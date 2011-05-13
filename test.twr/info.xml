@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ruleset xmlns="armycalc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="armycalc http://armycalc.com/xmls/twr3info.xsd" version="3.0">
+  <uid>6c9ef0d42c6137ed9bf858905fb2cdea</uid>
+  <revision>1</revision>
+  <name>Example Ruleset</name>
+  <author>francio</author>
+  <description>This is an example Ruleset.
+It shows the basic concepts of ArmyCalc.</description>
+  <defaultArmyName>Army</defaultArmyName>
+  <defaultArmySize>1500</defaultArmySize>
+  <displayFields>
+    <field>
+      <name>dexterity</name>
+      <default>3</default>
+    </field>
+    <field>
+      <name>strength</name>
+      <default>3</default>
+    </field>
+    <field>
+      <name>agility</name>
+      <default>3</default>
+    </field>
+    <field>
+      <name>lives</name>
+      <default>1</default>
+    </field>
+  </displayFields>
+  <languages>
+	<lang>
+		<name>Polski</name>
+	  	<id>pl</id>
+	</lang>
+	<lang default='true'>
+		<name>English</name>
+		<id>en</id>
+	</lang>
+  </languages>
+  <models>
+  	<model>
+		<name>Model 1</name>
+		<id>m1</id>
+	</model>
+	<model>
+		<name>Model 2</name>
+		<id>m2</id>
+	</model>
+  </models>
+  <files>
+    <units>
+      <file>
+        <name>Units</name>
+        <path>units.xml</path>
+      </file>
+      <file>
+        <name>Extra Units For Model 2</name>
+        <path>units2.xml</path>
+	<models>
+		<model>m2</model>
+	</models>
+	<menuname>Extra Units</menuname>
+      </file>
+    </units>
+    <validators>
+      <file>
+        <name>Default Validator</name>
+        <path>validator.lua</path>
+      </file>
+    </validators>
+    <displays>
+      <file>
+        <name>Default Display</name>
+        <path>display.lua</path>
+      </file>
+    </displays>
+    <media>media</media>
+  </files>
+</ruleset>
