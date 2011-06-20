@@ -8,8 +8,14 @@
 		<script src="js/jquery-1.6.min.js"></script>
 		<script src="js/jquery-ui.min.js"></script>
 		
-		<link rel="stylesheet" media="all" href="calc.css">
-		
+		<link rel="stylesheet" media="screen" href="calc.css">
+
+		<!--[if IE]>
+		<link rel="stylesheet" media="screen" href="calc.ie.css">
+		<script src="calc.ie.js"></script>	
+		<![endif]-->
+	
+	
 		<link rel="shortcut icon" href="favicon.ico" />
 		
 		<meta name="author" content="Franciszek Szczepan Wawrzak" />
@@ -19,20 +25,24 @@
 	</head>
 	<body>
 		
-
+	Please select ruleset:
+	<select id="twr" name="twr" onchange="calc.loadTWR($('#twr').val());">
+	<option value="">please select</option>
+	<option value="test1.twr/">Example TWR 3.0</option>
+	<option value="test2.twr/">Example TWR 2.0</option>
+	<option value="test3.twr/">test 3</option>
+	</select>
 	<div id='editorcanvas' style='margin:20px; border:1px solid #aaa;'></div>
 
 <script type="text/javascript">
 <!--
 
-	initCalculator('editorcanvas',{
-		acurl: 'http://armycalc.com/',
-		twrurl: 'test.twr/'});
+	calc = jsArmyCalc( '#editorcanvas', 'template.html' );
+	//uncomment this to load test1 on init
+	//calc.loadTWR('test1.twr/');
 
 //-->
 </script>
-
-	<a href='http://armycalc.com'>http://armycalc.com</a>
 
 	</body>
 </html>
