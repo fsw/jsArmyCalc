@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="utf-8"?>
+<units xmlns="armycalc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="armycalc http://armycalc.com/xmls/twr2units.xsd" version="2.0">
+  <unit minCount="1" maxCount="1">
+    <uid>183d6363396bdf8e6ece9391f05c9c41</uid>
+    <name>Hero</name>
+    <description>Hero is a special unit. It has min and max count set to 1 so it acts like a character unit.</description>
+    <categories>
+      <category>Heroes</category>
+    </categories>
+    <extraFields>
+      <display>Hero</display>
+      <field><name>dexterity</name><value>10</value></field>
+      <field><name>strength</name><value>10</value></field>
+      <field><name>agility</name><value>10</value></field>
+      <field><name>lives</name><value>3</value></field>
+    </extraFields>
+    <baseCost>0</baseCost>
+    <costPerUnit>100</costPerUnit>
+    <thumbnail>hero.jpg</thumbnail>
+    <bonus minCount="0" maxCount="unbounded">
+      <uid>3ac1feae366f3294ee9c7028c6aeb841</uid>
+      <name>granade</name>
+      <description>hero can take multiple granades into battle so max limit of this bonus is unlimited</description>
+      <baseCost>3</baseCost>
+      <costPerUnit>0</costPerUnit>
+    </bonus>
+
+    <bonus minCount="0" maxCount="1">
+      <uid>65c1feae366f3e4fe9c7028c6a75841</uid>
+      <name>servant</name>
+      <description>this bonus have its own characteristics</description>
+      <baseCost>15</baseCost>
+      <costPerUnit>0</costPerUnit>
+      <extraFields>
+        <display>Servant</display>
+        <field><name>dexterity</name><value>2</value></field>
+        <field><name>strength</name><value>2</value></field>
+        <field><name>agility</name><value>2</value></field>
+        <field><name>lives</name><value>1</value></field>
+      </extraFields> 
+    </bonus>
+  
+    <bonus minCount="0" maxCount="1">
+      <uid>2773447232972735ce4487be2a013188</uid>
+      <name>magic item</name>
+      <description>Hero can take only one magick item. This bonus have minimum number of childs set to 1 and maximum also to 1. This bonus is free because it is only used to group other bonuses</description>
+      <baseCost>0</baseCost>
+      <costPerUnit>0</costPerUnit>
+      <bonuses minCount="1" maxCount="1" uid="d3f965787144a9a02a990fda6d44b14c">
+        <uid>d3f965787144a9a02a990fda6d44b14c</uid>
+        <name></name>
+        <bonus minCount="0" maxCount="1">
+          <uid>af0c94931dee3e24d2bd98355559339d</uid>
+          <name>magic helmet</name>
+          <description>this is example magis item with cost 25 and max count 1</description>
+          <baseCost>25</baseCost>
+          <costPerUnit>0</costPerUnit>
+        </bonus>
+        <bonus minCount="0" maxCount="1">
+          <uid>7069d14ed4e3fbcc52b91f28f3aed0d5</uid>
+          <name>magic shues</name>
+          <description>this is example magis item with cost 10 and max count 1</description>
+          <baseCost>10</baseCost>
+          <costPerUnit>0</costPerUnit>
+        </bonus>
+        <bonus minCount="0" maxCount="1">
+          <uid>9e96a30f4bed3ebd4a4a4c5e05a56041</uid>
+          <name>magic glowes</name>
+          <description>this is example magis item with cost 15 and max count 1</description>
+          <baseCost>15</baseCost>
+          <costPerUnit>0</costPerUnit>
+        </bonus>
+      </bonuses>
+    </bonus>
+  </unit>
+  <unit minCount="1" maxCount="1">
+    <uid>unit_barbarian</uid>
+    <name>Barbarian</name>
+    <description>Another example hero. Very strong one.</description>
+    <categories>
+      <category>Heroes</category>
+    </categories>
+    <extraFields>
+      <display>Barbarian</display>
+      <field><name>dexterity</name><value>2</value></field>
+      <field><name>strength</name><value>70</value></field>
+      <field><name>agility</name><value>3</value></field>
+      <field><name>lives</name><value>2</value></field>
+    </extraFields>
+    <baseCost>0</baseCost>
+    <costPerUnit>120</costPerUnit>
+    <thumbnail>barbarian.jpg</thumbnail>
+    <bonus minCount="0" maxCount="unbounded">
+      <uid>bonus_granade</uid>
+      <name>granade</name>
+      <description>Just like hero, barbarian can take multiple granades into battle.</description>
+      <baseCost>3</baseCost>
+      <costPerUnit>0</costPerUnit>
+    </bonus>
+  </unit>
+  <unit minCount="1" maxCount="1">
+    <uid>unit_mage</uid>
+    <name>Mage</name>
+    <description>Example hero</description>
+    <categories>
+      <category>Heroes</category>
+    </categories>
+   <extraFields>
+      <display>Mage</display>
+      <field>
+        <name>dexterity</name>
+        <value>50</value>
+      </field>
+      <field>
+        <name>strength</name>
+        <value>50</value>
+      </field>
+      <field>
+        <name>agility</name>
+        <value>50</value>
+      </field>
+      <field>
+        <name>lives</name>
+        <value>5</value>
+      </field>
+    </extraFields>
+    <baseCost>0</baseCost>
+    <costPerUnit>150</costPerUnit>
+    <thumbnail>mage.jpg</thumbnail>
+    <bonus minCount="1" maxCount="1">
+      <uid>6b73452df2c03a8fcf35b2e130304f81</uid>
+      <name>spells</name>
+      <description>Mage have to select 3 spells from a list. This bonus settings are: min=1, max=1, min_childs=3, max_childs=3, cost=0, cpu=0</description>
+      <baseCost>0</baseCost>
+      <costPerUnit>0</costPerUnit>
+      <bonuses minCount="3" maxCount="3" uid="f6bf0c7bd29b9df41e8565f6592a49c4">
+        <uid>f6bf0c7bd29b9df41e8565f6592a49c4</uid>
+        <name></name>
+        <bonus minCount="0" maxCount="1">
+          <uid>c667c1a29c2b8ac301ee6dc8a4bfe45c</uid>
+          <name>fireball</name>
+          <description>blah blah blah, this is a spell</description>
+          <baseCost>12</baseCost>
+          <costPerUnit>0</costPerUnit>
+        </bonus>
+        <bonus minCount="0" maxCount="1">
+          <uid>5371f43985299acebda7f8b752194305</uid>
+          <name>armageddon</name>
+          <description>blah blah blah, this is a spell</description>
+          <baseCost>30</baseCost>
+          <costPerUnit>0</costPerUnit>
+        </bonus>
+        <bonus minCount="0" maxCount="1">
+          <uid>e357e576cdd80f747e84636b9f8f2a74</uid>
+          <name>icebolt</name>
+          <description>blah blah blah, this is a spell</description>
+          <baseCost>14</baseCost>
+          <costPerUnit>0</costPerUnit>
+        </bonus>
+        <bonus minCount="0" maxCount="1">
+          <uid>f8a2947d32763e45ebca50b379926d1d</uid>
+          <name>healing blast</name>
+          <description>blah blah blah, this is a spell</description>
+          <baseCost>5</baseCost>
+          <costPerUnit>0</costPerUnit>
+        </bonus>
+        <bonus minCount="0" maxCount="1">
+          <uid>601fdf5ebdf8544b506566beec6e1709</uid>
+          <name>lightening</name>
+          <description>blah blah blah, this is a spell</description>
+          <baseCost>12</baseCost>
+          <costPerUnit>0</costPerUnit>
+        </bonus>
+        <bonus minCount="0" maxCount="1">
+          <uid>5ff1300da55b32fe63ea93dadfb47203</uid>
+          <name>teleport</name>
+          <description>blah blah blah, this is a spell</description>
+          <baseCost>20</baseCost>
+          <costPerUnit>0</costPerUnit>
+        </bonus>
+      </bonuses>
+    </bonus>
+    <bonus minCount="0" maxCount="1">
+      <uid>21af44658ec2e527a9ddc1f679e2bad1</uid>
+      <name>artefacts</name>
+      <description>Mage can take up to 2 artefacts. This bonus settings: min=0, max=1, min_childs=1, max_childs=2, cost=0, cpu=0</description>
+      <baseCost>0</baseCost>
+      <costPerUnit>0</costPerUnit>
+      <bonuses minCount="1" maxCount="2" uid="4328471df5d783e11be12e7fc93a18a8">
+        <uid>4328471df5d783e11be12e7fc93a18a8</uid>
+        <name></name>
+        <bonus minCount="0" maxCount="1">
+          <uid>50c5fc6399b9442efad8775bcf4e25a2</uid>
+          <name>magic hat</name>
+          <description>blah blah blah, some example artefact</description>
+          <baseCost>50</baseCost>
+          <costPerUnit>0</costPerUnit>
+        </bonus>
+        <bonus minCount="0" maxCount="1">
+          <uid>90c200912e5e5c228debc595a88b22bc</uid>
+          <name>magic wand</name>
+          <description>blah blah blah, some example artefact</description>
+          <baseCost>22</baseCost>
+          <costPerUnit>0</costPerUnit>
+        </bonus>
+        <bonus minCount="0" maxCount="1">
+          <uid>01b7d6bb44199ffaa5cf88fd4587bc63</uid>
+          <name>magic boots</name>
+          <description>blah blah blah, some example artefact</description>
+          <baseCost>31</baseCost>
+          <costPerUnit>0</costPerUnit>
+        </bonus>
+      </bonuses>
+    </bonus>
+  </unit>
+  <unit minCount="10" maxCount="unbounded">
+    <uid>9572d55d0ef42e11d4f512362c93347c</uid>
+    <name>Soldier Squad</name>
+    <description>Typical unit. Minimum count of this unit is 5 maximum is infinite.</description>
+    <categories>
+      <category>Infantry</category>
+    </categories>
+    <extraFields>
+      <display>Soldier Squad</display>
+      <field>
+        <name>dexterity</name>
+        <value>3</value>
+      </field>
+      <field>
+        <name>strength</name>
+        <value>3</value>
+      </field>
+      <field>
+        <name>agility</name>
+        <value>3</value>
+      </field>
+      <field>
+        <name>lives</name>
+        <value>1</value>
+      </field>
+    </extraFields>
+    <baseCost>0</baseCost>
+    <costPerUnit>10</costPerUnit>
+    <thumbnail>soldier.jpg</thumbnail>
+    <bonus minCount="0" maxCount="1">
+      <uid>fec1123e366f3e4fe9c234857375841</uid>
+      <name>leader</name>
+      <description>this bonus have its own characteristics to represent that this is separate unit</description>
+      <baseCost>20</baseCost>
+      <costPerUnit>0</costPerUnit>
+      <extraFields>
+        <display>Leader</display>
+        <field><name>dexterity</name><value>4</value></field>
+        <field><name>strength</name><value>4</value></field>
+        <field><name>agility</name><value>4</value></field>
+        <field><name>lives</name><value>2</value></field>
+      </extraFields> 
+    </bonus>
+    
+    <bonus minCount="0" maxCount="1">
+      <uid>6bfddd47ebbce6113925c30d8a9f5ba0</uid>
+      <name>super weapons</name>
+      <description>this bonus cost depends on amount of soldiers in unit(because after selecting it each soldier will have an super weapon). It cost is set to 0 and its cost per unit(cpu) is set to 3</description>
+      <baseCost>0</baseCost>
+      <costPerUnit>3</costPerUnit>
+    </bonus>
+    <bonus minCount="0" maxCount="1">
+      <uid>86c72f555c108a1d21c97822c1b71e93</uid>
+      <name>flag</name>
+      <description>cost of this bonus do not depend on amount of soldiers in unit. Its cost is set to 10 and cost per unit(cpu) to 0</description>
+      <baseCost>10</baseCost>
+      <costPerUnit>0</costPerUnit>
+    </bonus>
+    <bonus minCount="0" maxCount="5">
+      <uid>d9fbbfc4a04a7c6c2db1d0b324d977c9</uid>
+      <name>granades</name>
+      <description>Each soldier can take up to 5 granades into battle</description>
+      <baseCost>0</baseCost>
+      <costPerUnit>5</costPerUnit>
+    </bonus>
+  </unit>
+  <unit minCount="2" maxCount="5">
+    <uid>1658105c5dff887ca9e2a305471fbeeb</uid>
+    <name>Elite Squad</name>
+    <description>Elite Squad size have to be between 2 and 5.</description>
+    <categories>
+      <category>Infantry</category>
+    </categories>
+    <extraFields>
+      <display>Elite Squad</display>
+      <field>
+        <name>dexterity</name>
+        <value>8</value>
+      </field>
+      <field>
+        <name>strength</name>
+        <value>8</value>
+      </field>
+      <field>
+        <name>agility</name>
+        <value>8</value>
+      </field>
+      <field>
+        <name>lives</name>
+        <value>7</value>
+      </field>
+    </extraFields>
+    <baseCost>10</baseCost>
+    <costPerUnit>16</costPerUnit>
+    <thumbnail>elite.jpg</thumbnail>
+    <bonus minCount="1" maxCount="1">
+      <uid>2709c652099d180e3a519a7eb9ffd1a1</uid>
+      <name>super weapons</name>
+      <description>In our example game Elite soldiers have super weapon by default. This bonus have min=1 and max=1 so it is allways selected.</description>
+      <baseCost>0</baseCost>
+      <costPerUnit>3</costPerUnit>
+    </bonus>
+  </unit>
+  <unit minCount="5" maxCount="10">
+    <uid>7538ec3b3ac7317765dd55c7ea7e4530</uid>
+    <name>Elf Squad</name>
+    <description>this units tests how unit with non 0 base costs work</description>
+    <categories>
+      <category>Infantry</category>
+    </categories>
+    <extraFields>
+      <display>Elf Squad</display>
+      <field>
+        <name>dexterity</name>
+        <value>3</value>
+      </field>
+      <field>
+        <name>strength</name>
+        <value>3</value>
+      </field>
+      <field>
+        <name>agility</name>
+        <value>3</value>
+      </field>
+      <field>
+        <name>lives</name>
+        <value>1</value>
+      </field>
+    </extraFields>
+    <baseCost>100</baseCost>
+    <costPerUnit>10</costPerUnit>
+    <thumbnail>elf.jpg</thumbnail>
+  </unit>
+  <unit minCount="1" maxCount="1">
+    <uid>03e71d2da6f68a9151d7f61acbb94174</uid>
+    <name>Dragon</name>
+    <description>This is a monster unit. min size is 1 max is also 1.</description>
+    <categories>
+      <category>Monsters</category>
+    </categories>
+    <extraFields>
+      <display>Dragon</display>
+      <field>
+        <name>dexterity</name>
+        <value>30</value>
+      </field>
+      <field>
+        <name>strength</name>
+        <value>10</value>
+      </field>
+      <field>
+        <name>agility</name>
+        <value>10</value>
+      </field>
+      <field>
+        <name>lives</name>
+        <value>5</value>
+      </field>
+    </extraFields>
+    <baseCost>0</baseCost>
+    <costPerUnit>55</costPerUnit>
+    <thumbnail>dragon.jpg</thumbnail>
+  </unit>
+  <unit minCount="5" maxCount="10">
+    <uid>1b6b3b7ac17cf1a02f83a5b09dc8e6d8</uid>
+    <name>Zombie</name>
+    <description>Unit of zombie consist of 5 to 10 units.</description>
+    <categories>
+      <category>Monsters</category>
+    </categories>
+    <extraFields>
+      <display>Zombie</display>
+      <field>
+        <name>dexterity</name>
+        <value>10</value>
+      </field>
+      <field>
+        <name>strength</name>
+        <value>3</value>
+      </field>
+      <field>
+        <name>agility</name>
+        <value>10</value>
+      </field>
+      <field>
+        <name>lives</name>
+        <value>2</value>
+      </field>
+    </extraFields>
+    <baseCost>0</baseCost>
+    <costPerUnit>10</costPerUnit>
+    <thumbnail>zombie.jpg</thumbnail>
+  </unit>
+  <unit minCount="1" maxCount="1">
+    <uid>cd8258c218d8b2a0e8081d4c674754b8</uid>
+    <name>Troll</name>
+    <description>Some another abstract unit.</description>
+    <categories>
+      <category>Monsters</category>
+    </categories>
+    <extraFields>
+      <display>Troll</display>
+      <field>
+        <name>dexterity</name>
+        <value>10</value>
+      </field>
+      <field>
+        <name>strength</name>
+        <value>10</value>
+      </field>
+      <field>
+        <name>agility</name>
+        <value>10</value>
+      </field>
+      <field>
+        <name>lives</name>
+        <value>10</value>
+      </field>
+    </extraFields>
+    <baseCost>0</baseCost>
+    <costPerUnit>50</costPerUnit>
+    <thumbnail>troll.jpg</thumbnail>
+  </unit>
+  <unit minCount="1" maxCount="1">
+    <uid>ff8f8508a935f530e5d98e99495e2cf6</uid>
+    <name>Tank</name>
+    <description>Tank is a warmachine. It costs a lot of points. You can only have one Tank in a unit.</description>
+    <categories>
+      <category>Machines</category>
+    </categories>
+    <extraFields>
+      <display>Tank</display>
+      <field>
+        <name>dexterity</name>
+        <value>0</value>
+      </field>
+      <field>
+        <name>strength</name>
+        <value>100</value>
+      </field>
+      <field>
+        <name>agility</name>
+        <value>100</value>
+      </field>
+      <field>
+        <name>lives</name>
+        <value>50</value>
+      </field>
+    </extraFields>
+    <baseCost>0</baseCost>
+    <costPerUnit>500</costPerUnit>
+    <thumbnail>tank.jpg</thumbnail>
+    <bonus minCount="5" maxCount="unbounded">
+      <uid>7525bddea5ccfd1fd87935f7fac98ce4</uid>
+      <name>Ammunition</name>
+      <description>This bonus have min set to 5 and max to infinity. Tanks and cannons might use this bonus.</description>
+      <baseCost>2</baseCost>
+      <costPerUnit>0</costPerUnit>
+    </bonus>
+    <bonus minCount="0" maxCount="1">
+      <uid>c64b8fb4dfdf5a6417a8d688bfff9832</uid>
+      <name>Super Hyper Cannon</name>
+      <description>some example addon</description>
+      <baseCost>10</baseCost>
+      <costPerUnit>0</costPerUnit>
+    </bonus>
+  </unit>
+  <unit minCount="1" maxCount="1">
+    <uid>unit_bolt</uid>
+    <name>Bolt Thrower</name>
+    <description>Another example warmachine</description>
+    <categories>
+      <category>Machines</category>
+    </categories>
+    <extraFields>
+      <display>Bolt Thrower</display>
+      <field>
+        <name>dexterity</name>
+        <value>-</value>
+      </field>
+      <field>
+        <name>strength</name>
+        <value>50</value>
+      </field>
+      <field>
+        <name>agility</name>
+        <value>50</value>
+      </field>
+      <field>
+        <name>lives</name>
+        <value>50</value>
+      </field>
+    </extraFields>
+    <baseCost>0</baseCost>
+    <costPerUnit>300</costPerUnit>
+    <thumbnail>bolt.jpg</thumbnail>
+    <bonus minCount="5" maxCount="unbounded">
+      <uid>7525bddea5ccfd1fd87935f7fac98ce4</uid>
+      <name>Ammunition</name>
+      <description>This bonus have min set to 5 and max to infinity. Tanks and cannons might use this bonus.</description>
+      <baseCost>2</baseCost>
+      <costPerUnit>0</costPerUnit>
+    </bonus>
+  </unit>
+  <unit minCount="1" maxCount="1">
+    <uid>eb4c1bd860ef4dff61a04f3a93ec3f7c</uid>
+    <name>Cannon</name>
+    <description>Another example warmachine</description>
+    <categories>
+      <category>Machines</category>
+    </categories>
+    <extraFields>
+      <display>Cannon</display>
+      <field>
+        <name>dexterity</name>
+        <value>0</value>
+      </field>
+      <field>
+        <name>strength</name>
+        <value>50</value>
+      </field>
+      <field>
+        <name>agility</name>
+        <value>50</value>
+      </field>
+      <field>
+        <name>lives</name>
+        <value>50</value>
+      </field>
+    </extraFields>
+    <baseCost>0</baseCost>
+    <costPerUnit>300</costPerUnit>
+    <thumbnail>cannon.jpg</thumbnail>
+    <bonus minCount="5" maxCount="unbounded">
+      <uid>7525bddea5ccfd1fd87935f7fac98ce4</uid>
+      <name>Ammunition</name>
+      <description>This bonus have min set to 5 and max to infinity. Tanks and cannons might use this bonus.</description>
+      <baseCost>2</baseCost>
+      <costPerUnit>0</costPerUnit>
+    </bonus>
+  </unit>
+  <unit minCount="1" maxCount="1">
+    <uid>3b21f56054ee8704b086a39440297c4b</uid>
+    <name>Soldier Squad Wagon</name>
+    <description>Lets say that in our abstract game You can add a Wagon to soldier squad. Wagon has its own statistics so we didn't defined it as a bonus but as a separate unit. 
+Ruleset validator will be checking if there is one wagon unit per Soldier Squad.</description>
+    <categories>
+      <category>Machines</category>
+    </categories>
+    <extraFields>
+      <display>Soldier Squad Wagon</display>
+      <field>
+        <name>dexterity</name>
+        <value>100</value>
+      </field>
+      <field>
+        <name>strength</name>
+        <value>200</value>
+      </field>
+      <field>
+        <name>agility</name>
+        <value>0</value>
+      </field>
+      <field>
+        <name>lives</name>
+        <value>100</value>
+      </field>
+    </extraFields>
+    <baseCost>0</baseCost>
+    <costPerUnit>100</costPerUnit>
+    <thumbnail>wagon.jpg</thumbnail>
+    <bonus minCount="0" maxCount="1">
+      <uid>c4ab4fc6e12c6b1ba1aadf7a222306a1</uid>
+      <name>5th Wheel</name>
+      <description>useless addon it is free.</description>
+      <baseCost>0</baseCost>
+      <costPerUnit>0</costPerUnit>
+    </bonus>
+    <bonus minCount="1" maxCount="1">
+      <uid>9ee02d0758ee58bc37a8d00010671787</uid>
+      <name>Driver</name>
+      <description>Wagon needs a driver. this bonus settings: min=1 max=1 cost=5.</description>
+      <baseCost>5</baseCost>
+      <costPerUnit>0</costPerUnit>
+    </bonus>
+  </unit>
+</units>

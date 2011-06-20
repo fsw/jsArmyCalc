@@ -1,0 +1,47 @@
+
+<div class="acCanvas">
+	<div class="toolbar">
+		<div class='settings'>
+			name: <input type='text' value=''/>
+			size: <span></span><a id='acResize' href='#'><img src='img/help.png' alt='resize'/></a>
+			lang: <select></select>
+			model: <select></select>
+		</div>	
+		<div class='buttons'>
+			<a id='acPrint' href='#'><img src='img/print.png' alt='print'/></a>
+	
+			<a id='acHelp' href='#'><img src='img/help.png' alt='help'/></a>
+			<a id='acMaximize' href='#'><img src='img/maximize.png' alt='maximize'/></a>
+			<a id='acMinimize' href='#' style="display:none;"><img src='img/minimize.png' alt='minimize'/></a>
+		</div>
+		
+	</div>
+	<div class="menu">
+		units: 
+		<ul id="acAvailable"></ul>
+	</div>
+	<div class="workspace">
+		<div class="unitslist">
+			<ul id="acUnits"></ul>
+			total: <span id="acTotal"></span>
+		</div>
+		<div class="unitdetails">
+			<div id="acDetails">
+				<div class='desc'></div>
+				<div class='stats'>
+					<table class='stats'>
+						<tr><th></th></tr>
+					</table>
+				</div>
+				<div class='extra'></div>
+			</div>
+		</div>
+	</div>
+	<div class="statusbar">
+		
+		<div class="status" id="acStatus"></div>
+		<div class="link">powered by <a href="http://armycalc.com/">ArmyCalc</a></div>
+		
+	</div>
+</div>
+
