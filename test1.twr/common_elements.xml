@@ -1,29 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<units xmlns="armycalc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="armycalc http://armycalc.com/xmls/twr2units.xsd" version="2.0">
-  <unit minCount="1" maxCount="1">
+<elements xmlns="armycalc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="armycalc http://armycalc.com/xmls/twr3elements.xsd" version="3.0">
+  <element minCount="1" maxCount="2" minSize="1" defaultSize="3" maxSize="10">
     <uid>183d6363396bdf8e6ece9391f05c9c41</uid>
-    <name>Hero</name>
-    <description>Hero is a special unit. It has min and max count set to 1 so it acts like a character unit.</description>
+    <name>Warrior</name>
+    <description></description>
     <categories>
-      <category>Heroes</category>
+      <category>Base Units</category>
     </categories>
-    <extraFields>
-      <display>Hero</display>
-      <field><name>dexterity</name><value>10</value></field>
-      <field><name>strength</name><value>10</value></field>
-      <field><name>agility</name><value>10</value></field>
-      <field><name>lives</name><value>3</value></field>
-    </extraFields>
+    
+	<stats>
+      <stat id="dx">10</stat>
+    </stats>
+
     <baseCost>0</baseCost>
     <costPerUnit>100</costPerUnit>
-    <thumbnail>hero.jpg</thumbnail>
-    <bonus minCount="0" maxCount="unbounded">
-      <uid>3ac1feae366f3294ee9c7028c6aeb841</uid>
-      <name>granade</name>
-      <description>hero can take multiple granades into battle so max limit of this bonus is unlimited</description>
-      <baseCost>3</baseCost>
-      <costPerUnit>0</costPerUnit>
-    </bonus>
+    <thumbnail src="media/hero.jpg"></thumbnail>
+	<elements>
+	  <upgradeEach>
+		<element minCont="0" maxCount="1" minSize="1" maxSize="1">
+		  <name>Shield</name>
+		  <description></description>
+		  <cost>
+			<>100<>
+		  </cost>
+		</element>
+		<element minCont="0" maxCount="1" minSize="1" maxSize="3">
+		  <name>Throwing Star</name>
+		  <description></description>
+		</element>
+	  </upgradeEach>
+	  <append>
+		<element minCount="0" maxCount="1" minSize="1" maxSize="3">
+		  
+		<element>
+	  </append>
+	  <upgradeOne>
+	  </upgradeOne>
+	</elements>
 
     <bonus minCount="0" maxCount="1">
       <uid>65c1feae366f3e4fe9c7028c6a75841</uid>

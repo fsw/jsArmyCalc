@@ -1,0 +1,5 @@
+
+
+army.addError('error');
+
+
