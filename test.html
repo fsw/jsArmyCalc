@@ -4,12 +4,12 @@
 		<title>ArmyCalc - js editor test</title>
 		<meta charset="utf-8" />
 		
-		<script src="calc.js"></script>
 		<script src="js/jquery-1.6.min.js"></script>
 		<script src="js/jquery-ui.min.js"></script>
 		
+		<script src="armycalc.js"></script>
+		
 		<link rel="stylesheet" media="screen" href="calc.css">
-
 		<!--[if IE]>
 		<link rel="stylesheet" media="screen" href="calc.ie.css">
 		<script src="calc.ie.js"></script>	
@@ -27,10 +27,10 @@
 		
 	Please select ruleset:
 	<select id="twr" name="twr" onchange="calc.loadTWR($('#twr').val());">
-	<option value="">please select</option>
+	<option value="" selected="true">please select</option>
 	<option value="test1.twr/">Example TWR 3.0</option>
-	<option value="test2.twr/">Example TWR 2.0</option>
-	<option value="test3.twr/">test 3</option>
+	<!--<option value="test2.twr/">Example TWR 2.0</option>
+	<option value="test3.twr/">test 3</option>-->
 	</select>
 	<div id='editorcanvas' style='margin:20px; border:1px solid #aaa;'></div>
 
@@ -38,6 +38,7 @@
 <!--
 
 	calc = jsArmyCalc( '#editorcanvas', 'template.html' );
+	calc.loadTWR('test1.twr/');
 	//uncomment this to load test1 on init
 	//calc.loadTWR('test1.twr/');
 

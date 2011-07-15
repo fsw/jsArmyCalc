@@ -1,68 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ruleset xmlns="armycalc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="armycalc http://armycalc.com/xmls/twr3info.xsd" version="3.0">
+  
+  <!--
+  This have to be unique for every ruleset.
+  Revision can be used by software to cehck if created army was made by older ruleset or so.
+  you should always upgrate the revision by one if you are making any changes
+  -->
   <uid>armycalc.twr3.test01</uid>
-  <revision>1</revision>
-  <name>Example TWR 3.0</name>
-  <author>francio</author>
-  <description>This is an example Ruleset. It shows the basic concepts of ArmyCalc.</description>
-  <defaultArmyName>Army</defaultArmyName>
-  <defaultArmySize>1500</defaultArmySize>
-  <displayFields>
-    <field>
-      <name>dexterity</name>
-      <default>3</default>
-    </field>
-    <field>
-      <name>strength</name>
-      <default>3</default>
-    </field>
-    <field>
-      <name>agility</name>
-      <default>3</default>
-    </field>
-    <field>
-      <name>lives</name>
-      <default>1</default>
-    </field>
-  </displayFields>
+  <revision>3</revision>
+  
+  <!--
+  Definition of languages.
+  This is an optional tag. You can write one-language rulesets
+  Ifyou define this one language needs to be marked as default
+  please se next section to see how this works
+  -->
   <languages>
-	<lang id="pl">
-		<name>Polski</name>
-	</lang>
-	<lang id="en" default='true'>
+	<language id="pl">
+		<name>Polski (polish)</name>
+	</language>
+	<language id="en" default='true'>
 		<name>English</name>
-	</lang>
+	</language>
   </languages>
+  
+  <!--
+  basic ruleset info. 
+  please note how do languages work. 
+  text outside the tr tag would be used as default language text
+  if you will write simply <name>Blahblah</name> Blahblah would be used as name in each language
+  -->
+  <name>
+	<tr ln="en">Example TWR 3.0</tr>
+	<tr ln="pl">Przykładowy TWR 3.0</tr>
+  </name>
+  <author>francio</author>
+  <description>
+  	This is an example Ruleset. It shows the basic concepts of ArmyCalc and TWR 3.0
+  	<tr ln="pl">Ten przykładowy zestaw zasad pokazuje jak działa ArmyCalc i TWR 3.0</tr>
+  </description>
+  
+  <!--
+  Ruleset icon.
+  Not that all images can be passed inline as base64 encodeddata or loaded using src attribute
+  -->
+  <icon src="icon.png"></icon>
+  
+  <!--
+  Stat fields that would bve possible to define for every element.
+  The display attribute will make this stat shown on the default army list and in the editor
+  -->
+  <stats>
+    <stat id="str" display="true">
+      <name>strength</name>
+	  <shortname>ST</shortname>
+      <default>5</default>
+    </stat>
+    <stat id="sta" display="true">
+      <name>stamina</name>
+	  <shortname>ST</shortname>
+      <default>5</default>
+    </stat>
+    <stat id="spe" display="true">
+      <name>speed</name>
+      <shortname>SP</shortname>
+      <default>5</default>
+    </stat>
+    <stat id="hp" display="true">
+      <name>hitpoints</name>
+	  <name>HP</name>
+      <default>10</default>
+    </stat>
+	<stat id="us">
+      <name>unit size</name>
+	  <name>US</name>
+      <default>1</default>
+    </stat>
+  </stats>
+ 
+  <!--
+  Here we can define units that would be later on summed up when creating army. In most cases you will need only one unit.
+  If you use <cost>10</cost> later on it would be interpreted as 10 of default unit( pts in this example )
+  -->
+  <costs>
+	<cost id="pts" default="true">
+	  <name>Points</name>
+	  <shortname>pts</shortname>
+	  <unit>pts</unit>
+	</cost>
+	<cost id="gc">
+	  <name>Gold Coins</name>
+	  <shortname>GC</shortname>
+	  <unit>coins</unit>
+	</cost>
+  </costs>
+  
+
+  <!--
+  here we can optionally define what would be set as default in an army creation dialog.
+  -->
+  <defaultArmyName>
+	<tr ln="en">Army</tr>
+	<tr ln="pl">Armia</tr>	
+  </defaultArmyName>
+ 
+  <defaultArmySize>
+	<cost id="pts">1500</cost>
+	<cost id="gold">10</cost>
+  </defaultArmySize>
+ 
+  <!--
+  This will be shown in a select dialog when creating new army.
+  You can check which model was selected using your validation script 
+  and make a special set of rules for a tuornament or so.
+  You can write totally different validation script for a model 
+  but you can check selected model inside the validation script as well.
+  You need to define atleast one model.
+  note that models can optionally override tags: defaultArmyName and defaultArmySize
+  -->
   <models>
-  	<model id="m1">
-		<name>Model 1</name>
-	</model>
 	<model id="m2" default='true'>
 		<name>Default Model</name>
+		<elements src="common_elements.xml"></elements>
+		<validator src="validator.js"></validator>
+	</model>
+   	<model id="m1">
+		<name>
+		  <tr ln="en">Tournament model</tr>
+		  <tr ln="pl">Model turniejowy</tr>	
+		</name>
+		<defaultArmyName>
+		  <tr ln="en">Tournament army</tr>
+		  <tr ln="pl">Armia turniejowa</tr>	
+		</defaultArmyName>
+		<elements src="common_elements.xml"></elements>
+		<validator src="validator.js"></validator>
 	</model>
   </models>
-  <files>
-    <units>
-      <file>
-        <name>Base Units</name>
-        <path>units1.xml</path>
-      </file>
-      <file>
-        <name>Extra Units For Model 2</name>
-        <path>units2.xml</path>
-	<models>
-		<model>m2</model>
-	</models>
-	<menuname>Extra Units</menuname>
-      </file>
-    </units>
-    <validators>
-      <file>
-        <name>Default Validator</name>
-        <path>validator.lua</path>
-      </file>
-    </validators>
-    <media>media</media>
-    <icon>icon.png</icon>
-  </files>
+
 </ruleset>

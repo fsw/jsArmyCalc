@@ -1,4 +1,9 @@
 
+div.acCanvas p, div.acCanvas h2, div.acCanvas div {
+	margin:0;
+	padding:0;
+}
+
 div.acCanvas {
 	
 	position: relative;
@@ -29,6 +34,11 @@ body.acFullscreen {
 	padding:0;
 }
 
+div.acCanvas img {
+	border: none;
+}
+
+
 /* TOOLBAR */
 div.acCanvas div.toolbar {
 	background: black;
@@ -45,10 +55,6 @@ div.acCanvas div.buttons {
 	height: 40px;
 }
 
-div.acCanvas div.buttons img {
-	border: none;
-}
-
 
 
 /* MENU */
@@ -58,6 +64,34 @@ div.acCanvas div.menu {
 	color: white;
 	line-height: 22px;
 }
+
+div.acCanvas div.menu #acElements {
+	list-style-type: none;
+	overflow: auto;
+	margin:0;
+	padding:0; 
+}
+
+div.acCanvas div.menu ul#acElements li {
+	list-style-type: none;
+	float:left;
+}
+
+div.acCanvas div.menu ul#acElements li a {
+  display: block;
+  color: white;
+  text-decoration: none;
+}
+
+div.acCanvas div.menu ul#acElements li a:hover {
+  background: white;
+  color:black;
+}
+
+
+
+
+
 
 /* WORKSPACE */
 div.acCanvas div.workspace {
@@ -103,6 +137,61 @@ div.acCanvas div.statusbar div.link a{
 	
 	color:white;
 
+}
+
+/* POPUP  */
+
+div#acPopup {
+  display:none;
+  position: absolute;
+  width: 400px;
+  top:40px;
+  border: 3px solid white;
+  left: 50%;
+  margin-left: -200px;
+  z-index:2;  
+
+}
+
+div#acPopupBg {
+  display:none;
+  position:fixed;  
+  height:100%;  
+  width:100%;  
+  top:0;  
+  left:0;  
+  background:#000000;  
+  z-index:1;
+  filter:alpha(opacity=60); 
+  -moz-opacity: 0.6; 
+  opacity: 0.6; 
+
+}
+
+div#acPopup a#acClosePopup {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  top:0;
+  right:0;
+
+}
+
+
+div#acPopup h2#acPopupTitle {
+  background: black;
+  color: white;
+  height: 24px;
+  padding:0;
+  margin:0;
+
+
+}
+
+div#acPopup div#acPopupContent {
+  
+  min-height: 400px;
+  background: white;
 }
 
 
