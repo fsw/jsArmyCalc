@@ -1,49 +1,63 @@
 <!doctype html>
 <html>
-	<head>
-		<title>ArmyCalc - js editor test</title>
-		<meta charset="utf-8" />
-		
-		<script src="js/jquery-1.6.min.js"></script>
-		<script src="js/jquery-ui.min.js"></script>
-		
-		<script src="armycalc.js"></script>
-		
-		<link rel="stylesheet" media="screen" href="calc.css">
-		<!--[if IE]>
-		<link rel="stylesheet" media="screen" href="calc.ie.css">
-		<script src="calc.ie.js"></script>	
-		<![endif]-->
+  <head>
+	<title>ArmyCalc - js editor test</title>
+	<meta charset="utf-8" />
 	
+	<link rel="stylesheet" media="screen" href="test.css">
 	
-		<link rel="shortcut icon" href="favicon.ico" />
-		
-		<meta name="author" content="Franciszek Szczepan Wawrzak" />
-		<meta name="date" content="" />
-		<meta name="keywords" content="" />
-		<meta name="description" content="" />
-	</head>
-	<body>
-		
-	Please select ruleset:
-	<select id="twr" name="twr" onchange="calc.loadTWR($('#twr').val());">
-	<option value="" selected="true">please select</option>
-	<option value="test1.twr/">Example TWR 3.0</option>
-	<!--<option value="test2.twr/">Example TWR 2.0</option>
-	<option value="test3.twr/">test 3</option>-->
-	</select>
-	<div id='editorcanvas' style='margin:20px; border:1px solid #aaa;'></div>
+	<script src="js/jquery-1.6.min.js"></script>
+	<!-- <script src="js/jquery-ui.min.js"></script> -->
+	<script src="armycalc.js"></script>
+	<link rel="stylesheet" media="screen" href="calc.css">
+	<!--[if IE]>
+	<link rel="stylesheet" media="screen" href="calc.ie.css">
+	<script src="calc.ie.js"></script>	
+	<![endif]-->
+	
+	<link rel="shortcut icon" href="favicon.ico" />
+	<meta name="author" content="CadoSolutions" />
+	<meta name="date" content="" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+  
+  </head>
+  <body>
+	
+	<div id="legend">
+	  <p>
+	  This is the example page using jsArmyCalc witch is a part of the <a href='http://armycalc.com'>ArmyCalc</a> project.
+	  </p>
+	  <p>
+	  Please see this page source to see how to embed jsArmyCalc in a html document.
+	  </p>
+	  <p>
+	  For instructions on how to build your own TWR 3.0 file please see <a href='test1.twr/'>test1.twr</a>.
+	  </p>
+	  <p>
+	  Please select ruleset to load it with jsArmyCalc API:
+	  <br/>
+	  <select id="twr" name="twr" onchange="calc.loadTWR($('#twr').val());">
+		<option value="" selected="true">please select</option>
+		<option value="test1.twr/">Example TWR 3.0</option>
+		<!--<option value="test2.twr/">Example TWR 2.0</option>
+		<option value="test3.twr/">test 3</option>-->
+	  </select>
+	  </p>
+	</div>
 
-<script type="text/javascript">
-<!--
+	<div id="rhs">
+	  <div id='editorcanvas' style='margin:20px; border:1px solid #aaa; height:400px;'></div>
+	</div>
 
+	<script type="text/javascript">
+	<!--
 	calc = jsArmyCalc( '#editorcanvas', 'template.html' );
 	calc.loadTWR('test1.twr/');
 	//uncomment this to load test1 on init
 	//calc.loadTWR('test1.twr/');
+	//-->
+	</script>
 
-//-->
-</script>
-
-	</body>
+  </body>
 </html>
