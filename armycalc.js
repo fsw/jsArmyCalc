@@ -191,7 +191,7 @@ function jsArmyCalc( selector, templateurl ){
 	
 			element.stats = {};
 			for(id in calc.ruleset.stats)
-			  element.stats[id] = calc.ruleset.stats[id].default;
+			  element.stats[id] = calc.ruleset.stats[id]['default'];
 
 			$(this).children('stats').children('stat').each(function(){
 			  element.stats[$(this).attr('id')] = $(this).text();
@@ -266,7 +266,7 @@ function jsArmyCalc( selector, templateurl ){
 			display : ($(this).attr('display')==true?true:false),
 			name : getText($(this).children('name'),lang),
 			shortname : getText($(this).children('shortname'),lang),
-			default : $(this).children('default').text()
+			'default' : $(this).children('default').text()
 		  };
 		});
 
@@ -286,7 +286,7 @@ function jsArmyCalc( selector, templateurl ){
 		  
 		  ruleset.models[model_id] = {
 			name : getText($(this).children('name'),lang),
-			default : $(this).attr('default') == 'true'
+			'default' : $(this).attr('default') == 'true'
 		  };
 		  
 		  ruleset.models[model_id].elements = {};
@@ -353,8 +353,8 @@ function jsArmyCalc( selector, templateurl ){
 		modelSelect = $("<select></select>");
 		
 		for( id in this.ruleset.models )
-			modelSelect.append("<option value='" + id + "'"+(this.ruleset.models[id].default ?" selected='true'":"")+">"
-				+this.ruleset.models[id].name+"</option>");
+			modelSelect.append("<option value='" + id + "'"+(this.ruleset.models[id]['default'] ?" selected='true'":"")+">"
+				+this.ruleset.models['id'].name+"</option>");
 		  
 
 		createButton = $("<input type='button' value='create'/>");
