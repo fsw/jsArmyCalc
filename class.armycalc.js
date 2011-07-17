@@ -354,7 +354,7 @@ function jsArmyCalc( selector, templateurl ){
 		
 		for( id in this.ruleset.models )
 			modelSelect.append("<option value='" + id + "'"+(this.ruleset.models[id]['default'] ?" selected='true'":"")+">"
-				+this.ruleset.models['id'].name+"</option>");
+				+this.ruleset.models[id].name+"</option>");
 		  
 
 		createButton = $("<input type='button' value='create'/>");
