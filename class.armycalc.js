@@ -24,6 +24,9 @@ function jsArmyCalc( selector, templateurl ){
 
 	calc.statusElem = calc.canvas.find('#acStatus');
 	calc.submenuElem = calc.canvas.find('.submenu');
+	
+	calc.langSelect = calc.canvas.find('#acLang');
+	calc.langSelect.change(function(){ calc.setLang($(this).val()); });
 
 	calc.canvas.find('#acMaximize').click(function(){calc.setFullscreen(true); return false;});
 	calc.canvas.find('#acMinimize').click(function(){calc.setFullscreen(false); return false;});
@@ -128,6 +131,20 @@ function jsArmyCalc( selector, templateurl ){
 		this.statusElem.text(text);
 	}
 
+	calc.setLang = function( lang ){
+	
+	  acAddCSSRule(".trans", "display", "none");
+
+
+	  //if a language was already set 
+	  if(this.lang)
+		acAddCSSRule("."+this.lang+"", "display", "none");
+
+	  this.lang = lang;
+	  
+	  acAddCSSRule("."+lang+"", "display", "inline");
+ 
+	}
 
 	calc.setStatus('no TWR file loaded');			
 
@@ -139,16 +156,21 @@ function jsArmyCalc( selector, templateurl ){
 		this.calc.setError( this.url+' - '+text + ' - ' + error );
 	}
 
-	getText = function( xml, lang ){
+	getText = function( xml ){
 
 	  txt = '';
 
 	  $(xml).contents().each(function(){
 	
-		if((this.nodeType==3) && (!this.isElementContentWhitespace) && (!txt))
+		if((this.nodeType==3) && (!this.isElementContentWhitespace))
+		  txt += this.wholeText;
+		if((this.nodeType!=3))
+		  txt += "<span class='trans "+$(this).attr('ln')+"'>"+$(this).text()+"</span>";
+		
+		/*if((this.nodeType==3) && (!this.isElementContentWhitespace) && (!txt))
 		  txt = this.wholeText;
 		if((this.nodeType!=3) && ($(this).attr('ln')==lang))
-		  txt = $(this).text();
+		  txt = $(this).text();*/
 		
 	  });
 	
@@ -156,7 +178,7 @@ function jsArmyCalc( selector, templateurl ){
 	}
 
 
-	calc.loadElements = function( xml, elements, lang ){
+	calc.loadElements = function( xml, elements ){
 	  
 
 	  if($(xml).attr('src')){
@@ -165,7 +187,7 @@ function jsArmyCalc( selector, templateurl ){
 		  $.ajax({
 			  calc: calc,
 			  url: calc.twrurl + $(xml).attr('src'),
-			  success: function( xml ){ calc.loadElements( $(xml).children('elements') , elements, lang ); },
+			  success: function( xml ){ calc.loadElements( $(xml).children('elements') , elements ); },
 			  error: xhrError,
 			  dataType: 'xml'
 		  });
@@ -178,8 +200,8 @@ function jsArmyCalc( selector, templateurl ){
 			element.uid = $(this).children('uid').text();
 			
 
-			element.name = getText($(this).children('name'),lang);
-			element.description = getText($(this).children('description'),lang);
+			element.name = getText($(this).children('name'));
+			element.description = getText($(this).children('description'));
 
 			//alert(element.uid);
 			//element.child = [];
@@ -190,15 +212,15 @@ function jsArmyCalc( selector, templateurl ){
 			element.maxCount = ($(this).attr('maxCount')?$(this).attr('maxCount'):null);
 	
 			element.stats = {};
-			for(id in calc.ruleset.stats)
-			  element.stats[id] = calc.ruleset.stats[id]['default'];
+			//for(id in calc.ruleset.stats)
+			//  element.stats[id] = calc.ruleset.stats[id]['default'];
 
 			$(this).children('stats').children('stat').each(function(){
 			  element.stats[$(this).attr('id')] = $(this).text();
 			});
 
 
-			calc.loadElements( $(this).children('elements'), element.elements, lang );
+			calc.loadElements( $(this).children('elements'), element.elements );
 			
 			elements[ element.uid ] = element;
 
@@ -209,11 +231,20 @@ function jsArmyCalc( selector, templateurl ){
 	  
 	}
 
-	calc.loadInfoXml = function( xml, textStatus, jqXHR, lang ){
+	calc.loadInfoXml = function( xml, textStatus, jqXHR ){
 		
 		ruleset = {};
-	
+		
+		this.calc.langSelect.html();
+		langSelect = this.calc.langSelect;
 
+		$(xml).children('ruleset').children('languages').children('language').each(function(){
+			langSelect.append("<option value='"+$(this).attr('id')+"'"+($(this).attr('default') == 'true' ?" selected='true'":"")+">"+$(this).find('name').text()+"</option>");
+			if($(this).attr('default') == 'true')
+			  calc.setLang($(this).attr('id'));
+		});
+		  
+		/*
 		if(!lang) {
 		
 		  lnSelect = $("<select></select>");
@@ -238,6 +269,7 @@ function jsArmyCalc( selector, templateurl ){
 		 
 		  return;
 		}
+		*/
 
 		xml = $(xml).children('ruleset');
 
@@ -246,17 +278,17 @@ function jsArmyCalc( selector, templateurl ){
 		ruleset.revision = $(xml).children('revision').text();
 	
 
-		ruleset.name = getText($(xml).children('name'),lang);
-		ruleset.description = getText($(xml).children('description'),lang);
+		ruleset.name = getText($(xml).children('name'));
+		ruleset.description = getText($(xml).children('description'));
 
 		ruleset.costs = {};
 		
 		
 		$(xml).children('costs').children('cost').each(function(){
 		  ruleset.costs[$(this).attr('id')] = {
-			name : getText($(this).children('name'),lang),
-			shortname : getText($(this).children('shortname'),lang),
-			unit : getText($(this).children('unit'),lang)
+			name : getText($(this).children('name')),
+			shortname : getText($(this).children('shortname')),
+			unit : getText($(this).children('unit'))
 		  };
 		});
 		
@@ -264,13 +296,13 @@ function jsArmyCalc( selector, templateurl ){
 		$(xml).children('stats').children('stat').each(function(){
 		  ruleset.stats[$(this).attr('id')] = {
 			display : ($(this).attr('display')==true?true:false),
-			name : getText($(this).children('name'),lang),
-			shortname : getText($(this).children('shortname'),lang),
+			name : getText($(this).children('name')),
+			shortname : getText($(this).children('shortname')),
 			'default' : $(this).children('default').text()
 		  };
 		});
 
-		ruleset.defaultArmyName = getText($(xml).children('defaultArmyName'),lang);
+		ruleset.defaultArmyName = getText($(xml).children('defaultArmyName'));
 		
 		ruleset.defaultArmySize = {};
 
@@ -280,12 +312,15 @@ function jsArmyCalc( selector, templateurl ){
 
 		ruleset.models = {}
 		
+
+		calc.ruleset = ruleset;
+
 		$(xml).children('models').find('model').each(function(){
 		  
 		  model_id = $(this).attr('id');
 		  
 		  ruleset.models[model_id] = {
-			name : getText($(this).children('name'),lang),
+			name : getText($(this).children('name')),
 			'default' : $(this).attr('default') == 'true'
 		  };
 		  
@@ -303,14 +338,14 @@ function jsArmyCalc( selector, templateurl ){
 			});
 
 		  $(this).find('elements').each(function(){
-			calc.loadElements(this,ruleset.models[model_id].elements, lang);
+			calc.loadElements(this,ruleset.models[model_id].elements);
 		  });
 
 		  ruleset.models[model_id].defaultArmyName = ruleset.defaultArmyName;
 		  ruleset.models[model_id].defaultArmySize = ruleset.defaultArmySize;
 		  //overriding
 		  if($(this).children('defaultArmyName').length)
-			ruleset.models[model_id].defaultArmyName = getText($(this).children('defaultArmyName'),lang);
+			ruleset.models[model_id].defaultArmyName = getText($(this).children('defaultArmyName'));
 	 
 		  $(this).children('defaultArmySize').children('cost').each(function(){
 			ruleset.models[model_id].defaultArmySize[$(this).attr('id')] = $(this).text();
@@ -318,9 +353,6 @@ function jsArmyCalc( selector, templateurl ){
   
 		});
 
-				
-
-		this.ruleset = ruleset;
 	}
 
 	calc.calcLoadUnitsXml = function( xml ){

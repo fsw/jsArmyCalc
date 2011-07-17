@@ -138,7 +138,7 @@
 		</defaultArmyName>
 		<elements src="core_units.xml"></elements>
 		<elements src="special_units.xml"></elements>
-		<elements src="turnament_heroes.xml"></elements>	
+		<elements src="tournament_heroes.xml"></elements>	
 		<elements src="magic_items.xml"></elements>
 		<validator src="validator.js"></validator>
 	</model>

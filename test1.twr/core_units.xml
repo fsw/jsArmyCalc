@@ -4,7 +4,10 @@
   <element minCount="1" maxCount="2" minSize="1" defaultSize="3" maxSize="20">
     
 	<uid>warrior</uid>
-    <name>Warrior</name>
+    <name>
+	  <tr ln="en">Warrior</tr>
+	  <tr ln="pl">Wojownik</tr>
+	</name>
     <description></description>
     
 	<menu>Base Units</menu>
