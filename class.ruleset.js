@@ -147,7 +147,13 @@ function acRuleset( calc ){
 			
 			element.minCount = ($(this).attr('minCount')?$(this).attr('minCount'):0);
 			element.maxCount = ($(this).attr('maxCount')?$(this).attr('maxCount'):null);
+			
+			element.minSize = ($(this).attr('minSize')?$(this).attr('minSize'):1);
+			element.maxSize = ($(this).attr('maxSize')?$(this).attr('maxSize'):null);
+			element.defaultSize = ($(this).attr('defaultSize')?$(this).attr('defaultSize'):element.minSize);
 	
+
+
 			element.stats = {};
 			for(id in that.stats)
 			  element.stats[id] = that.stats[id]['default'];

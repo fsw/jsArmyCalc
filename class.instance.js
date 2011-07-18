@@ -1,60 +1,75 @@
 
-function acInstance( parent, data, subUL ){
-	  
-	  this.name = data.name;
-	  
-	  this.clear =  function() { 
-		this.child={} 
-	  }
+function acInstance( parent, element ){
 
-	  this.data = data;
+	var that = this;
+	this.parent = parent;
+	this.isArmy = ( this.parent == null );
+
+	this.element = element;
+	this.name = element.name;
+
+
+	this.size = 0;
+
+
+	if(! this.isArmy ){
+	
+	  this._subul = $("<ul></ul>");
+	  this._anchor = $("<a href='#'>"+this.name+"</a>");
   
-	  this.append = function(uid) {
+	  this._li = $("<li></li>").append(this._anchor).append(this._subul);
+
+	  //TODO
+	  //should we keep submenus in memory or generate them on the fly on each click?
+	  this._submenu = $("<ul><li>submenu</li></ul>");
+	
+	  $.each(this.element.elements,function( id, item ){
+			  var button = $("<a href='#'>"+item.name+"</a>");
+			  button.click( function(){ that.append(id);} );
+			  that._submenu.append($("<li></li>").append(button));
+	  });
+	  
+	  calc.submenuElem.append(this._submenu);
+	
+	  this._submenu.hide();
+	  
+	  this._anchor.click(function(){
+				calc.submenuElem.children().hide();
+				that._submenu.show();
+			});
+
+
+	} else {
+
+	  this._subul = $('#acUnits');
+
+	}
+
+
+	this.clear =  function() { 
+		this.child={} 
+		var that = this;
+		$.each( this.element.elements, function( id, item ){
+		  that.child[id] = [];
+		} );
+		
+	}
+
+	this.clear();
+
+
+	this.append = function( uid ) {
 
 		//alert(uid);
-		if(!this.data.elements[uid])
-		  return;
-		  
-		if(!this.instances[uid])
-		  this.instances[uid] = [];
-
-		var ul = $("<ul></ul>");
-
-		var instance = new acInstance( this, this.data.elements[uid], ul );
-
-		this.instances[uid].push( instance );
-
-		anchor = $("<a href='#'>"+this.data.elements[uid].name+"</a>");
-		instance.submenu = $("<ul><li>submenu</li></ul>");
-		  
-		$.each(this.data.elements[uid].elements,function( id, item ){
-			var button = $("<a href='#'>"+item.name+"</a>");
-			button.click( function(){ instance.append(id);} );
-			instance.submenu.append($("<li></li>").append(button));
-		});
-  
-		this._ul.append($("<li></li>").append(anchor).append(ul));
+		if(!this.element.elements[uid])
+			return;
 
 
-		calc.submenuElem.append(instance.submenu);
-		instance.submenu.hide();
-		
-		anchor.click(function(){
-		  calc.submenuElem.children().hide();
-		  instance.submenu.show();
-		});
+		var instance = new acInstance( this, this.element.elements[uid] );
+		this.child[uid].push( instance );
+		this._subul.append( instance._li );
 
-		//TODO error
-	  }
-
-	  this._ul = subUL;
-
-	  this.instances = {};
-
-	  //for( i in data.elements ){
-		//this.instances[i] = {}
-		//this.elements[i] = new Element(data.elements[i],null);
-	  //}
+	}
 	
 }
-	
+

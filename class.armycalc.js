@@ -142,7 +142,7 @@ function jsArmyCalc( selector, templateurl ){
 		  
 		  calc.closePopup( );  
 				
-		  calc.army = new acInstance( null, that.ruleset.models[modelSelect.val()], $('#acUnits') );
+		  calc.army = new acInstance( null, that.ruleset.models[modelSelect.val()] );
 
 		  calc.army.maxCosts = {};
 		  for( id in calc.ruleset.costs ){
@@ -152,8 +152,8 @@ function jsArmyCalc( selector, templateurl ){
 
 		  calc.canvas.find('#acElements').html();
 
-		  $.each(calc.army.data.elements,function( id, item ){
-			var appendButton = $("<a href='#'>"+item.name+"("+id+")</a>");
+		  $.each(calc.army.element.elements,function( id, item ){
+			var appendButton = $("<a href='#'>"+item.name+"</a>");
 			calc.canvas.find('#acElements').append($("<li></li>").append(appendButton));
 			appendButton.click( function(){ calc.army.append( id ); } );
 		  });
