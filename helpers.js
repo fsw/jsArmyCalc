@@ -36,3 +36,27 @@ function acAddCSSRule(sel, prop, val) {
     }
 }
 
+
+
+function acGetText( xml ){
+
+	txt = '';
+
+	$(xml).contents().each(function(){
+
+			if((this.nodeType==3) && (!this.isElementContentWhitespace))
+			txt += this.wholeText;
+			if((this.nodeType!=3))
+			txt += "<span class='trans "+$(this).attr('ln')+"'>"+$(this).text()+"</span>";
+
+			/*if((this.nodeType==3) && (!this.isElementContentWhitespace) && (!txt))
+			  txt = this.wholeText;
+			  if((this.nodeType!=3) && ($(this).attr('ln')==lang))
+			  txt = $(this).text();*/
+
+			});
+
+	return $.trim(txt);
+}
+
+

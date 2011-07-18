@@ -1,10 +1,12 @@
 
 
 
-function Element(){
-
-
+function acArmy(){
 
 
 }
+
+
+acArmy.prototype = new acInstance();
+
 

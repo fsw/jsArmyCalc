@@ -156,204 +156,6 @@ function jsArmyCalc( selector, templateurl ){
 		this.calc.setError( this.url+' - '+text + ' - ' + error );
 	}
 
-	getText = function( xml ){
-
-	  txt = '';
-
-	  $(xml).contents().each(function(){
-	
-		if((this.nodeType==3) && (!this.isElementContentWhitespace))
-		  txt += this.wholeText;
-		if((this.nodeType!=3))
-		  txt += "<span class='trans "+$(this).attr('ln')+"'>"+$(this).text()+"</span>";
-		
-		/*if((this.nodeType==3) && (!this.isElementContentWhitespace) && (!txt))
-		  txt = this.wholeText;
-		if((this.nodeType!=3) && ($(this).attr('ln')==lang))
-		  txt = $(this).text();*/
-		
-	  });
-	
-	  return $.trim(txt);
-	}
-
-
-	calc.loadElements = function( xml, elements ){
-	  
-
-	  if($(xml).attr('src')){
-
-
-		  $.ajax({
-			  calc: calc,
-			  url: calc.twrurl + $(xml).attr('src'),
-			  success: function( xml ){ calc.loadElements( $(xml).children('elements') , elements ); },
-			  error: xhrError,
-			  dataType: 'xml'
-		  });
-	  
-	  } else {
-	
-		$(xml).children('element').each(function(){
-
-			var element = {};
-			element.uid = $(this).children('uid').text();
-			
-
-			element.name = getText($(this).children('name'));
-			element.description = getText($(this).children('description'));
-
-			//alert(element.uid);
-			//element.child = [];
-			element.elements = {};
-			
-			
-			element.minCount = ($(this).attr('minCount')?$(this).attr('minCount'):0);
-			element.maxCount = ($(this).attr('maxCount')?$(this).attr('maxCount'):null);
-	
-			element.stats = {};
-			//for(id in calc.ruleset.stats)
-			//  element.stats[id] = calc.ruleset.stats[id]['default'];
-
-			$(this).children('stats').children('stat').each(function(){
-			  element.stats[$(this).attr('id')] = $(this).text();
-			});
-
-
-			calc.loadElements( $(this).children('elements'), element.elements );
-			
-			elements[ element.uid ] = element;
-
-		});
-	  
-	  }
-
-	  
-	}
-
-	calc.loadInfoXml = function( xml, textStatus, jqXHR ){
-		
-		ruleset = {};
-		
-		this.calc.langSelect.html();
-		langSelect = this.calc.langSelect;
-
-		$(xml).children('ruleset').children('languages').children('language').each(function(){
-			langSelect.append("<option value='"+$(this).attr('id')+"'"+($(this).attr('default') == 'true' ?" selected='true'":"")+">"+$(this).find('name').text()+"</option>");
-			if($(this).attr('default') == 'true')
-			  calc.setLang($(this).attr('id'));
-		});
-		  
-		/*
-		if(!lang) {
-		
-		  lnSelect = $("<select></select>");
-		  $(xml).children('ruleset').children('languages').children('language').each(function(){
-			lnSelect.append("<option value='"+$(this).attr('id')+"'"+($(this).attr('default') == 'true' ?" selected='true'":"")+">"+$(this).find('name').text()+"</option>");
-		  });
-		  
-
-		  lnButton = $("<input type='button' value='select'/>");
-
-		  body = $("<div></div>");
-		  
-		  body.append(lnSelect);
-		  body.append(lnButton);
-		  
-		  this.calc.popup("Select Language",body, function(){} );
-
-		  lnButton.click( function(){ 
-					calc.closePopup( );  
-					calc.loadInfoXml( xml, textStatus, jqXHR, lnSelect.val());  
-					} );
-		 
-		  return;
-		}
-		*/
-
-		xml = $(xml).children('ruleset');
-
-		ruleset.version = $(xml).attr('version');
-		ruleset.uid = $(xml).children('uid').text();
-		ruleset.revision = $(xml).children('revision').text();
-	
-
-		ruleset.name = getText($(xml).children('name'));
-		ruleset.description = getText($(xml).children('description'));
-
-		ruleset.costs = {};
-		
-		
-		$(xml).children('costs').children('cost').each(function(){
-		  ruleset.costs[$(this).attr('id')] = {
-			name : getText($(this).children('name')),
-			shortname : getText($(this).children('shortname')),
-			unit : getText($(this).children('unit'))
-		  };
-		});
-		
-		ruleset.stats = {};
-		$(xml).children('stats').children('stat').each(function(){
-		  ruleset.stats[$(this).attr('id')] = {
-			display : ($(this).attr('display')==true?true:false),
-			name : getText($(this).children('name')),
-			shortname : getText($(this).children('shortname')),
-			'default' : $(this).children('default').text()
-		  };
-		});
-
-		ruleset.defaultArmyName = getText($(xml).children('defaultArmyName'));
-		
-		ruleset.defaultArmySize = {};
-
-		$(xml).children('defaultArmySize').children('cost').each(function(){
-		  ruleset.defaultArmySize[$(this).attr('id')] = $(this).text();
-		});
-
-		ruleset.models = {}
-		
-
-		calc.ruleset = ruleset;
-
-		$(xml).children('models').find('model').each(function(){
-		  
-		  model_id = $(this).attr('id');
-		  
-		  ruleset.models[model_id] = {
-			name : getText($(this).children('name')),
-			'default' : $(this).attr('default') == 'true'
-		  };
-		  
-		  ruleset.models[model_id].elements = {};
-		  
-		  ruleset.models[model_id].validator = "";	
-	
-		  
-		  $.ajax({
-				calc: calc,
-				url: calc.twrurl + $(this).children('validator').attr('src'),
-				success: function(text){ ruleset.models[model_id].validator = text },
-				error: xhrError,
-				dataType: 'text'
-			});
-
-		  $(this).find('elements').each(function(){
-			calc.loadElements(this,ruleset.models[model_id].elements);
-		  });
-
-		  ruleset.models[model_id].defaultArmyName = ruleset.defaultArmyName;
-		  ruleset.models[model_id].defaultArmySize = ruleset.defaultArmySize;
-		  //overriding
-		  if($(this).children('defaultArmyName').length)
-			ruleset.models[model_id].defaultArmyName = getText($(this).children('defaultArmyName'));
-	 
-		  $(this).children('defaultArmySize').children('cost').each(function(){
-			ruleset.models[model_id].defaultArmySize[$(this).attr('id')] = $(this).text();
-		  });
-  
-		});
-
-	}
 
 	calc.calcLoadUnitsXml = function( xml ){
 		console.log(xml);
@@ -366,18 +168,15 @@ function jsArmyCalc( selector, templateurl ){
 		this.availableUnits = [];
 		
 		this.setStatus( 'loading '+url );
-	
-		$.ajax({
-			calc: this,
-			url: url + 'info.xml',
-			success: this.loadInfoXml,
-			error: xhrError,
-			dataType: 'xml'
-		});
 
+		this.ruleset = new acRuleset( this );
+		this.ruleset.loadFromUrl( url );
+	  
 	};
 
 	calc.newArmy = function( ){
+
+		that = this;
 
 		body = $('<div></div>');
 		body.append("<p>"+this.ruleset.description+"</p>");
@@ -402,11 +201,11 @@ function jsArmyCalc( selector, templateurl ){
 		  
 		  calc.closePopup( );  
 				
-		  calc.army = new Instance( ruleset.models[modelSelect.val()], $('#acUnits'), true );
+		  calc.army = new Instance( that.ruleset.models[modelSelect.val()], $('#acUnits'), true );
 
 		  calc.army.maxCosts = {};
 		  for( id in calc.ruleset.costs ){
-			calc.army.maxCosts[id] = calc.ruleset.costs[id].input.val();
+			calc.army.maxCosts[id] = that.ruleset.costs[id].input.val();
 		  }
 
 
