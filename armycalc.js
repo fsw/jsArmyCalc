@@ -236,16 +236,6 @@ function acRuleset( calc ){
 
 
 
-function acElement( ){
-
-
-}
-
-
-
-
-
-
 function acArmy(){
 
 
