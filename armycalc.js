@@ -234,79 +234,7 @@ function acRuleset( calc ){
 }
 
 
-
-
-function acArmy(){
-
-
-}
-
-
-acArmy.prototype = new acInstance();
-
-
-
-function acInstance( parent, element ){
-
-  this.parent = parent;
-  
-  this.available = [];
-  this.children = [];
-
-  this.childCount = function(){
-	
-  }
-
-  this.append = function( uid ){
-	
-  }
-
-  this.stat = function( id, value ){
-	
-  }
-
-}
-
-
-
-
-
-
-/*
-jsArmyCalc constructor
-selector is a jquery selector string that is to return a single dom element
-$template url can be used to customize calc template
-*/
-function jsArmyCalc( selector, templateurl ){
-	
-	calc = {};
-	
-	calc.canvas = $(selector);
-	calc.canvas.attr('style','');
-	
-	calc.canvas.html('loading calc...');
-	
-	// calc template is loaded with AJAX	
-	var template = $.ajax({
-				url: templateurl,
-				async: false
-				}).responseText;
-		
-	calc.canvas.html(template);
-
-	calc.statusElem = calc.canvas.find('#acStatus');
-	calc.submenuElem = calc.canvas.find('.submenu');
-	
-	calc.langSelect = calc.canvas.find('#acLang');
-	calc.langSelect.change(function(){ calc.setLang($(this).val()); });
-
-	calc.canvas.find('#acMaximize').click(function(){calc.setFullscreen(true); return false;});
-	calc.canvas.find('#acMinimize').click(function(){calc.setFullscreen(false); return false;});
-	
-	calc.canvas.find('#acNew').click(function(){calc.newArmy(); return false;});
-	
-	
-	Instance = function( data, subUL, root ){
+function acInstance( parent, data, subUL ){
 	  
 	  this.name = data.name;
 	  
@@ -327,7 +255,7 @@ function jsArmyCalc( selector, templateurl ){
 
 		var ul = $("<ul></ul>");
 
-		var instance = new Instance(this.data.elements[uid],ul);
+		var instance = new acInstance( this, this.data.elements[uid], ul );
 
 		this.instances[uid].push( instance );
 
@@ -363,7 +291,43 @@ function jsArmyCalc( selector, templateurl ){
 		//this.elements[i] = new Element(data.elements[i],null);
 	  //}
 	
-	}
+}
+	
+
+
+/*
+jsArmyCalc constructor
+selector is a jquery selector string that is to return a single dom element
+$template url can be used to customize calc template
+*/
+function jsArmyCalc( selector, templateurl ){
+	
+	calc = {};
+	
+	calc.canvas = $(selector);
+	calc.canvas.attr('style','');
+	
+	calc.canvas.html('loading calc...');
+	
+	// calc template is loaded with AJAX	
+	var template = $.ajax({
+				url: templateurl,
+				async: false
+				}).responseText;
+		
+	calc.canvas.html(template);
+
+	calc.statusElem = calc.canvas.find('#acStatus');
+	calc.submenuElem = calc.canvas.find('.submenu');
+	
+	calc.langSelect = calc.canvas.find('#acLang');
+	calc.langSelect.change(function(){ calc.setLang($(this).val()); });
+
+	calc.canvas.find('#acMaximize').click(function(){calc.setFullscreen(true); return false;});
+	calc.canvas.find('#acMinimize').click(function(){calc.setFullscreen(false); return false;});
+	
+	calc.canvas.find('#acNew').click(function(){calc.newArmy(); return false;});
+	
 	//this is a 
 	calc.army = {
 	  maxCosts: {}
@@ -473,7 +437,7 @@ function jsArmyCalc( selector, templateurl ){
 		  
 		  calc.closePopup( );  
 				
-		  calc.army = new Instance( that.ruleset.models[modelSelect.val()], $('#acUnits'), true );
+		  calc.army = new acInstance( null, that.ruleset.models[modelSelect.val()], $('#acUnits') );
 
 		  calc.army.maxCosts = {};
 		  for( id in calc.ruleset.costs ){
