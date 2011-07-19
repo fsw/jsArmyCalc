@@ -42,17 +42,36 @@ div.acCanvas img {
 /* TOOLBAR */
 div.acCanvas div.toolbar {
 	background: black;
-	height: 40px;
+	height: 26px;
 	color:white;
 }
-div.acCanvas div.settings {
-	float: left;	
-	height: 40px;
+
+div.acCanvas div.toolbar img {
+	padding: 2px;
 }
 
-div.acCanvas div.buttons {
+div.acCanvas span.langsel {
+	display: block;
+	float: left;
+	padding: 2px;
+}
+
+
+div.acCanvas div.toolbar select {
+	border: 1px solid #eee;
+	background: #333;
+	color: white;
+}
+
+div.acCanvas div.buttons1 {
+	float: left;	
+	height: 26px;
+}
+
+
+div.acCanvas div.buttons2 {
 	float: right;	
-	height: 40px;
+	height: 26px;
 }
 
 
@@ -60,7 +79,8 @@ div.acCanvas div.buttons {
 /* MENU */
 div.acCanvas div.menu {
 	background: black;
-	height: 22px;
+	/* height: 22px; */
+	min-height: 22px;
 	color: white;
 	line-height: 22px;
 }
@@ -81,6 +101,7 @@ div.acCanvas div.menu ul#acElements li a {
   display: block;
   color: white;
   text-decoration: none;
+  padding: 0 10px;
 }
 
 div.acCanvas div.menu ul#acElements li a:hover {
@@ -97,18 +118,20 @@ div.acCanvas div.menu ul#acElements li a:hover {
 div.acCanvas div.workspace {
 	min-height: 150px;
 	border: none;
-	overflow: auto;
+	overflow: hidden;
 }
 div.acCanvas div.workspace div.unitslist{
-	width:40%;
-	float:left;
+	margin-right: 160px;
+	float: left;
 }
 div.acCanvas div.workspace div.unitdetails{
-	width:60%;
-	float:right;
+	width: 160px;
+	float: right;
 }
 div.acCanvas div.workspace #acDetails{
-	border:1px solid;;
+	background-color: #ccc;
+	min-height: 100px;
+	padding:5px;
 }
 
 /* STATUSBAR */
@@ -192,6 +215,18 @@ div#acPopup div#acPopupContent {
   
   min-height: 400px;
   background: white;
+}
+
+/* UNITS LIST */
+
+div.acCanvas #acUnits ul {
+
+  padding-left:20px;
+
+}
+
+div.acCanvas #acUnits li {
+  padding: 3px;
 }
 
 

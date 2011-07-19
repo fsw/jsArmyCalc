@@ -1,15 +1,14 @@
 <div class="acCanvas">
 	<div class="toolbar">
-		<div class='mainmenu'>
-			lang: <select id='acLang'></select>
-			<a id='acNew' href='#'><img src='img/new.png' alt='new'/></a>
+		<div class='buttons1'>
+			<a id='acNew' href='#' title="New Army"><img src='img/action_new.png' alt='new'/></a>
+			<a id='acPrint' href='#' title="Print Army"><img src='img/action_print.png' alt='print'/></a>	
+			<a id='acHelp' href='#' title="Help"><img src='img/action_help.png' alt='help'/></a>
 		</div>	
-		<div class='buttons'>
-			<a id='acPrint' href='#'><img src='img/print.png' alt='print'/></a>
-	
-			<a id='acHelp' href='#'><img src='img/help.png' alt='help'/></a>
-			<a id='acMaximize' href='#'><img src='img/maximize.png' alt='maximize'/></a>
-			<a id='acMinimize' href='#' style="display:none;"><img src='img/minimize.png' alt='minimize'/></a>
+		<div class='buttons2'>
+			<span class="langsel">lang: <select id='acLang'></select></span>
+			<a id='acMaximize' href='#' title="Fullscreen"><img src='img/action_maximize.png' alt='maximize'/></a>
+			<a id='acMinimize' href='#' title="Revert" style="display:none;"><img src='img/action_minimize.png' alt='minimize'/></a>
 		</div>
 		
 	</div>
@@ -23,12 +22,6 @@
 		</div>
 		<div class="unitdetails">
 			<div id="acDetails">
-				<div class='desc'></div>
-				<div class='stats'>
-					<table class='stats'>
-						<tr><th></th></tr>
-					</table>
-				</div>
 				<div class='submenu'></div>
 			</div>
 		</div>
