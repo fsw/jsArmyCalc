@@ -33,6 +33,10 @@ function jsArmyCalc( selector, templateurl ){
 	
 	calc.canvas.find('#acNew').click(function(){calc.newArmy(); return false;});
 	
+	calc.canvas.find('#acDec').click( function(){ _focused_element.size(_focused_element.size()-1); return false;});
+	calc.canvas.find('#acInc').click( function(){ _focused_element.size(_focused_element.size()+1); return false;});
+	calc.canvas.find('#acRem').click( function(){ _focused_element.remove(); return false;});
+	  
 	//this is a 
 	calc.army = {
 	  maxCosts: {}
@@ -49,7 +53,7 @@ function jsArmyCalc( selector, templateurl ){
 
 	calc.popup = function( title, body, block ){
 		
-		this.canvas.find('#acPopupTitle').text( title );
+		this.canvas.find('#acPopupTitle').html( title );
 		this.canvas.find('#acPopupContent').html( '' ); 
 		this.canvas.find('#acPopupContent').append( body );
 		
@@ -120,7 +124,7 @@ function jsArmyCalc( selector, templateurl ){
 		that = this;
 
 		body = $('<div></div>');
-		body.append("<p>"+this.ruleset.description+"</p>");
+		body.append("<div class='piece'><h3>"+this.ruleset.name+"</h3>"+this.ruleset.description+"</div>");
 	
 		modelSelect = $("<select></select>");
 		
@@ -131,7 +135,7 @@ function jsArmyCalc( selector, templateurl ){
 
 		createButton = $("<input type='button' value='create'/>");
 
-		body.append(modelSelect);
+		body.append($("<label>Model</label>").append(modelSelect));
 	
 		for( id in this.ruleset.costs ){
 			this.ruleset.costs[id].input = $("<input name='cost[" + id + "]' value='0'/>");
@@ -150,7 +154,8 @@ function jsArmyCalc( selector, templateurl ){
 		  }
 
 
-		  calc.canvas.find('#acElements').html();
+		  calc.canvas.find('#acElements').html('');
+		  calc.canvas.find('#acUnits').html('');
 
 		  $.each(calc.army.element.elements,function( id, item ){
 			var appendButton = $("<a href='#'>"+item.name+"</a>");
@@ -161,9 +166,9 @@ function jsArmyCalc( selector, templateurl ){
 
 		});
 
-		body.append(createButton);  
+		body.append($("<div class='submit'></div>").append(createButton));  
 	
-		this.popup( "new army - " + this.ruleset.name, body );
+		this.popup( "New army - " + this.ruleset.name, body );
 
 	};
 

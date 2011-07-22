@@ -213,6 +213,8 @@ function acRuleset( calc ){
 			element.minSize = ($(this).attr('minSize')?$(this).attr('minSize'):1);
 			element.maxSize = ($(this).attr('maxSize')?$(this).attr('maxSize'):null);
 			element.defaultSize = ($(this).attr('defaultSize')?$(this).attr('defaultSize'):element.minSize);
+			
+			element.size = ($(this).attr('size')?$(this).attr('size'):'custom');
 	
 
 
@@ -250,19 +252,48 @@ function acInstance( parent, element ){
 	this.name = element.name;
 
 
-	this.size = 0;
+	this._size = parseInt( element.defaultSize );
+
+	this.size = function( newsize ){
+	  if( typeof newsize === 'undefined' )
+		return this._size;
+
+	  this._size = newsize;
+	  this._dom_size.html( this._size );
+	  $('#acDec').toggle( this.size() != this.element.minSize );
+	  $('#acInc').toggle( this.size() != this.element.maxSize );
+	
+	  //$each()
+
+	}
+
+
+	this._rebuildSubmenu = function(){
+	  
+	  
+	}
+	
+	this._rebuildListElem = function(){
+	  
+	}
 
 
 	if(! this.isArmy ){
 	
 	  this._subul = $("<ul></ul>");
-	  this._anchor = $("<a href='#'>"+this.name+"</a>");
+	  this._dom_size = $("<span>" + this._size + "</span>");
+
+	  this._anchor = $("<a href='#'> x "+this.name+"</a>").prepend( this._dom_size );
   
 	  this._li = $("<li></li>").append(this._anchor).append(this._subul);
 
 	  //TODO
 	  //should we keep submenus in memory or generate them on the fly on each click?
-	  this._submenu = $("<ul><li>submenu</li></ul>");
+	  this._submenu = $("<ul><li><b>description:</b></li></ul>");
+	  this._submenu.append($("<li>"+this.element.description+"</li>"));
+
+ 
+	  this._submenu.append($("<li><b>append:</b></li>"));
 	
 	  $.each(this.element.elements,function( id, item ){
 			  var button = $("<a href='#'>"+item.name+"</a>");
@@ -274,10 +305,7 @@ function acInstance( parent, element ){
 	
 	  this._submenu.hide();
 	  
-	  this._anchor.click(function(){
-				calc.submenuElem.children().hide();
-				that._submenu.show();
-			});
+	  this._anchor.click(function(){ that._focus(); return false; });
 
 
 	} else {
@@ -286,7 +314,7 @@ function acInstance( parent, element ){
 
 	}
 
-
+	
 	this.clear =  function() { 
 		this.child={} 
 		var that = this;
@@ -298,6 +326,13 @@ function acInstance( parent, element ){
 
 	this.clear();
 
+	this.remove = function(){
+		//alert(this.parent.child[this.element.uid].indexOf( this ));
+		this.clear();
+		this.parent.child[this.element.uid].splice( this.parent.child[this.element.uid].indexOf( this ), 1 );
+		this._li.remove();
+		this._submenu.remove();
+	}
 
 	this.append = function( uid ) {
 
@@ -312,6 +347,32 @@ function acInstance( parent, element ){
 
 	}
 	
+	
+	this._focus = function(){
+
+	  calc.submenuElem.children().hide();
+	  that._submenu.show();
+
+	  if(typeof(_focused_element) !== 'undefined') 
+		_focused_element._anchor.removeClass('focus');
+
+	  _focused_element = this;
+	  _focused_element._anchor.addClass('focus');
+
+	  $('#acDec').toggle( that.size() != that.element.minSize );
+	  $('#acInc').toggle( that.size() != that.element.maxSize );
+	  $('#acRem').toggle( true );
+	
+	}
+	
+	//we check if any child element has minCount and append it if so.
+	$.each( this.element.elements,function( id, item ){
+	  for(var i=0;i<item.minCount;i++)
+		that.append(id);
+	});
+	
+	//this.size( parseInt( element.defaultSize ) );
+
 }
 
 
@@ -349,6 +410,10 @@ function jsArmyCalc( selector, templateurl ){
 	
 	calc.canvas.find('#acNew').click(function(){calc.newArmy(); return false;});
 	
+	calc.canvas.find('#acDec').click( function(){ _focused_element.size(_focused_element.size()-1); return false;});
+	calc.canvas.find('#acInc').click( function(){ _focused_element.size(_focused_element.size()+1); return false;});
+	calc.canvas.find('#acRem').click( function(){ _focused_element.remove(); return false;});
+	  
 	//this is a 
 	calc.army = {
 	  maxCosts: {}
@@ -365,7 +430,7 @@ function jsArmyCalc( selector, templateurl ){
 
 	calc.popup = function( title, body, block ){
 		
-		this.canvas.find('#acPopupTitle').text( title );
+		this.canvas.find('#acPopupTitle').html( title );
 		this.canvas.find('#acPopupContent').html( '' ); 
 		this.canvas.find('#acPopupContent').append( body );
 		
@@ -436,7 +501,7 @@ function jsArmyCalc( selector, templateurl ){
 		that = this;
 
 		body = $('<div></div>');
-		body.append("<p>"+this.ruleset.description+"</p>");
+		body.append("<div class='piece'><h3>"+this.ruleset.name+"</h3>"+this.ruleset.description+"</div>");
 	
 		modelSelect = $("<select></select>");
 		
@@ -447,7 +512,7 @@ function jsArmyCalc( selector, templateurl ){
 
 		createButton = $("<input type='button' value='create'/>");
 
-		body.append(modelSelect);
+		body.append($("<label>Model</label>").append(modelSelect));
 	
 		for( id in this.ruleset.costs ){
 			this.ruleset.costs[id].input = $("<input name='cost[" + id + "]' value='0'/>");
@@ -466,7 +531,8 @@ function jsArmyCalc( selector, templateurl ){
 		  }
 
 
-		  calc.canvas.find('#acElements').html();
+		  calc.canvas.find('#acElements').html('');
+		  calc.canvas.find('#acUnits').html('');
 
 		  $.each(calc.army.element.elements,function( id, item ){
 			var appendButton = $("<a href='#'>"+item.name+"</a>");
@@ -477,9 +543,9 @@ function jsArmyCalc( selector, templateurl ){
 
 		});
 
-		body.append(createButton);  
+		body.append($("<div class='submit'></div>").append(createButton));  
 	
-		this.popup( "new army - " + this.ruleset.name, body );
+		this.popup( "New army - " + this.ruleset.name, body );
 
 	};
 

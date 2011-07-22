@@ -25,8 +25,7 @@
     <thumbnail src="media/warrior.jpg"></thumbnail>
 
 	<elements>
-		<element minCont="0" maxCount="1" minSize="1" maxSize="1"
-			afterCountChange = "this.parent.childCount('chieftains_squire',this.count());">
+		<element minCount="0" maxCount="1" minSize="1" maxSize="1">
 		  <uid>chieftain</uid>
 		  <name>Chieftain</name>
 		  <stats>
@@ -37,7 +36,7 @@
 		  </stats>
 		
 		  <elements>
-			<element minCont="0" maxCount="1" minSize="1" maxSize="1" visible="false">
+			<element minCount="1" maxCount="1" minSize="1" maxSize="1">
 			  <uid>chieftains_squire</uid>
 			  <name>Chieftain's squire</name>
 			  <stats>
@@ -51,34 +50,27 @@
 
 		</element>
 
-		<element minCont="0" maxCount="1" resizable="false" 
-			  afterCountChange = "this.parent.stat('sta',this.parent.stat('sta')+this.count()); 
-							  this.parent.available['two_handed_weapons'].enabled(!this.count());"
-			  beforeCostRecalc = "this.size(this.parent.size());">
-		  <uid>shields</uid>
-		  <name>Shields</name>
+		<element minCount="0" maxCount="1" size="inherit" 
+			  afterCountChange = "this.parent.stat('sta',this.parent.stat('sta')+this.count());
+								  this.parent.available['two_handed_weapon'].enabled(!this.count());">
+		  <uid>shield</uid>
+		  <name>Shield</name>
 		  <cost id="pts">1</cost>
 		</element>
 		
-		<element minCont="0" maxCount="1" resizable="false" 
+		<element minCount="0" maxCount="1" size="inherit" 
 			  afterCountChange = "this.parent.stat('str',this.parent.stat('str')+this.count()); 
-							  this.parent.available['shields'].enabled(!this.count());"
-			  beforeCostRecalc = "this.size(this.parent.size());">
-		  <uid>two_handed_weapons</uid>
-		  <name>Two handed weapons</name>
+								  this.parent.available['shield'].enabled(!this.count());">
+		  <uid>two_handed_weapon</uid>
+		  <name>Two handed weapon</name>
 		  <cost id="pts">1</cost>
 		</element>
 
-		<element minCont="0" maxCount="1" minSize="1" maxSize="3">
-		  <uid>magic_standard</uid>
-		  <name>Magic Standard</name>
-		  <description></description>
-		</element>
 	</elements>
 
   </element>
   
-  <element minCount="1" maxCount="2" minSize="1" defaultSize="3" maxSize="20">
+  <element minCount="0" maxCount="2" minSize="1" defaultSize="3" maxSize="20">
     
 	<uid>archer</uid>
     <name>Archer</name>
@@ -113,7 +105,7 @@
 
   </element> 
 
-  <element minCount="1" maxCount="2" minSize="1" defaultSize="3" maxSize="20">
+  <element minCount="0" minSize="5" defaultSize="10">
     
 	<uid>peon</uid>
     <name>Peon</name>
@@ -135,6 +127,41 @@
 
   </element>
 
+  <element minCount="0" maxCount="2" minSize="3" defaultSize="5" maxSize="10">
+    
+	<uid>horseman</uid>
+    <name>Horseman</name>
+    <description></description>
+    
+	<menupath>
+	  <menu>Base Units</menu>
+	</menupath>
+	
+	<stats>
+	  <stat id="str">3</stat>
+	  <stat id="sta">3</stat>
+	  <stat id="spe">3</stat>
+	  <stat id="hp">6</stat>
+	</stats>
 
+	<cost id="pts">1</cost>
+	<cost id="gc">0</cost>
+	
+    <thumbnail src="media/horseman.jpg"></thumbnail>
+	
+	<elements>
+		<element minCount="1" maxCount="1" size="inherit">
+		  <uid>horse</uid>
+		  <name>Horse</name>
+		  <stats>
+			<stat id="str">0</stat>
+			<stat id="sta">0</stat>
+			<stat id="spe">25</stat>
+			<stat id="hp">2</stat>
+		  </stats>
+		</element>
+	</elements>
+
+  </element>
 
 </elements>

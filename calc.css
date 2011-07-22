@@ -131,7 +131,21 @@ div.acCanvas div.workspace div.unitdetails{
 div.acCanvas div.workspace #acDetails{
 	background-color: #ccc;
 	min-height: 100px;
-	padding:5px;
+	padding: 5px;
+}
+
+div.acCanvas #acDetails ul.actions {
+	overflow: hidden;
+	padding-left: 25px;
+	height: 34px;
+}
+
+div.acCanvas #acDetails ul.actions li {
+	float: left;
+}
+
+div.acCanvas #acDetails ul.actions li a {
+	display: block;
 }
 
 /* STATUSBAR */
@@ -197,26 +211,74 @@ div#acPopup a#acClosePopup {
   height: 22px;
   top:0;
   right:0;
-
+  padding:3px;
 }
 
 
 div#acPopup h2#acPopupTitle {
   background: black;
   color: white;
-  height: 24px;
-  padding:0;
-  margin:0;
-
+  height: 28px;
+  padding: 0 5px;
+  margin: 0;
+  line-height: 28px;
+  font-size: 14px;
+  font-weight: bold;
 
 }
 
 div#acPopup div#acPopupContent {
   
-  min-height: 400px;
+  min-height: 100px;
   background: white;
+  overflow: auto;
 }
 
+div#acPopup div#acPopupContent div.piece {
+  border: 1px dashed #ddd;
+  margin: 5px;
+  padding: 10px;
+  font-size: 12px;
+  line-height: 16px;
+  background: none repeat scroll 0 0 #EEEEEE;
+  font-style: italic;
+  color: #222;
+}
+
+div#acPopup div#acPopupContent div.piece h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+div#acPopup div#acPopupContent div.submit {
+  border: 1px dashed #ddd;
+  margin: 5px;
+  padding: 10px;
+  overflow: auto;
+}
+
+
+div#acPopup div#acPopupContent label {
+  
+  display: block;
+  border: 1px dashed #ddd;
+  margin: 5px;
+  padding: 5px;
+  overflow: auto;
+
+}
+
+div#acPopup input, div#acPopup select {
+  
+  width: 200px;
+  border: 1px solid #aaa;
+  float: right;
+  
+}
+
+
+ 
 /* UNITS LIST */
 
 div.acCanvas #acUnits ul {

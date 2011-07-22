@@ -151,6 +151,8 @@ function acRuleset( calc ){
 			element.minSize = ($(this).attr('minSize')?$(this).attr('minSize'):1);
 			element.maxSize = ($(this).attr('maxSize')?$(this).attr('maxSize'):null);
 			element.defaultSize = ($(this).attr('defaultSize')?$(this).attr('defaultSize'):element.minSize);
+			
+			element.size = ($(this).attr('size')?$(this).attr('size'):'custom');
 	
 
 
