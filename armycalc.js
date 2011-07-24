@@ -258,11 +258,21 @@ function acInstance( parent, element ){
 	  if( typeof newsize === 'undefined' )
 		return this._size;
 
+	  
 	  this._size = newsize;
 	  this._dom_size.html( this._size );
-	  $('#acDec').toggle( this.size() != this.element.minSize );
-	  $('#acInc').toggle( this.size() != this.element.maxSize );
-	
+
+	  $.each( this.child, function( id, item ){
+		  $.each( item, function( id, item ){
+			if(item.element.size === 'inherit')
+			  item.size(newsize);
+		  });
+	  });
+
+	  if((typeof(_focused_element) !== 'undefined') && (_focused_element == this )){
+	    $('#acDec').toggle( this.size() != this.element.minSize );
+		$('#acInc').toggle( this.size() != this.element.maxSize );
+	  }
 	  //$each()
 
 	}
@@ -327,11 +337,16 @@ function acInstance( parent, element ){
 	this.clear();
 
 	this.remove = function(){
-		//alert(this.parent.child[this.element.uid].indexOf( this ));
-		this.clear();
-		this.parent.child[this.element.uid].splice( this.parent.child[this.element.uid].indexOf( this ), 1 );
-		this._li.remove();
-		this._submenu.remove();
+		
+		//checking if minCount was reached
+		if( this.parent.child[this.element.uid].length > this.element.minCount ){
+
+		  this.clear();
+		  this.parent.child[this.element.uid].splice( this.parent.child[this.element.uid].indexOf( this ), 1 );
+		  this._li.remove();
+		  this._submenu.remove();
+
+		}
 	}
 
 	this.append = function( uid ) {
@@ -340,11 +355,14 @@ function acInstance( parent, element ){
 		if(!this.element.elements[uid])
 			return;
 
+		//checking if maxCount was reached
+		if( (this.element.elements[uid].maxCount == null) || (this.child[uid].length < this.element.elements[uid].maxCount) ){
 
-		var instance = new acInstance( this, this.element.elements[uid] );
-		this.child[uid].push( instance );
-		this._subul.append( instance._li );
-
+		  var instance = new acInstance( this, this.element.elements[uid] );
+		  this.child[uid].push( instance );
+		  this._subul.append( instance._li );
+		
+		}
 	}
 	
 	
@@ -359,8 +377,8 @@ function acInstance( parent, element ){
 	  _focused_element = this;
 	  _focused_element._anchor.addClass('focus');
 
-	  $('#acDec').toggle( that.size() != that.element.minSize );
-	  $('#acInc').toggle( that.size() != that.element.maxSize );
+	  $('#acDec').toggle( (that.element.size === 'custom') && (that.size() != that.element.minSize) );
+	  $('#acInc').toggle( (that.element.size === 'custom') && (that.size() != that.element.maxSize) );
 	  $('#acRem').toggle( true );
 	
 	}
@@ -370,8 +388,10 @@ function acInstance( parent, element ){
 	  for(var i=0;i<item.minCount;i++)
 		that.append(id);
 	});
-	
-	//this.size( parseInt( element.defaultSize ) );
+
+
+	if(! this.isArmy )
+	  this.size( parseInt( element.defaultSize ) );
 
 }
 
@@ -415,9 +435,7 @@ function jsArmyCalc( selector, templateurl ){
 	calc.canvas.find('#acRem').click( function(){ _focused_element.remove(); return false;});
 	  
 	//this is a 
-	calc.army = {
-	  maxCosts: {}
-	};
+	calc.army = null;
 	
 	calc.units = [];
 	calc.availableUnits = {};
@@ -522,17 +540,16 @@ function jsArmyCalc( selector, templateurl ){
 		createButton.click(function(){
 		  
 		  calc.closePopup( );  
-				
+			
+		  calc.canvas.find('#acElements').html('');
+		  calc.canvas.find('#acUnits').html('');
+
 		  calc.army = new acInstance( null, that.ruleset.models[modelSelect.val()] );
 
 		  calc.army.maxCosts = {};
 		  for( id in calc.ruleset.costs ){
 			calc.army.maxCosts[id] = that.ruleset.costs[id].input.val();
 		  }
-
-
-		  calc.canvas.find('#acElements').html('');
-		  calc.canvas.find('#acUnits').html('');
 
 		  $.each(calc.army.element.elements,function( id, item ){
 			var appendButton = $("<a href='#'>"+item.name+"</a>");

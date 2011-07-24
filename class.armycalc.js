@@ -38,9 +38,7 @@ function jsArmyCalc( selector, templateurl ){
 	calc.canvas.find('#acRem').click( function(){ _focused_element.remove(); return false;});
 	  
 	//this is a 
-	calc.army = {
-	  maxCosts: {}
-	};
+	calc.army = null;
 	
 	calc.units = [];
 	calc.availableUnits = {};
@@ -145,17 +143,16 @@ function jsArmyCalc( selector, templateurl ){
 		createButton.click(function(){
 		  
 		  calc.closePopup( );  
-				
+			
+		  calc.canvas.find('#acElements').html('');
+		  calc.canvas.find('#acUnits').html('');
+
 		  calc.army = new acInstance( null, that.ruleset.models[modelSelect.val()] );
 
 		  calc.army.maxCosts = {};
 		  for( id in calc.ruleset.costs ){
 			calc.army.maxCosts[id] = that.ruleset.costs[id].input.val();
 		  }
-
-
-		  calc.canvas.find('#acElements').html('');
-		  calc.canvas.find('#acUnits').html('');
 
 		  $.each(calc.army.element.elements,function( id, item ){
 			var appendButton = $("<a href='#'>"+item.name+"</a>");
