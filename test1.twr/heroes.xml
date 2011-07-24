@@ -1,5 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <elements xmlns="armycalc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="armycalc http://armycalc.com/xmls/twr3elements.xsd" version="3.0">
-  
+
+  <element minCount="0" maxCount="1" size="fixed" defaultSize="1">
+
+	<uid>hero</uid>
+    <name>
+	  <tr ln="en">Hero</tr>
+	  <tr ln="pl">Bohater</tr>
+	</name>
+	
+	<menu>Base Units</menu>
+	
+	<stats>
+	  <stat id="str">50</stat>
+	  <stat id="sta">50</stat>
+	  <stat id="spe">50</stat>
+	  <stat id="hp">50</stat>
+	</stats>
+
+	<cost id="pts">100</cost>
+	<cost id="gc">10</cost>
+	
+    <thumbnail src="media/hero.jpg"/>
+
+	<elements>
+	  <element extend="runic-sword" />
+	  <element extend="runic-sword">
+		<uid>runic-sword-2</uid>
+		<name>
+		  <tr ln="en">Runic Sword 2</tr>
+		  <tr ln="pl">Runiczny Miecz 2</tr>
+		</name>
+	  </element>
+ 
+	</elements>
+
+  </element>
 
 </elements>

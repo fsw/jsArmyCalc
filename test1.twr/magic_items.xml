@@ -1,5 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <elements xmlns="armycalc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="armycalc http://armycalc.com/xmls/twr3elements.xsd" version="3.0">
   
+  <element maxCount="1" size="fixed" defaultSize="1">
+    
+	<uid>runic-sword</uid>
+    <name>
+	  <tr ln="en">Runic Sword</tr>
+	  <tr ln="pl">Runiczny Miecz</tr>
+	</name>
+    <description>
+	  <tr ln="en"></tr>
+	  <tr ln="pl"></tr>
+	</description>
+    
+    <thumbnail src="media/runic-sword.jpg"></thumbnail>
+
+	<elements>
+	  
+	  <element minCount="0" maxCount="1" minSize="1" maxSize="1">
+	    <uid>rune-of-might</uid>
+	    <name>Rune Of Might</name>
+	  </element>
+	  
+	  <element minCount="0" maxCount="1" minSize="1" maxSize="1">
+	    <uid>rune-of-fire</uid>
+	    <name>Rune Of Fire</name>
+	  </element>
+	  
+	  <element minCount="0" maxCount="1" minSize="1" maxSize="1">
+	    <uid>rune-of-ice</uid>
+	    <name>Rune Of Ice</name>
+	  </element>
+	  
+	</elements>
+  
+  </element>
 
 </elements>

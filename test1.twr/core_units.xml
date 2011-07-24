@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <elements xmlns="armycalc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="armycalc http://armycalc.com/xmls/twr3elements.xsd" version="3.0">
   
-  <element minCount="1" maxCount="2" minSize="1" defaultSize="3" maxSize="20">
+  <element minCount="1" maxCount="5" minSize="1" defaultSize="5" maxSize="20">
     
 	<uid>warrior</uid>
     <name>
 	  <tr ln="en">Warrior</tr>
 	  <tr ln="pl">Wojownik</tr>
 	</name>
-    <description></description>
+    <description>
+	  <tr ln="en">There have to be at least one and maximum 5 units of warriors in the army. Each unit can contain from 1 to 20 warriors.</tr>
+	  <tr ln="pl">W armii może być od 1 do 5 oddziałów wojowników. Każdy oddział może składać się z 1 do 20 wojowników.</tr>
+	</description>
     
 	<menu>Base Units</menu>
 	
@@ -37,7 +40,7 @@
 		
 		  <elements>
 			<element minCount="1" maxCount="1" minSize="1" maxSize="1">
-			  <uid>chieftains_squire</uid>
+			  <uid>chieftains-squire</uid>
 			  <name>Chieftain's squire</name>
 			  <stats>
 				<stat id="str">1</stat>
@@ -52,7 +55,7 @@
 
 		<element minCount="0" maxCount="1" size="inherit" 
 			  afterCountChange = "this.parent.stat('sta',this.parent.stat('sta')+this.count());
-								  this.parent.available['two_handed_weapon'].enabled(!this.count());">
+								  this.parent.available['two-handed-weapon'].enabled(!this.count());">
 		  <uid>shield</uid>
 		  <name>Shield</name>
 		  <cost id="pts">1</cost>
@@ -61,7 +64,7 @@
 		<element minCount="0" maxCount="1" size="inherit" 
 			  afterCountChange = "this.parent.stat('str',this.parent.stat('str')+this.count()); 
 								  this.parent.available['shield'].enabled(!this.count());">
-		  <uid>two_handed_weapon</uid>
+		  <uid>two-handed-weapon</uid>
 		  <name>Two handed weapon</name>
 		  <cost id="pts">1</cost>
 		</element>
@@ -73,7 +76,10 @@
   <element minCount="0" maxCount="2" minSize="1" defaultSize="3" maxSize="20">
     
 	<uid>archer</uid>
-    <name>Archer</name>
+    <name>
+	  <tr ln="en">Archer</tr>
+	  <tr ln="pl">Łucznik</tr>
+	</name>
     <description></description>
     
 	<menu>Base Units</menu>
@@ -108,7 +114,11 @@
   <element minCount="0" minSize="5" defaultSize="10">
     
 	<uid>peon</uid>
-    <name>Peon</name>
+    <name>
+	  <tr ln="en">Peon</tr>
+	  <tr ln="pl">Chłop</tr>
+	</name>
+	
     <description></description>
     
 	<menu>Base Units</menu>
@@ -130,7 +140,11 @@
   <element minCount="0" maxCount="2" minSize="3" defaultSize="5" maxSize="10">
     
 	<uid>horseman</uid>
-    <name>Horseman</name>
+    <name>
+	  <tr ln="en">Horseman</tr>
+	  <tr ln="pl">Jeździec</tr>
+	</name>
+	
     <description></description>
     
 	<menupath>

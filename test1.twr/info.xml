@@ -4,7 +4,7 @@
   <!--
   This have to be unique for every ruleset.
   Revision can be used by software to cehck if created army was made by older ruleset or so.
-  you should always upgrate the revision by one if you are making any changes
+  you should always upgrate the revision number by one if you are publishing any changes
   -->
   <uid>armycalc.twr3.test01</uid>
   <revision>3</revision>
@@ -27,7 +27,7 @@
   <!--
   basic ruleset info. 
   please note how do languages work. 
-  text outside the tr tag would be used as default language text
+  text outside the tr tag would be used for both languages
   if you will write simply <name>Blahblah</name> Blahblah would be used as name in each language
   -->
   <name>
@@ -36,7 +36,7 @@
   </name>
   <author>francio</author>
   <description>
-  	This is an example Ruleset. It shows the basic concepts of ArmyCalc and TWR 3.0
+  	<tr ln="en">This is an example Ruleset. It shows the basic concepts of ArmyCalc and TWR 3.0</tr>
   	<tr ln="pl">Ten przykładowy zestaw zasad pokazuje jak działa ArmyCalc i TWR 3.0</tr>
   </description>
   
