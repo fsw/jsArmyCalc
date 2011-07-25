@@ -77,41 +77,113 @@ div.acCanvas div.buttons2 {
 
 
 /* MENU */
-div.acCanvas div.menu {
+
+div.acCanvas div.menucontainer {
 	background: black;
-	/* height: 22px; */
-	min-height: 22px;
+	min-height: 25px;
 	color: white;
 	line-height: 22px;
+	margin-bottom: 7px;
+}
+
+div.acCanvas div.menu {
+	position:absolute;	
+	z-index:100;
+	/*
+	left:20px;
+	margin-left:-2.5em;
+	width:80%;
+	*/
+}
+
+div.acCanvas div.menu #acElements li>ul { 
+	top: auto;
+	left: auto;
 }
 
 div.acCanvas div.menu #acElements {
-	list-style-type: none;
-	overflow: auto;
+	list-style: none;
+}
+
+div.acCanvas div.menu #acElements ul { 
+	padding: 0;
 	margin:0;
-	padding:0; 
+	list-style: none;
+    width:10em;
+    z-index:99;
+    position:relative;
+    overflow:visible;  
 }
 
-div.acCanvas div.menu ul#acElements li {
-	list-style-type: none;
-	float:left;
+div.acCanvas div.menu #acElements li { 
+    margin:0;   
+    position: relative; 
+    float:left;
+	width: 10em;
+	background-color: black;
+    border:solid 1px #444;
+    display:block;
+    height:auto;
 }
 
-div.acCanvas div.menu ul#acElements li a {
-  display: block;
-  color: white;
-  text-decoration: none;
-  padding: 0 10px;
+div.acCanvas div.menu #acElements ul li{ 
+	background-color: black;
 }
 
-div.acCanvas div.menu ul#acElements li a:hover {
-  background: white;
-  color:black;
+div.acCanvas div.menu #acElements ul li{
+	border-width:1px 1px 0 0;
 }
 
+div.acCanvas div.menu #acElements ul ul li{ 
+	border-width:1px 1px 0 1px;
+}
 
+div.acCanvas div.menu #acElements ul ul li:last-child { 
+	border-width:1px;
+}
+ 
+div.acCanvas div.menu #acElements a {
+	text-align: center;
+    text-decoration:none; 
+    display:block;
+	color: white;    
+	/* padding: 0.1em;  
+    margin:0.2em 0 0.2em 0.1em; 
+    width:11.5em; 
+    height:1.05em; */
+}
 
+div.acCanvas div.menu #acElements a:hover {
+	background-color: white;
+	color: black;
+}
+/* div.acCanvas div.menu #acElements a:hover, div.acCanvas div.menu #acElements li:hover, div.acCanvas div.menu #acElements ul li:hover, div.acCanvas div.menu #acElements ul li a:hover */
 
+div.acCanvas div.menu #acElements ul{
+    display:none;   
+}
+
+/*all see this */
+div.acCanvas div.menu #acElements ul ul, div.acCanvas div.menu #acElements ul ul ul{
+    display:none; 
+    position:absolute; 
+    margin-top:-1.8em; 
+    margin-left:10em;
+}
+
+/* non-IE browsers see this */
+div.acCanvas div.menu #acElements ul li>ul, div.acCanvas div.menu #acElements ul ul li>ul {
+    margin-top:-1.35em; 
+}
+
+ 
+div.acCanvas div.menu #acElements li:hover ul ul, div.acCanvas div.menu #acElements li:hover ul ul ul, div.acCanvas div.menu #acElements li:hover ul ul ul ul, div.acCanvas div.menu #acElements li:hover ul ul ul ul ul {
+    display:none;
+}
+
+div.acCanvas div.menu #acElements li:hover ul, div.acCanvas div.menu #acElements ul li:hover ul, div.acCanvas div.menu #acElements ul ul li:hover ul, div.acCanvas div.menu #acElements ul ul ul li:hover ul, div.acCanvas div.menu #acElements ul ul ul ul li:hover ul {
+    /* display:block; */
+}
 
 
 /* WORKSPACE */

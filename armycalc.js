@@ -137,7 +137,25 @@ function acRuleset( calc ){
 	});
 
 	this.models = {}
-		
+	
+
+	this.mainmenu = {}
+	$(xml).children('mainmenu').children('menu').each(function(){
+		  
+		  menu_id = $(this).attr('id');
+
+		  that.mainmenu[menu_id] = {};
+		  that.mainmenu[menu_id]['name'] = acGetText( $(this).children('name') );
+		  that.mainmenu[menu_id]['submenus'] = {};
+		  
+		  $(this).children('menu').each(function(){	
+			that.mainmenu[menu_id]['submenus'][$(this).attr('id')] = {};
+			that.mainmenu[menu_id]['submenus'][$(this).attr('id')]['name'] = acGetText( $(this).children('name') );
+		  });
+
+	});
+
+
 	
 	$(xml).children('models').find('model').each(function(){
 		  
@@ -148,7 +166,7 @@ function acRuleset( calc ){
 			'default' : $(this).attr('default') == 'true'
 		  };
 		  
-		  that.models[model_id].elements = {};
+		  that.models[model_id].elements = [];
 		  
 		  that.models[model_id].validator = "";	
 	
@@ -162,6 +180,9 @@ function acRuleset( calc ){
 		  $(this).find('elements').each(function(){
 			that.appendElements( baseurl, this, that.models[model_id].elements );
 		  });
+
+		  
+		  that.models[model_id].mainmenu = that.mainmenu;	
 
 		  that.models[model_id].defaultArmyName = that.defaultArmyName;
 		  that.models[model_id].defaultArmySize = that.defaultArmySize;
@@ -192,19 +213,23 @@ function acRuleset( calc ){
 		  });
 	  
 	  } else {
-	
+
+		var e = {};
+
 		$(xml).children('element').each(function(){
 
 			var element = {};
 			element.uid = $(this).children('uid').text();
-			
+
+			if( $(this).children('menu').length > 0 )
+			  element.menu_id = $(this).children('menu').attr('id');
 
 			element.name = acGetText($(this).children('name'));
 			element.description = acGetText($(this).children('description'));
 
 			//alert(element.uid);
 			//element.child = [];
-			element.elements = {};
+			element.elements = [];
 			
 			
 			element.minCount = ($(this).attr('minCount')?$(this).attr('minCount'):0);
@@ -226,17 +251,22 @@ function acRuleset( calc ){
 			  element.stats[$(this).attr('id')] = $(this).text();
 			});
 
+			$.each( $(this).children('elements'), function( id, item){
+			  
+			  that.appendElements( baseurl, item, element.elements );
+			  
+			});
 
-			that.appendElements( baseurl, $(this).children('elements'), element.elements );
-			
-			elements[ element.uid ] = element;
+			e[ element.uid ] = element;
 
 		});
-	  
-	  }
 
+	  elements.push( e );
 	  
 	}
+
+	  
+  }
 
 
 }
@@ -306,9 +336,11 @@ function acInstance( parent, element ){
 	  this._submenu.append($("<li><b>append:</b></li>"));
 	
 	  $.each(this.element.elements,function( id, item ){
+		  $.each(item,function( id, item ){
 			  var button = $("<a href='#'>"+item.name+"</a>");
 			  button.click( function(){ that.append(id);} );
 			  that._submenu.append($("<li></li>").append(button));
+		  });
 	  });
 	  
 	  calc.submenuElem.append(this._submenu);
@@ -329,8 +361,10 @@ function acInstance( parent, element ){
 		this.child={} 
 		var that = this;
 		$.each( this.element.elements, function( id, item ){
-		  that.child[id] = [];
-		} );
+		  $.each( item, function( id, item ){
+			that.child[id] = [];
+		  });
+		});
 		
 	}
 
@@ -352,13 +386,20 @@ function acInstance( parent, element ){
 	this.append = function( uid ) {
 
 		//alert(uid);
-		if(!this.element.elements[uid])
+		var element_to_append = null;
+
+		$.each( this.element.elements, function( id, item ){
+		  if(item[uid])
+			element_to_append = item[uid];
+		});
+
+		if(!element_to_append)
 			return;
 
 		//checking if maxCount was reached
-		if( (this.element.elements[uid].maxCount == null) || (this.child[uid].length < this.element.elements[uid].maxCount) ){
+		if( (element_to_append.maxCount == null) || (this.child[uid].length < element_to_append.maxCount) ){
 
-		  var instance = new acInstance( this, this.element.elements[uid] );
+		  var instance = new acInstance( this, element_to_append );
 		  this.child[uid].push( instance );
 		  this._subul.append( instance._li );
 		
@@ -385,8 +426,10 @@ function acInstance( parent, element ){
 	
 	//we check if any child element has minCount and append it if so.
 	$.each( this.element.elements,function( id, item ){
-	  for(var i=0;i<item.minCount;i++)
-		that.append(id);
+	  $.each( item, function( id, item ){
+		for(var i=0;i<item.minCount;i++)
+		  that.append(id);
+	  });
 	});
 
 
@@ -551,10 +594,51 @@ function jsArmyCalc( selector, templateurl ){
 			calc.army.maxCosts[id] = that.ruleset.costs[id].input.val();
 		  }
 
+		  
+		
+		  var menu_ul_by_id = {};
+		  /* we are buliding the menu and populating the menu_ul_by_id table */
+		  /* TODO make this recurrent to populate multiple menu levels? */
+		  $.each(that.ruleset.models[modelSelect.val()].mainmenu,function( id, item ){
+			
+			menu_ul_by_id[id] = $("<ul class='submm'></ul>");
+
+			var menu_elem = $("<a href='#'>"+item.name+"</a>");
+
+			calc.canvas.find('#acElements').append(
+				$("<li></li>")
+				  .append(menu_elem)
+				  .append(menu_ul_by_id[id])
+				  .hover(function(){ $(this).children("ul").show();},function(){$(this).children("ul").hide();})
+			);
+			
+			$.each(item.submenus,function( child_id, child ){
+				menu_ul_by_id[child_id] = $("<ul class='submm'></ul>");
+				var menu_elem = $("<a href='#'>"+child.name+"</a>");
+				
+				menu_ul_by_id[id].append(
+					$("<li></li>")
+					  .append(menu_elem)
+					  .append(menu_ul_by_id[child_id])
+					  .hover(function(){ $(this).children("ul").show();},function(){$(this).children("ul").hide();})
+				);
+			  
+			});
+			
+		  });
+
+		  /* we are appending all elements that have menu defined to the menu*/
 		  $.each(calc.army.element.elements,function( id, item ){
-			var appendButton = $("<a href='#'>"+item.name+"</a>");
-			calc.canvas.find('#acElements').append($("<li></li>").append(appendButton));
-			appendButton.click( function(){ calc.army.append( id ); } );
+			$.each(item,function( id, item ){
+			  if(item.menu_id){
+				var appendButton = $("<a href='#'>"+item.name+"</a>");
+				menu_ul_by_id[item.menu_id].append($("<li></li>").append(appendButton));
+				appendButton.click( function(){ 
+					calc.army.append( id ); 
+					$('.submm').hide();
+				} );
+			  }
+			});
 		  });
 
 

@@ -63,9 +63,11 @@ function acInstance( parent, element ){
 	  this._submenu.append($("<li><b>append:</b></li>"));
 	
 	  $.each(this.element.elements,function( id, item ){
+		  $.each(item,function( id, item ){
 			  var button = $("<a href='#'>"+item.name+"</a>");
 			  button.click( function(){ that.append(id);} );
 			  that._submenu.append($("<li></li>").append(button));
+		  });
 	  });
 	  
 	  calc.submenuElem.append(this._submenu);
@@ -86,8 +88,10 @@ function acInstance( parent, element ){
 		this.child={} 
 		var that = this;
 		$.each( this.element.elements, function( id, item ){
-		  that.child[id] = [];
-		} );
+		  $.each( item, function( id, item ){
+			that.child[id] = [];
+		  });
+		});
 		
 	}
 
@@ -109,13 +113,20 @@ function acInstance( parent, element ){
 	this.append = function( uid ) {
 
 		//alert(uid);
-		if(!this.element.elements[uid])
+		var element_to_append = null;
+
+		$.each( this.element.elements, function( id, item ){
+		  if(item[uid])
+			element_to_append = item[uid];
+		});
+
+		if(!element_to_append)
 			return;
 
 		//checking if maxCount was reached
-		if( (this.element.elements[uid].maxCount == null) || (this.child[uid].length < this.element.elements[uid].maxCount) ){
+		if( (element_to_append.maxCount == null) || (this.child[uid].length < element_to_append.maxCount) ){
 
-		  var instance = new acInstance( this, this.element.elements[uid] );
+		  var instance = new acInstance( this, element_to_append );
 		  this.child[uid].push( instance );
 		  this._subul.append( instance._li );
 		
@@ -142,8 +153,10 @@ function acInstance( parent, element ){
 	
 	//we check if any child element has minCount and append it if so.
 	$.each( this.element.elements,function( id, item ){
-	  for(var i=0;i<item.minCount;i++)
-		that.append(id);
+	  $.each( item, function( id, item ){
+		for(var i=0;i<item.minCount;i++)
+		  that.append(id);
+	  });
 	});
 
 

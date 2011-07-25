@@ -14,8 +14,8 @@
 	  <tr ln="pl">Ta jednostka dostępna jest jedynie w 'modelu turniejowym'.</tr>
 	</description>
     
-	<menu>Base Units</menu>
-	
+	<menu id="menu-heroes-units" />
+
 	<stats>
 	  <stat id="str">50</stat>
 	  <stat id="sta">50</stat>

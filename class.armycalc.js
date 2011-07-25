@@ -154,10 +154,51 @@ function jsArmyCalc( selector, templateurl ){
 			calc.army.maxCosts[id] = that.ruleset.costs[id].input.val();
 		  }
 
+		  
+		
+		  var menu_ul_by_id = {};
+		  /* we are buliding the menu and populating the menu_ul_by_id table */
+		  /* TODO make this recurrent to populate multiple menu levels? */
+		  $.each(that.ruleset.models[modelSelect.val()].mainmenu,function( id, item ){
+			
+			menu_ul_by_id[id] = $("<ul class='submm'></ul>");
+
+			var menu_elem = $("<a href='#'>"+item.name+"</a>");
+
+			calc.canvas.find('#acElements').append(
+				$("<li></li>")
+				  .append(menu_elem)
+				  .append(menu_ul_by_id[id])
+				  .hover(function(){ $(this).children("ul").show();},function(){$(this).children("ul").hide();})
+			);
+			
+			$.each(item.submenus,function( child_id, child ){
+				menu_ul_by_id[child_id] = $("<ul class='submm'></ul>");
+				var menu_elem = $("<a href='#'>"+child.name+"</a>");
+				
+				menu_ul_by_id[id].append(
+					$("<li></li>")
+					  .append(menu_elem)
+					  .append(menu_ul_by_id[child_id])
+					  .hover(function(){ $(this).children("ul").show();},function(){$(this).children("ul").hide();})
+				);
+			  
+			});
+			
+		  });
+
+		  /* we are appending all elements that have menu defined to the menu*/
 		  $.each(calc.army.element.elements,function( id, item ){
-			var appendButton = $("<a href='#'>"+item.name+"</a>");
-			calc.canvas.find('#acElements').append($("<li></li>").append(appendButton));
-			appendButton.click( function(){ calc.army.append( id ); } );
+			$.each(item,function( id, item ){
+			  if(item.menu_id){
+				var appendButton = $("<a href='#'>"+item.name+"</a>");
+				menu_ul_by_id[item.menu_id].append($("<li></li>").append(appendButton));
+				appendButton.click( function(){ 
+					calc.army.append( id ); 
+					$('.submm').hide();
+				} );
+			  }
+			});
 		  });
 
 

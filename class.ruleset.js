@@ -75,7 +75,25 @@ function acRuleset( calc ){
 	});
 
 	this.models = {}
-		
+	
+
+	this.mainmenu = {}
+	$(xml).children('mainmenu').children('menu').each(function(){
+		  
+		  menu_id = $(this).attr('id');
+
+		  that.mainmenu[menu_id] = {};
+		  that.mainmenu[menu_id]['name'] = acGetText( $(this).children('name') );
+		  that.mainmenu[menu_id]['submenus'] = {};
+		  
+		  $(this).children('menu').each(function(){	
+			that.mainmenu[menu_id]['submenus'][$(this).attr('id')] = {};
+			that.mainmenu[menu_id]['submenus'][$(this).attr('id')]['name'] = acGetText( $(this).children('name') );
+		  });
+
+	});
+
+
 	
 	$(xml).children('models').find('model').each(function(){
 		  
@@ -86,7 +104,7 @@ function acRuleset( calc ){
 			'default' : $(this).attr('default') == 'true'
 		  };
 		  
-		  that.models[model_id].elements = {};
+		  that.models[model_id].elements = [];
 		  
 		  that.models[model_id].validator = "";	
 	
@@ -100,6 +118,9 @@ function acRuleset( calc ){
 		  $(this).find('elements').each(function(){
 			that.appendElements( baseurl, this, that.models[model_id].elements );
 		  });
+
+		  
+		  that.models[model_id].mainmenu = that.mainmenu;	
 
 		  that.models[model_id].defaultArmyName = that.defaultArmyName;
 		  that.models[model_id].defaultArmySize = that.defaultArmySize;
@@ -130,19 +151,23 @@ function acRuleset( calc ){
 		  });
 	  
 	  } else {
-	
+
+		var e = {};
+
 		$(xml).children('element').each(function(){
 
 			var element = {};
 			element.uid = $(this).children('uid').text();
-			
+
+			if( $(this).children('menu').length > 0 )
+			  element.menu_id = $(this).children('menu').attr('id');
 
 			element.name = acGetText($(this).children('name'));
 			element.description = acGetText($(this).children('description'));
 
 			//alert(element.uid);
 			//element.child = [];
-			element.elements = {};
+			element.elements = [];
 			
 			
 			element.minCount = ($(this).attr('minCount')?$(this).attr('minCount'):0);
@@ -164,17 +189,22 @@ function acRuleset( calc ){
 			  element.stats[$(this).attr('id')] = $(this).text();
 			});
 
+			$.each( $(this).children('elements'), function( id, item){
+			  
+			  that.appendElements( baseurl, item, element.elements );
+			  
+			});
 
-			that.appendElements( baseurl, $(this).children('elements'), element.elements );
-			
-			elements[ element.uid ] = element;
+			e[ element.uid ] = element;
 
 		});
-	  
-	  }
 
+	  elements.push( e );
 	  
 	}
+
+	  
+  }
 
 
 }

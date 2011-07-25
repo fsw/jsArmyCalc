@@ -13,7 +13,7 @@
 	  <tr ln="pl">W armii może być od 1 do 5 oddziałów wojowników. Każdy oddział może składać się z 1 do 20 wojowników.</tr>
 	</description>
     
-	<menu>Base Units</menu>
+	<menu id="menu-infantry-units" />
 	
 	<stats>
 	  <stat id="str">5</stat>
@@ -52,22 +52,26 @@
 		  </elements>
 
 		</element>
+	</elements>
 
-		<element minCount="0" maxCount="1" size="inherit" 
+	<elements maxTotalCount="1">
+
+	  <element minCount="0" maxCount="1" size="inherit" 
 			  afterCountChange = "this.parent.stat('sta',this.parent.stat('sta')+this.count());
 								  this.parent.available['two-handed-weapon'].enabled(!this.count());">
-		  <uid>shield</uid>
-		  <name>Shield</name>
-		  <cost id="pts">1</cost>
-		</element>
+		<uid>shield</uid>
+		<name>Shield</name>
+		<cost id="pts">1</cost>
+	  </element>
 		
-		<element minCount="0" maxCount="1" size="inherit" 
+	  <element minCount="0" maxCount="1" size="inherit" 
 			  afterCountChange = "this.parent.stat('str',this.parent.stat('str')+this.count()); 
 								  this.parent.available['shield'].enabled(!this.count());">
-		  <uid>two-handed-weapon</uid>
-		  <name>Two handed weapon</name>
-		  <cost id="pts">1</cost>
-		</element>
+		<uid>two-handed-weapon</uid>
+		<name>Two handed weapon</name>
+		<cost id="pts">1</cost>
+
+	  </element>
 
 	</elements>
 
@@ -82,7 +86,7 @@
 	</name>
     <description></description>
     
-	<menu>Base Units</menu>
+	<menu id="menu-infantry-units" />
 	
 	<stats>
 	  <stat id="str">4</stat>
@@ -121,7 +125,7 @@
 	
     <description></description>
     
-	<menu>Base Units</menu>
+	<menu id="menu-infantry-units" />
 	
 	<stats>
 	  <stat id="str">2</stat>
@@ -147,9 +151,7 @@
 	
     <description></description>
     
-	<menupath>
-	  <menu>Base Units</menu>
-	</menupath>
+	<menu id="menu-cavalry-units" />
 	
 	<stats>
 	  <stat id="str">3</stat>

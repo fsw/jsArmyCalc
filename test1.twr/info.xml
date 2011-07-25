@@ -108,7 +108,41 @@
 	<cost id="pts">1500</cost>
 	<cost id="gold">10</cost>
   </defaultArmySize>
- 
+
+
+  <mainmenu>
+	<menu id="menu-core-units">
+	  <name>
+		<tr ln="en">Core units</tr>
+		<tr ln="pl">Jednostki podstawowe</tr>	
+	  </name>
+	  <menu id="menu-infantry-units">
+		<name>
+		  <tr ln="en">Infantry</tr>
+		  <tr ln="pl">Piechota</tr>	
+		</name>
+	  </menu>
+	  <menu id="menu-cavalry-units">
+		<name>
+		  <tr ln="en">Cavalry</tr>
+		  <tr ln="pl">Kawaleria</tr>	
+		</name>
+	  </menu>
+	</menu>
+	<menu id="menu-special-units">
+	  <name>
+	  	<tr ln="en">Special units</tr>
+		<tr ln="pl">Jednostki specjalne</tr>	
+	  </name>
+	</menu>
+	<menu id="menu-heroes-units">
+	  <name>
+		<tr ln="en">Heroes</tr>
+		<tr ln="pl">Bohaterowie</tr>
+	  </name>
+	</menu>
+  </mainmenu>
+
   <!--
   This will be shown in a select dialog when creating new army.
   You can check which model was selected using your validation script 

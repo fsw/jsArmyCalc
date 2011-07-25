@@ -9,7 +9,7 @@
 	  <tr ln="pl">Bohater</tr>
 	</name>
 	
-	<menu>Base Units</menu>
+	<menu id="menu-heroes-units" />
 	
 	<stats>
 	  <stat id="str">50</stat>
