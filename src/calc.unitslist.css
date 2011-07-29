@@ -1,0 +1,60 @@
+
+/* UNITS LIST */
+div.acCanvas #acUnits {
+	background-color: white;
+	min-height: 200px;
+}
+
+div.acCanvas #acUnits ul {
+
+	padding-left: 20px;
+	display: block;
+
+}
+
+div.acCanvas #acUnits li {
+}
+
+div.acCanvas #acUnits li a {
+	display:block;
+	line-height: 16px;
+	padding: 2px;
+	text-decoration: none;
+	color: black;
+}
+
+div.acCanvas #acUnits > li > a {
+	font-weight: bold;
+}	
+
+div.acCanvas #acUnits li a.focus {
+	background: green;
+}
+
+
+div.acCanvas span.st {
+	width: 35px;
+	float: right;
+	display: block;
+	text-align: center;
+	border-right: 1px solid #555;
+}
+
+div.acCanvas span.cst {
+	width: 35px;
+	float: right;
+	display: block;
+	text-align: center;
+	border-left: 1px solid #555;
+}
+
+div.acCanvas #acUnitsHeader div.title {
+	
+	overflow: auto;
+	padding:2px;
+	font-weight: bold;
+	border-bottom: 1px solid #555;
+}
+
+
+

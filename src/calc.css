@@ -38,6 +38,9 @@ div.acCanvas img {
 	border: none;
 }
 
+div.acCanvas a:focus {
+    outline: none;
+}
 
 /* TOOLBAR */
 div.acCanvas div.toolbar {
@@ -88,7 +91,7 @@ div.acCanvas div.menucontainer {
 
 div.acCanvas div.menu {
 	position:absolute;	
-	z-index:100;
+	z-index:10;
 	/*
 	left:20px;
 	margin-left:-2.5em;
@@ -146,7 +149,8 @@ div.acCanvas div.menu #acElements a {
 	text-align: center;
     text-decoration:none; 
     display:block;
-	color: white;    
+	color: white;
+	white-space: nowrap;
 	/* padding: 0.1em;  
     margin:0.2em 0 0.2em 0.1em; 
     width:11.5em; 
@@ -191,24 +195,27 @@ div.acCanvas div.workspace {
 	min-height: 150px;
 	border: none;
 	overflow: hidden;
+	background-color: #ddd;
 }
 div.acCanvas div.workspace div.unitslist{
-	margin-right: 160px;
-	float: left;
+	margin-left: 160px;
+	height: 300px;
+	overflow: auto;
+	overflow-x: hidden;
+	-ms-overflow-x: hidden;
 }
 div.acCanvas div.workspace div.unitdetails{
 	width: 160px;
-	float: right;
+	float: left;
 }
 div.acCanvas div.workspace #acDetails{
-	background-color: #ccc;
 	min-height: 100px;
-	padding: 5px;
+	padding: 5px 0;
+
 }
 
 div.acCanvas #acDetails ul.actions {
 	overflow: hidden;
-	padding-left: 25px;
 	height: 34px;
 }
 
@@ -258,7 +265,7 @@ div#acPopup {
   border: 3px solid white;
   left: 50%;
   margin-left: -200px;
-  z-index:2;  
+  z-index:200;  
 
 }
 
@@ -351,16 +358,4 @@ div#acPopup input, div#acPopup select {
 
 
  
-/* UNITS LIST */
-
-div.acCanvas #acUnits ul {
-
-  padding-left:20px;
-
-}
-
-div.acCanvas #acUnits li {
-  padding: 3px;
-}
-
 

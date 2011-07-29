@@ -33,10 +33,23 @@ function jsArmyCalc( selector, templateurl ){
 	
 	calc.canvas.find('#acNew').click(function(){calc.newArmy(); return false;});
 	
-	calc.canvas.find('#acDec').click( function(){ _focused_element.size(_focused_element.size()-1); return false;});
-	calc.canvas.find('#acInc').click( function(){ _focused_element.size(_focused_element.size()+1); return false;});
-	calc.canvas.find('#acRem').click( function(){ _focused_element.remove(); return false;});
-	  
+	calc.canvas.find('#acDec').click( function(){ _focused_element.size(_focused_element.size()-1); return false;}).hide();
+	calc.canvas.find('#acInc').click( function(){ _focused_element.size(_focused_element.size()+1); return false;}).hide();
+	calc.canvas.find('#acRem').click( function(){ _focused_element.remove(); return false;}).hide();
+	
+	calc.canvas.find('#acUp').click( function(){
+		_focused_element._li.prev().before(  _focused_element._li );
+		calc.canvas.find('#acUp').toggle(_focused_element._li.prev().length > 0);
+		calc.canvas.find('#acDown').toggle(_focused_element._li.next().length > 0);
+		return false;
+	}).hide();
+	calc.canvas.find('#acDown').click( function(){
+		_focused_element._li.next().after(  _focused_element._li );
+		calc.canvas.find('#acUp').toggle(_focused_element._li.prev().length > 0);
+		calc.canvas.find('#acDown').toggle(_focused_element._li.next().length > 0);
+		return false;
+	}).hide();
+	
 	//this is a 
 	calc.army = null;
 	
@@ -73,6 +86,13 @@ function jsArmyCalc( selector, templateurl ){
 	calc.setStatus = function( text ){
 		this.statusElem.text(text);
 	}
+
+	calc.flashMsg = function( text ){
+		this.statusElem.hide();
+		this.statusElem.html( text );
+		this.statusElem.fadeIn();
+	}
+
 
 	calc.setLang = function( lang ){
 	
@@ -146,14 +166,29 @@ function jsArmyCalc( selector, templateurl ){
 			
 		  calc.canvas.find('#acElements').html('');
 		  calc.canvas.find('#acUnits').html('');
+		  
 
-		  calc.army = new acInstance( null, that.ruleset.models[modelSelect.val()] );
+
+		  var list_header = $("<div class='title'></div>");
+		  $.each( that.ruleset.costs, function( id, item){
+			list_header.append("<span class='cst'>"+item.shortname+"</span>");
+		  });
+
+		  $.each( that.ruleset.stats, function( id, item){
+		    list_header.append("<span class='st'>"+item.shortname+"</span>");
+		  });
+  
+
+		  calc.canvas.find('#acUnitsHeader').html( "" );
+		  calc.canvas.find('#acUnitsHeader').append( list_header );
+		  
+
+		  calc.army = new acInstance( that, that.ruleset, null, that.ruleset.models[modelSelect.val()] );
 
 		  calc.army.maxCosts = {};
 		  for( id in calc.ruleset.costs ){
 			calc.army.maxCosts[id] = that.ruleset.costs[id].input.val();
 		  }
-
 		  
 		
 		  var menu_ul_by_id = {};
@@ -184,12 +219,12 @@ function jsArmyCalc( selector, templateurl ){
 				);
 			  
 			});
-			
+		  
 		  });
 
 		  /* we are appending all elements that have menu defined to the menu*/
 		  $.each(calc.army.element.elements,function( id, item ){
-			$.each(item,function( id, item ){
+			$.each(item.elements,function( id, item ){
 			  if(item.menu_id){
 				var appendButton = $("<a href='#'>"+item.name+"</a>");
 				menu_ul_by_id[item.menu_id].append($("<li></li>").append(appendButton));
@@ -200,6 +235,14 @@ function jsArmyCalc( selector, templateurl ){
 			  }
 			});
 		  });
+
+		  //in case a model does not define any units for a menu we remove it from the dom tree
+		  $.each(menu_ul_by_id,function( id, item ){
+				if($(item).children('li').length == 0)
+				  $(item).parent().remove();
+		  });
+
+
 
 
 		});
@@ -216,6 +259,15 @@ function jsArmyCalc( selector, templateurl ){
 		this.canvas.toggleClass('acFullscreen',fs);
 		this.canvas.find('#acMaximize').toggle( !fs );
 		this.canvas.find('#acMinimize').toggle( fs );
+	
+		if(fs){
+			var hhh = $(window).height()-80;
+			this.canvas.find('.unitslist').height(hhh);
+		}
+		else {
+			this.canvas.find('.unitslist').height(200);
+		}
+
 
 	};
 	

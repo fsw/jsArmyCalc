@@ -4,7 +4,7 @@
 # then it uses yui-compressor to build minified versions
 
 FILES="src/ie.calc.js src/helpers.js src/class.ruleset.js src/class.instance.js src/class.armycalc.js"
-CSS_FILES="src/calc.css"
+CSS_FILES="src/calc.css src/calc.unitslist.css"
 
 cat $FILES > armycalc.js
 cat $CSS_FILES > armycalc.css

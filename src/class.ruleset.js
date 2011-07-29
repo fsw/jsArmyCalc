@@ -50,6 +50,7 @@ function acRuleset( calc ){
 	$(xml).children('costs').children('cost').each(function(){
 		  that.costs[$(this).attr('id')] = {
 			name : acGetText($(this).children('name')),
+			'default' : parseFloat($(this).children('default').text()),
 			shortname : acGetText($(this).children('shortname')),
 			unit : acGetText($(this).children('unit'))
 		  };
@@ -154,6 +155,13 @@ function acRuleset( calc ){
 
 		var e = {};
 
+		//TODO overloading this options with
+		e.minTotalCount = ($(xml).attr('minTotalCount')?$(xml).attr('minTotalCount'):0);
+		e.maxTotalCount = ($(xml).attr('maxTotalCount')?$(xml).attr('maxTotalCount'):null);
+		e.minTotalSize = ($(xml).attr('minTotalSize')?$(xml).attr('minTotalSize'):0);
+		e.maxTotalSize = ($(xml).attr('maxTotalSize')?$(xml).attr('maxTotalSize'):null);
+		e.elements = {};
+
 		$(xml).children('element').each(function(){
 
 			var element = {};
@@ -179,15 +187,24 @@ function acRuleset( calc ){
 			
 			element.size = ($(this).attr('size')?$(this).attr('size'):'custom');
 	
-
-
-			element.stats = {};
-			for(id in that.stats)
-			  element.stats[id] = that.stats[id]['default'];
-
-			$(this).children('stats').children('stat').each(function(){
-			  element.stats[$(this).attr('id')] = $(this).text();
+			element.cost = {};
+			for(id in that.costs)
+			  element.cost[id] = that.costs[id]['default'];
+			
+			$(this).children('cost').each(function(){
+			  element.cost[$(this).attr('id')] = parseFloat( $(this).text() );
 			});
+			
+			if( $(this).children('stats').length > 0 ){
+
+			  element.stats = {};
+			  for(id in that.stats)
+				element.stats[id] = that.stats[id]['default'];
+
+			  $(this).children('stats').children('stat').each(function(){
+				element.stats[$(this).attr('id')] = $(this).text();
+			  });
+			}
 
 			$.each( $(this).children('elements'), function( id, item){
 			  
@@ -195,7 +212,7 @@ function acRuleset( calc ){
 			  
 			});
 
-			e[ element.uid ] = element;
+			e.elements[ element.uid ] = element;
 
 		});
 

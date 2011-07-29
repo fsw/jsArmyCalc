@@ -18,10 +18,6 @@
 		</div>
 	</div>
 	<div class="workspace">
-		<div class="unitslist">
-			<ul id="acUnits"></ul>
-			total: <span id="acTotal"></span>
-		</div>
 		<div class="unitdetails">
 			<div id="acDetails">
 				<ul class='actions'>
@@ -34,6 +30,14 @@
 					<img src='img/elem_inc_disabled.png' alt='rem'/>
 				  </li>
 				  <li>
+					<a id='acUp' href='#' title="Move up"><img src='img/elem_up.png' alt='up'/></a>
+					<img src='img/elem_up_disabled.png' alt='up'/>
+				  </li>
+				  <li>
+					<a id='acDown' href='#' title="Move down"><img src='img/elem_down.png' alt='down'/></a>
+					<img src='img/elem_down_disabled.png' alt='down'/>
+				  </li>
+				  <li>
 					<a id='acRem' href='#' title="Delete"><img src='img/elem_rem.png' alt='del'/></a>
 					<img src='img/elem_rem_disabled.png' alt='rem'/>
 				  </li>
@@ -41,6 +45,11 @@
 				<div class='submenu'></div>
 			</div>
 		</div>
+		<div class="unitslist">
+			<div id="acUnitsHeader"></div>
+			<ul id="acUnits"></ul>
+			total: <span id="acTotal"></span>
+		</div>	
 	</div>
 	<div class="statusbar">
 		
