@@ -1,0 +1,12 @@
+
+
+div.acCanvas ul.errors li {
+	padding: 5px;
+}
+
+div.acCanvas ul.errors li.error {
+	color: red;
+	font-weight: bold;
+}
+
+

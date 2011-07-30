@@ -32,6 +32,7 @@ function jsArmyCalc( selector, templateurl ){
 	calc.canvas.find('#acMinimize').click(function(){calc.setFullscreen(false); return false;});
 	
 	calc.canvas.find('#acNew').click(function(){calc.newArmy(); return false;});
+	calc.canvas.find('#acRevalidate').click(function(){calc.revalidate(); return false;});
 	
 	calc.canvas.find('#acDec').click( function(){ _focused_element.size(_focused_element.size()-1); return false;}).hide();
 	calc.canvas.find('#acInc').click( function(){ _focused_element.size(_focused_element.size()+1); return false;}).hide();
@@ -88,9 +89,13 @@ function jsArmyCalc( selector, templateurl ){
 	}
 
 	calc.flashMsg = function( text ){
-		this.statusElem.hide();
+
+		//this.statusElem.stop();
+		//this.statusElem.hide();
 		this.statusElem.html( text );
-		this.statusElem.fadeIn();
+		//this.statusElem.fadeIn();
+		this.statusElem.stop().css("background-color", "#ff0000").animate({backgroundColor: '#000000'}, 1000);
+
 	}
 
 
@@ -137,6 +142,22 @@ function jsArmyCalc( selector, templateurl ){
 	  
 	};
 
+	calc.revalidate = function( ){
+		if(! this.army ){
+		  	this.flashMsg( "Please create new army first!" );
+			return;
+		}
+
+		if(! this.model.validator ){
+		  	this.flashMsg( "This model do not provide a validator!" );
+			return;
+		}
+
+		acSandbox( this.model.validator, { army: this.army });
+		this.popup( "validation result", this.army._errorsul );
+	
+	}
+
 	calc.newArmy = function( ){
 
 		that = this;
@@ -182,8 +203,8 @@ function jsArmyCalc( selector, templateurl ){
 		  calc.canvas.find('#acUnitsHeader').html( "" );
 		  calc.canvas.find('#acUnitsHeader').append( list_header );
 		  
-
-		  calc.army = new acInstance( that, that.ruleset, null, that.ruleset.models[modelSelect.val()] );
+		  calc.model = that.ruleset.models[modelSelect.val()];
+		  calc.army = new acInstance( that, that.ruleset, null, calc.model );
 
 		  calc.army.maxCosts = {};
 		  for( id in calc.ruleset.costs ){
@@ -194,7 +215,7 @@ function jsArmyCalc( selector, templateurl ){
 		  var menu_ul_by_id = {};
 		  /* we are buliding the menu and populating the menu_ul_by_id table */
 		  /* TODO make this recurrent to populate multiple menu levels? */
-		  $.each(that.ruleset.models[modelSelect.val()].mainmenu,function( id, item ){
+		  $.each(calc.model.mainmenu,function( id, item ){
 			
 			menu_ul_by_id[id] = $("<ul class='submm'></ul>");
 

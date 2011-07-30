@@ -149,10 +149,17 @@
   
   <errors>
 	<error class="error">
-	  <uid>hero-warriors-wrong-count</uid>
+	  <uid>heroes-warriors-wrong-count</uid>
 	  <message>
 		<tr ln="en">Army can have only 1 hero for each 3 warriors units.</tr>
-		<tr ln="pl">Armia może zawierać tylko jednego Bohatera na karzde trzy oddziały wojowników.</tr>
+		<tr ln="pl">Armia może zawierać tylko jednego Bohatera na każde trzy oddziały wojowników.</tr>
+	  </message>
+	</error>
+	<error class="warning">
+	  <uid>test-error</uid>
+	  <message>
+		<tr ln="en">This warning is issued in every validation and there is nothing you can do about it.</tr>
+		<tr ln="pl">To ostrzeżenie pojawia się przy każdej walidacji i nie da się tego zmienić.</tr>
 	  </message>
 	</error>
   </errors>

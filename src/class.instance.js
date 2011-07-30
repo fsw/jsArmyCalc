@@ -141,6 +141,8 @@ function acInstance( calc, ruleset, parent, element ){
 
 	}
 
+	this._errorsul = $("<ul class='errors'></ul>");
+	  
 	
 	this.clear =  function() { 
 		this.child={} 
@@ -154,6 +156,13 @@ function acInstance( calc, ruleset, parent, element ){
 	}
 
 	this.clear();
+
+	this.toggleError = function( uid, on ){
+
+		this._errorsul.find( '.' + uid ).remove();
+		if(on)
+		  this._errorsul.append( "<li class='" + uid + " " + this.ruleset.errors[uid]['class'] + "'>" + this.ruleset.errors[uid]['message'] + "</li>" );
+	}
 
 	this.remove = function(){
 		
@@ -170,6 +179,18 @@ function acInstance( calc, ruleset, parent, element ){
 
 		} else
 		  this.calc.flashMsg( "Minimum count of "+this.element.name+" is "+this.element.minCount );
+	}
+
+	
+	this.count = function( uid ) {
+	  
+	  if( typeof uid === 'undefined' )
+		return this.parent.child[this.element.uid].length;
+	
+	  if(uid in this.child)
+		return this.child[uid].length;
+
+	  return 0;
 	}
 
 	this.append = function( uid ) {

@@ -93,6 +93,16 @@ function acRuleset( calc ){
 		  });
 
 	});
+	
+	//Loading errors
+	this.errors = {}
+	$(xml).children('errors').children('error').each(function(){
+
+		  that.errors[$(this).children('uid').text()] = {
+			'class': $(this).attr('class'),
+			'message': acGetText( $(this).children('message') )
+			}
+	});
 
 
 	
@@ -110,8 +120,9 @@ function acRuleset( calc ){
 		  that.models[model_id].validator = "";	
 	
 		  $.ajax({
+				model_id: model_id,
 				url: baseurl + $(this).children('validator').attr('src'),
-				success: function(text){ that.models[model_id].validator = text },
+				success: function(text){ that.models[this.model_id].validator = text },
 				error: function( jqxhr, text, error ){ that.calc.setError( this.url+' - '+text + ' - ' + error ); },
 				dataType: 'text'
 		  });
