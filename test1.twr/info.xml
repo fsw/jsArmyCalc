@@ -53,17 +53,17 @@
   <stats>
     <stat id="str" display="true">
       <name>strength</name>
-	  <shortname>ST</shortname>
+	  <shortname>Str</shortname>
       <default>5</default>
     </stat>
     <stat id="sta" display="true">
       <name>stamina</name>
-	  <shortname>ST</shortname>
+	  <shortname>Sta</shortname>
       <default>5</default>
     </stat>
     <stat id="spe" display="true">
       <name>speed</name>
-      <shortname>SP</shortname>
+      <shortname>Spe</shortname>
       <default>5</default>
     </stat>
     <stat id="hp" display="true">

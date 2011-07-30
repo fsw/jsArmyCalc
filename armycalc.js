@@ -158,6 +158,14 @@ function acGetText( xml ){
 
 
 
+function acSandbox( code, params ){
+	
+	//TODO safe quote!
+	new Function("window", "with(window){" + code + "}")( params ); 
+	
+}
+
+
 
 function acRuleset( calc ){
 
@@ -222,7 +230,7 @@ function acRuleset( calc ){
 			display : ($(this).attr('display')==true?true:false),
 			name : acGetText($(this).children('name')),
 			shortname : acGetText($(this).children('shortname')),
-			'default' : $(this).children('default').text()
+			'default' : parseInt($(this).children('default').text())
 		  };
 	});
 	
@@ -336,6 +344,9 @@ function acRuleset( calc ){
 			elements_group.name = elements_group.name + element.name + ", ";
 
 			element.description = acGetText($(this).children('description'));
+	
+			element.afterAppend = ($(this).attr('afterAppend')?$(this).attr('afterAppend'):0);
+			element.beforeRemove = ($(this).attr('beforeRemove')?$(this).attr('beforeRemove'):0);
 
 			//alert(element.uid);
 			//element.child = [];
@@ -366,7 +377,7 @@ function acRuleset( calc ){
 				element.stats[id] = that.stats[id]['default'];
 
 			  $(this).children('stats').children('stat').each(function(){
-				element.stats[$(this).attr('id')] = $(this).text();
+				element.stats[$(this).attr('id')] = parseInt($(this).text());
 			  });
 			}
 
@@ -397,6 +408,7 @@ function acInstance( calc, ruleset, parent, element ){
 	this.parent = parent;
 	this.isArmy = ( this.parent == null );
 	this.calc = calc;
+	this.army = calc.army;
 	this.ruleset = ruleset;
 
 
@@ -441,6 +453,18 @@ function acInstance( calc, ruleset, parent, element ){
 
 	}
 
+	this.stat = function( statid, newvalue ){
+	
+
+		if( typeof newvalue === 'undefined' )
+			return this._stats[ statid ];
+		
+		if( statid in this._stats ){
+			this._stats[ statid ] = newvalue;
+			this._stats_spans[ statid ].text( this._stats[statid] );
+		}
+	  	
+	}
 
 	this._rebuildSubmenu = function(){
 	  
@@ -473,9 +497,10 @@ function acInstance( calc, ruleset, parent, element ){
 	
 	  if( this.element.stats ){
 
+		this._stats = this.element.stats;
 		$.each( this.ruleset.stats, function( id, item){
 		  
-		    that._stats_spans[ id ] = $("<span class='st'>"+that.element.stats[id]+"</span>");
+		    that._stats_spans[ id ] = $("<span class='st'>"+that._stats[id]+"</span>");
 			that._anchor.append( that._stats_spans[ id ] );
 
 		});
@@ -534,6 +559,9 @@ function acInstance( calc, ruleset, parent, element ){
 		
 		//checking if minCount was reached
 		if( this.parent.child[this.element.uid].length > this.element.minCount ){
+		  
+		  if( this.element.beforeRemove )
+			  acSandbox( this.element.beforeRemove, { 'that':this, 'army':this.army } );
 
 		  this.clear();
 		  this.parent.child[this.element.uid].splice( this.parent.child[this.element.uid].indexOf( this ), 1 );
@@ -577,6 +605,9 @@ function acInstance( calc, ruleset, parent, element ){
 		  if(element_to_append.size === 'inherit')
 			  instance.size(this._size);
 
+		  //HOOKS
+		  if( element_to_append.afterAppend )
+			acSandbox( element_to_append.afterAppend, { 'that':instance, 'army':this.army } );
 		
 		} else
 		  this.calc.flashMsg("Maximum count of "+element_to_append.name+" reached ("+element_to_append.maxCount+")");

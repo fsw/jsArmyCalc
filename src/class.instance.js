@@ -5,6 +5,7 @@ function acInstance( calc, ruleset, parent, element ){
 	this.parent = parent;
 	this.isArmy = ( this.parent == null );
 	this.calc = calc;
+	this.army = calc.army;
 	this.ruleset = ruleset;
 
 
@@ -49,6 +50,18 @@ function acInstance( calc, ruleset, parent, element ){
 
 	}
 
+	this.stat = function( statid, newvalue ){
+	
+
+		if( typeof newvalue === 'undefined' )
+			return this._stats[ statid ];
+		
+		if( statid in this._stats ){
+			this._stats[ statid ] = newvalue;
+			this._stats_spans[ statid ].text( this._stats[statid] );
+		}
+	  	
+	}
 
 	this._rebuildSubmenu = function(){
 	  
@@ -81,9 +94,10 @@ function acInstance( calc, ruleset, parent, element ){
 	
 	  if( this.element.stats ){
 
+		this._stats = this.element.stats;
 		$.each( this.ruleset.stats, function( id, item){
 		  
-		    that._stats_spans[ id ] = $("<span class='st'>"+that.element.stats[id]+"</span>");
+		    that._stats_spans[ id ] = $("<span class='st'>"+that._stats[id]+"</span>");
 			that._anchor.append( that._stats_spans[ id ] );
 
 		});
@@ -142,6 +156,9 @@ function acInstance( calc, ruleset, parent, element ){
 		
 		//checking if minCount was reached
 		if( this.parent.child[this.element.uid].length > this.element.minCount ){
+		  
+		  if( this.element.beforeRemove )
+			  acSandbox( this.element.beforeRemove, { 'that':this, 'army':this.army } );
 
 		  this.clear();
 		  this.parent.child[this.element.uid].splice( this.parent.child[this.element.uid].indexOf( this ), 1 );
@@ -185,6 +202,9 @@ function acInstance( calc, ruleset, parent, element ){
 		  if(element_to_append.size === 'inherit')
 			  instance.size(this._size);
 
+		  //HOOKS
+		  if( element_to_append.afterAppend )
+			acSandbox( element_to_append.afterAppend, { 'that':instance, 'army':this.army } );
 		
 		} else
 		  this.calc.flashMsg("Maximum count of "+element_to_append.name+" reached ("+element_to_append.maxCount+")");

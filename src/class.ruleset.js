@@ -63,7 +63,7 @@ function acRuleset( calc ){
 			display : ($(this).attr('display')==true?true:false),
 			name : acGetText($(this).children('name')),
 			shortname : acGetText($(this).children('shortname')),
-			'default' : $(this).children('default').text()
+			'default' : parseInt($(this).children('default').text())
 		  };
 	});
 	
@@ -177,6 +177,9 @@ function acRuleset( calc ){
 			elements_group.name = elements_group.name + element.name + ", ";
 
 			element.description = acGetText($(this).children('description'));
+	
+			element.afterAppend = ($(this).attr('afterAppend')?$(this).attr('afterAppend'):0);
+			element.beforeRemove = ($(this).attr('beforeRemove')?$(this).attr('beforeRemove'):0);
 
 			//alert(element.uid);
 			//element.child = [];
@@ -207,7 +210,7 @@ function acRuleset( calc ){
 				element.stats[id] = that.stats[id]['default'];
 
 			  $(this).children('stats').children('stat').each(function(){
-				element.stats[$(this).attr('id')] = $(this).text();
+				element.stats[$(this).attr('id')] = parseInt($(this).text());
 			  });
 			}
 

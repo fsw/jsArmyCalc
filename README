@@ -3,6 +3,7 @@ jsArmyCalc
 javascript army calculator based on TWR files
 part of the ArmyCalc project
 Copyright 2011 CadoSolutions. All rights reserved.
+released under terms of Simplified BSD License
 
 developer: Franciszek Szczepan Wawrzak <frank@wawrzak.com>
 project website: http://armycalc.com/
@@ -36,11 +37,6 @@ FILES IN THIS PACKAGE
 
 
 CREADITS
-
-JSandbox JavaScript Library v0.2.3
-2009-01-25
-By Elijah Grey, http://eligrey.com
-Licensed under the X11/MIT License
 
 bobince @ stackoverflow
 for missing IE array functions

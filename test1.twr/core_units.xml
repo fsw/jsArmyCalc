@@ -57,16 +57,16 @@
 	<elements maxTotalCount="1">
 
 	  <element minCount="0" maxCount="1" size="inherit" 
-			  afterCountChange = "this.parent.stat('sta',this.parent.stat('sta')+this.count());
-								  this.parent.available['two-handed-weapon'].enabled(!this.count());">
+			  afterAppend = "that.parent.stat('sta',that.parent.stat('sta')+1);"
+			  beforeRemove = "that.parent.stat('sta',that.parent.stat('sta')-1);">
 		<uid>shield</uid>
 		<name>Shield</name>
 		<cost id="pts">1</cost>
 	  </element>
 		
 	  <element minCount="0" maxCount="1" size="inherit" 
-			  afterCountChange = "this.parent.stat('str',this.parent.stat('str')+this.count()); 
-								  this.parent.available['shield'].enabled(!this.count());">
+			  afterAppend = "that.parent.stat('str',that.parent.stat('str')+1);"
+			  beforeRemove = "that.parent.stat('str',that.parent.stat('str')-1);">
 		<uid>two-handed-weapon</uid>
 		<name>Two handed weapon</name>
 		<cost id="pts">1</cost>
