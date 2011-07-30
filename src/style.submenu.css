@@ -1,0 +1,20 @@
+
+
+div.acCanvas .submenu li {
+}
+
+div.acCanvas .submenu li a {
+    background-image: url("img/icon_append.png");
+    background-position: 5px 5px;
+    background-repeat: no-repeat;
+    color: black;
+    display: block;
+    line-height: 16px;
+    padding: 5px 5px 5px 25px;
+    text-decoration: none;
+}
+
+div.acCanvas .submenu li a:hover {
+	font-weight: bold;
+}
+ 

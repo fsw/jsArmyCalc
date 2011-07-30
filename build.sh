@@ -4,7 +4,7 @@
 # then it uses yui-compressor to build minified versions
 
 JS_FILES="src/ie.calc.js src/helpers.js src/class.sandbox.js src/class.ruleset.js src/class.instance.js src/class.armycalc.js"
-CSS_FILES="src/style.css src/style.unitslist.css src/style.validation.css"
+CSS_FILES="src/style.css src/style.unitslist.css src/style.validation.css src/style.submenu.css"
 
 
 echo -n "merging js files..."
