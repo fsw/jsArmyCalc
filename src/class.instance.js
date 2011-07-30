@@ -182,6 +182,9 @@ function acInstance( calc, ruleset, parent, element ){
 		  var instance = new acInstance( calc, ruleset, this, element_to_append );
 		  this.child[uid].push( instance );
 		  this._subul.append( instance._li );
+		  if(element_to_append.size === 'inherit')
+			  instance.size(this._size);
+
 		
 		} else
 		  this.calc.flashMsg("Maximum count of "+element_to_append.name+" reached ("+element_to_append.maxCount+")");
