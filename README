@@ -1,0 +1,51 @@
+
+jsArmyCalc
+javascript army calculator based on TWR files
+part of the ArmyCalc project
+Copyright 2011 CadoSolutions. All rights reserved.
+
+developer: Franciszek Szczepan Wawrzak <frank@wawrzak.com>
+project website: http://armycalc.com/
+
+
+
+
+
+FILES IN THIS PACKAGE
+
+/README - this file
+/LICENSE - simplified BSD licence
+
+/src/* - JS and CSS surces
+
+/build.sh - script merging and minifying sources from src to: 
+/armycalc.css
+/armycalc.min.css  
+/armycalc.js
+/armycalc.min.js
+
+/js/* - vendor java script files required for calc
+/img/ - images for calc
+/template.html - calc template
+
+/test1.twr - example ruleset
+/test2.twr - example ruleset
+
+/test.html - usage example
+/test.css
+
+
+CREADITS
+
+JSandbox JavaScript Library v0.2.3
+2009-01-25
+By Elijah Grey, http://eligrey.com
+Licensed under the X11/MIT License
+
+bobince @ stackoverflow
+for missing IE array functions
+http://stackoverflow.com/questions/2790001/fixing-javascript-array-functions-in-internet-explorer-indexof-foreach-etc/2790686#2790686
+
+
+
+
