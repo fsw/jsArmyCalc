@@ -94,7 +94,10 @@ function acInstance( calc, ruleset, parent, element ){
 	
 	  if( this.element.stats ){
 
-		this._stats = this.element.stats;
+		this._stats = {};
+		for(id in this.element.stats)
+				this._stats[id] = this.element.stats[id];
+		
 		$.each( this.ruleset.stats, function( id, item){
 		  
 		    that._stats_spans[ id ] = $("<span class='st'>"+that._stats[id]+"</span>");
