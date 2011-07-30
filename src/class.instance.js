@@ -155,10 +155,22 @@ function acInstance( calc, ruleset, parent, element ){
 	this.append = function( uid ) {
 
 		var element_to_append = null;
+		var that = this;
 
 		$.each( this.element.elements, function( id, item ){
-		  if(item.elements[uid])
+		  if(item.elements[uid]){
 			element_to_append = item.elements[uid];
+			//check if element group total count is reached
+			var elements_group_count = 0;
+			$.each( item.elements, function( id, item){
+				elements_group_count += that.child[id].length;
+			});
+			//if so we do not append
+			if( elements_group_count === item.maxTotalCount){
+			  that.calc.flashMsg("Maximum total count of group "+item.name+" reached ("+item.maxTotalCount+")");
+			  element_to_append = null;
+			}  
+		  }
 		});
 	
 		if(!element_to_append)

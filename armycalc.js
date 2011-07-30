@@ -312,14 +312,17 @@ function acRuleset( calc ){
 	  
 	  } else {
 
-		var e = {};
+		var elements_group = {};
 
 		//TODO overloading this options with
-		e.minTotalCount = ($(xml).attr('minTotalCount')?$(xml).attr('minTotalCount'):0);
-		e.maxTotalCount = ($(xml).attr('maxTotalCount')?$(xml).attr('maxTotalCount'):null);
-		e.minTotalSize = ($(xml).attr('minTotalSize')?$(xml).attr('minTotalSize'):0);
-		e.maxTotalSize = ($(xml).attr('maxTotalSize')?$(xml).attr('maxTotalSize'):null);
-		e.elements = {};
+		elements_group.minTotalCount = ($(xml).attr('minTotalCount')?parseInt($(xml).attr('minTotalCount')):0);
+		elements_group.maxTotalCount = ($(xml).attr('maxTotalCount')?parseInt($(xml).attr('maxTotalCount')):null);
+		elements_group.minTotalSize = ($(xml).attr('minTotalSize')?parseInt($(xml).attr('minTotalSize')):0);
+		elements_group.maxTotalSize = ($(xml).attr('maxTotalSize')?parseInt($(xml).attr('maxTotalSize')):null);
+		elements_group.elements = {};
+		
+		//this by default will contain concatenated elements names
+		elements_group.name = "";
 
 		$(xml).children('element').each(function(){
 
@@ -330,6 +333,8 @@ function acRuleset( calc ){
 			  element.menu_id = $(this).children('menu').attr('id');
 
 			element.name = acGetText($(this).children('name'));
+			elements_group.name = elements_group.name + element.name + ", ";
+
 			element.description = acGetText($(this).children('description'));
 
 			//alert(element.uid);
@@ -371,11 +376,11 @@ function acRuleset( calc ){
 			  
 			});
 
-			e.elements[ element.uid ] = element;
+			elements_group.elements[ element.uid ] = element;
 
 		});
 
-	  elements.push( e );
+	  elements.push( elements_group );
 	  
 	}
 
@@ -542,10 +547,22 @@ function acInstance( calc, ruleset, parent, element ){
 	this.append = function( uid ) {
 
 		var element_to_append = null;
+		var that = this;
 
 		$.each( this.element.elements, function( id, item ){
-		  if(item.elements[uid])
+		  if(item.elements[uid]){
 			element_to_append = item.elements[uid];
+			//check if element group total count is reached
+			var elements_group_count = 0;
+			$.each( item.elements, function( id, item){
+				elements_group_count += that.child[id].length;
+			});
+			//if so we do not append
+			if( elements_group_count === item.maxTotalCount){
+			  that.calc.flashMsg("Maximum total count of group "+item.name+" reached ("+item.maxTotalCount+")");
+			  element_to_append = null;
+			}  
+		  }
 		});
 	
 		if(!element_to_append)
