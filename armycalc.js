@@ -1023,22 +1023,35 @@ function jsArmyCalc( selector, templateurl ){
 
 	calc.setFullscreen = function( fs ){
 		
+		var that = this;
 		$('body').toggleClass('acFullscreen',fs);
 		this.canvas.toggleClass('acFullscreen',fs);
 		this.canvas.find('#acMaximize').toggle( !fs );
 		this.canvas.find('#acMinimize').toggle( fs );
 	
 		if(fs){
-			var hhh = $(window).height()-80;
-			this.canvas.find('.unitslist').height(hhh);
+			$(window).resize(function(){
+				var hhh = $(window).height()-80;
+				that.canvas.find('.unitslist').height(hhh);
+			});
+			$(window).resize();
 		}
 		else {
 			this.canvas.find('.unitslist').height(200);
+			$(window).unbind('resize');
 		}
 
 
 	};
-	
+
+	//this will be run after ebbedding calculator inside desktop application
+	calc.setEmbedded = function( eb ){
+		if( eb ){
+			this.setFullscreen(true);
+			//TODO hide unnecesairy icons
+		}
+	}
+
 	return calc;
 }
 
