@@ -76,7 +76,7 @@ function acRuleset( calc ){
 	});
 
 	this.models = {}
-	
+		
 
 	this.mainmenu = {}
 	$(xml).children('mainmenu').children('menu').each(function(){
@@ -116,6 +116,7 @@ function acRuleset( calc ){
 		  };
 		  
 		  that.models[model_id].elements = [];
+		  that.models[model_id].elements_by_uid = {};
 		  
 		  that.models[model_id].validator = "";	
 	
@@ -128,7 +129,7 @@ function acRuleset( calc ){
 		  });
 
 		  $(this).find('elements').each(function(){
-			that.appendElements( baseurl, this, that.models[model_id].elements );
+			that.appendElements( baseurl, this, that.models[model_id].elements, that.models[model_id].elements_by_uid);
 		  });
 
 		  
@@ -149,7 +150,7 @@ function acRuleset( calc ){
   
   }
 
-  this.appendElements = function( baseurl, xml, elements ){
+  this.appendElements = function( baseurl, xml, elements, elements_by_uid){
 	 
 	  that = this;
 
@@ -157,7 +158,7 @@ function acRuleset( calc ){
 
 		  $.ajax({
 			  url: baseurl + $(xml).attr('src'),
-			  success: function( xml ){ that.appendElements( baseurl, $(xml).children('elements') , elements ); },
+			  success: function( xml ){ that.appendElements( baseurl, $(xml).children('elements') , elements, elements_by_uid); },
 			  error: function( jqxhr, text, error ){ that.calc.setError( this.url+' - '+text + ' - ' + error ); },
 			  dataType: 'xml'
 		  });
@@ -178,34 +179,66 @@ function acRuleset( calc ){
 
 		$(xml).children('element').each(function(){
 
-			var element = {};
-			element.uid = $(this).children('uid').text();
+			
+			if($(this).attr('extend') && ($(this).attr('extend') in elements_by_uid) ){
+				var element = acClone( elements_by_uid[$(this).attr('extend')] );
+			} else {
+				var element = {};
+			}
+
+			if( $(this).children('uid').length > 0 )
+			  element.uid = $(this).children('uid').text();
 
 			if( $(this).children('menu').length > 0 )
 			  element.menu_id = $(this).children('menu').attr('id');
 
-			element.name = acGetText($(this).children('name'));
+			if( $(this).children('name').length > 0 )
+			  element.name = acGetText($(this).children('name'));
+			
 			elements_group.name = elements_group.name + element.name + ", ";
-
-			element.description = acGetText($(this).children('description'));
-	
-			element.afterAppend = ($(this).attr('afterAppend')?$(this).attr('afterAppend'):0);
-			element.beforeRemove = ($(this).attr('beforeRemove')?$(this).attr('beforeRemove'):0);
+			
+			if( $(this).children('description').length > 0 )
+			  element.description = acGetText($(this).children('description'));
+		
+			if(! ('afterAppend' in element ))
+			  element.afterAppend = ($(this).attr('afterAppend')?$(this).attr('afterAppend'):0);
+			if(! ('beforeRemove' in element ))
+			  element.beforeRemove = ($(this).attr('beforeRemove')?$(this).attr('beforeRemove'):0);
 
 			//alert(element.uid);
 			//element.child = [];
-			element.elements = [];
+			if(! ('elements' in element ))
+			  element.elements = [];
 			
+		
+			function loadAttr( element, xml, name, def, parse ){
+				if(!(name in element))
+				  element[name] = def;
+
+				if( xml.attr( name ) )
+				  if( parse )
+					element[name] = parseInt(xml.attr(name));
+				  else
+					element[name] = xml.attr(name);
+
+			}
+
+			loadAttr( element, $(this), 'minCount', 0, true );
+			loadAttr( element, $(this), 'maxCount', null, true );
+			loadAttr( element, $(this), 'minSize', 1, true );
+			loadAttr( element, $(this), 'maxSize', null, true );
+			loadAttr( element, $(this), 'defaultSize', element.minSize, true );
+			loadAttr( element, $(this), 'size', 'custom', false );
+
+
+			//element.minCount = ($(this).attr('minCount')?parseInt($(this).attr('minCount')):0);
+			//element.maxCount = ($(this).attr('maxCount')?parseInt($(this).attr('maxCount')):null);	
+			//element.minSize = ($(this).attr('minSize')?parseInt($(this).attr('minSize')):1);
+			//element.maxSize = ($(this).attr('maxSize')?parseInt($(this).attr('maxSize')):null);
+			//element.defaultSize = ($(this).attr('defaultSize')?parseInt($(this).attr('defaultSize')):element.minSize);
+			//element.size = ($(this).attr('size')?$(this).attr('size'):'custom');
 			
-			element.minCount = ($(this).attr('minCount')?$(this).attr('minCount'):0);
-			element.maxCount = ($(this).attr('maxCount')?$(this).attr('maxCount'):null);
-			
-			element.minSize = ($(this).attr('minSize')?$(this).attr('minSize'):1);
-			element.maxSize = ($(this).attr('maxSize')?$(this).attr('maxSize'):null);
-			element.defaultSize = ($(this).attr('defaultSize')?$(this).attr('defaultSize'):element.minSize);
-			
-			element.size = ($(this).attr('size')?$(this).attr('size'):'custom');
-	
+
 			element.cost = {};
 			for(id in that.costs)
 			  element.cost[id] = that.costs[id]['default'];
@@ -227,12 +260,12 @@ function acRuleset( calc ){
 
 			$.each( $(this).children('elements'), function( id, item){
 			  
-			  that.appendElements( baseurl, item, element.elements );
+			  that.appendElements( baseurl, item, element.elements, elements_by_uid );
 			  
 			});
 
 			elements_group.elements[ element.uid ] = element;
-
+			elements_by_uid[ element.uid ] = element;
 		});
 
 	  elements.push( elements_group );

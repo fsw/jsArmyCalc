@@ -67,3 +67,17 @@ function acGetText( xml ){
 
 
 
+
+//clone prototype. for cloning elements with extedn attribute
+function acClone( object ){
+  var newObj = (this instanceof Array) ? [] : {};
+  for (i in object) {
+    if (typeof object[i] == "object") 
+      newObj[i] = acClone(object[i]);
+    else 
+	  newObj[i] = object[i];
+  } 
+  return newObj;
+};
+
+

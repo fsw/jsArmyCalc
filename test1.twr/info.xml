@@ -175,10 +175,10 @@
   <models>
 	<model id="m2" default='true'>
 		<name>Default Model</name>
+		<elements src="equipment.xml"></elements>
 		<elements src="core_units.xml"></elements>
 		<elements src="special_units.xml"></elements>
 		<elements src="heroes.xml"></elements>
-		<elements src="magic_items.xml"></elements>
 		<validator src="validator.js"></validator>
 	</model>
    	<model id="m1">
@@ -190,10 +190,10 @@
 		  <tr ln="en">Tournament army</tr>
 		  <tr ln="pl">Armia turniejowa</tr>	
 		</defaultArmyName>
+		<elements src="equipment.xml"></elements>
 		<elements src="core_units.xml"></elements>
 		<elements src="special_units.xml"></elements>
 		<elements src="tournament_heroes.xml"></elements>	
-		<elements src="magic_items.xml"></elements>
 		<validator src="validator.js"></validator>
 	</model>
   </models>
