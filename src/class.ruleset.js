@@ -199,7 +199,11 @@ function acRuleset( calc ){
 			
 			if( $(this).children('description').length > 0 )
 			  element.description = acGetText($(this).children('description'));
-		
+
+			if( $(this).children('thumbnail').length > 0 )
+			  element.thumbnail = "<img src='" + baseurl + $(this).children('thumbnail').attr('src') + "' />";
+
+			//HOOKS
 			if(! ('afterAppend' in element ))
 			  element.afterAppend = ($(this).attr('afterAppend')?$(this).attr('afterAppend'):0);
 			if(! ('beforeRemove' in element ))

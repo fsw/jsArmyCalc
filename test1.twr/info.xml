@@ -36,8 +36,15 @@
   </name>
   <author>francio</author>
   <description>
-  	<tr ln="en">This is an example Ruleset. It shows the basic concepts of ArmyCalc and TWR 3.0</tr>
-  	<tr ln="pl">Ten przykładowy zestaw zasad pokazuje jak działa ArmyCalc i TWR 3.0</tr>
+  	<tr ln="en">
+	This is an example Ruleset.
+	It shows the basic concepts of ArmyCalc and TWR 3.0.
+	Credits go to http://gamenaminator.com/male-rpg.php for heroes names and http://www.reinerstilesets.de/ for units thumbnails.
+	</tr>
+  	<tr ln="pl">
+	Ten przykładowy zestaw zasad pokazuje jak działa ArmyCalc i TWR 3.0.
+	Podziękowania dla http://gamenaminator.com/male-rpg.php za nazwy bohaterów i http://www.reinerstilesets.de/ za obrazki.
+	</tr>
   </description>
   
   <!--

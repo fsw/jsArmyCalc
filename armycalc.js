@@ -387,7 +387,11 @@ function acRuleset( calc ){
 			
 			if( $(this).children('description').length > 0 )
 			  element.description = acGetText($(this).children('description'));
-		
+
+			if( $(this).children('thumbnail').length > 0 )
+			  element.thumbnail = "<img src='" + baseurl + $(this).children('thumbnail').attr('src') + "' />";
+
+			//HOOKS
 			if(! ('afterAppend' in element ))
 			  element.afterAppend = ($(this).attr('afterAppend')?$(this).attr('afterAppend'):0);
 			if(! ('beforeRemove' in element ))
@@ -582,6 +586,10 @@ function acInstance( calc, ruleset, parent, element ){
 	  //TODO
 	  //should we keep submenus in memory or generate them on the fly on each click?
 	  this._submenu = $("<ul></ul>");
+	  
+	  if(this.element.thumbnail)
+		this._submenu.append($("<li>"+this.element.thumbnail+"</li>"));
+
 	  if(this.element.description)
 		this._submenu.append($("<li>"+this.element.description+"</li>"));
 

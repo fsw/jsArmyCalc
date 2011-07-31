@@ -114,6 +114,10 @@ function acInstance( calc, ruleset, parent, element ){
 	  //TODO
 	  //should we keep submenus in memory or generate them on the fly on each click?
 	  this._submenu = $("<ul></ul>");
+	  
+	  if(this.element.thumbnail)
+		this._submenu.append($("<li>"+this.element.thumbnail+"</li>"));
+
 	  if(this.element.description)
 		this._submenu.append($("<li>"+this.element.description+"</li>"));
 
