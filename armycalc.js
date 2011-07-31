@@ -905,6 +905,23 @@ function jsArmyCalc( selector, templateurl ){
 	
 	}
 
+
+	calc.getArmyHtml = function( ){
+		if(! this.army ){
+		  	this.flashMsg( "Please create new army first!" );
+			return false;
+		}
+		return "Not <b>yet</b> implemented.HTML";
+	}
+	
+	calc.getArmyTwa = function( ){
+		if(! this.army ){
+		  	this.flashMsg( "Please create new army first!" );
+			return false;
+		}
+		return "Not <b>yet</b> implemented.TWA";
+	}
+
 	calc.newArmy = function( ){
 
 		that = this;
@@ -1049,6 +1066,8 @@ function jsArmyCalc( selector, templateurl ){
 		if( eb ){
 			this.setFullscreen(true);
 			//TODO hide unnecesairy icons
+			calc.canvas.find('#acMinimize').hide();
+			calc.canvas.find('.buttons1').hide();
 		}
 	}
 

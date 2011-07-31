@@ -200,9 +200,11 @@ div.acCanvas div.workspace {
 div.acCanvas div.workspace div.unitslist{
 	margin-left: 160px;
 	height: 300px;
+	/*
 	overflow: auto;
 	overflow-x: hidden;
 	-ms-overflow-x: hidden;
+	*/
 }
 div.acCanvas div.workspace div.unitdetails{
 	width: 160px;
