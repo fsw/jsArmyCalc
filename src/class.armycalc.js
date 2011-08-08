@@ -33,6 +33,8 @@ function jsArmyCalc( selector, templateurl ){
 	
 	calc.canvas.find('#acNew').click(function(){calc.newArmy(); return false;});
 	calc.canvas.find('#acRevalidate').click(function(){calc.revalidate(); return false;});
+		
+	calc.canvas.find('#acPrint').click(function(){calc.print(); return false;});
 	
 	calc.canvas.find('#acDec').click( function(){ _focused_element.size(_focused_element.size()-1); return false;}).hide();
 	calc.canvas.find('#acInc').click( function(){ _focused_element.size(_focused_element.size()+1); return false;}).hide();
@@ -173,6 +175,20 @@ function jsArmyCalc( selector, templateurl ){
 			return false;
 		}
 		return "Not <b>yet</b> implemented.TWA";
+	}
+
+
+
+	calc.print = function( ){
+	
+		if(! this.army ){
+		  	this.flashMsg( "Please create new army first!" );
+			return;
+		}
+
+	  
+		acPrintText(this.canvas.find(".unitslist").html());
+
 	}
 
 	calc.newArmy = function( ){

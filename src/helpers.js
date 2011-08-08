@@ -81,3 +81,16 @@ function acClone( object ){
 };
 
 
+
+function acPrintText( content ){
+  
+  var WindowObject = window.open('', "TrackHistoryData",
+  "width=420,height=225,top=250,left=345,toolbars=no,scrollbars=no,status=no,resizable=no");
+  WindowObject.document.write( content );
+  WindowObject.document.close();
+  WindowObject.focus();
+  WindowObject.print();
+  WindowObject.close();
+}
+
+
