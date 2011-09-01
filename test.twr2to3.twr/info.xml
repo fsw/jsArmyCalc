@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<ruleset schemaLocation="armycalc http://armycalc.com/xmls/twr3info.xsd" version="3.0">
+  <uid>armycalc.twr3.autoconvert.ac_example_ruleset</uid>
+  <revision>1</revision>
+  <languages>
+    <language id="en" default="true">
+      <transtab src="english.xml"/>
+      <name>English</name>
+    </language>
+  </languages>
+  <name>Example Ruleset</name>
+  <author>francio</author>
+  <description>This is an example Ruleset.
+It contains example units, add-ons and validation script for the abstract game system.</description>
+  <icon src="icon.png"/>
+  <stats>
+    <stat id="dexterity" display="true">
+      <name>dexterity</name>
+      <shortname>dexterity</shortname>
+      <default>3</default>
+    </stat>
+    <stat id="strength" display="true">
+      <name>strength</name>
+      <shortname>strength</shortname>
+      <default>3</default>
+    </stat>
+    <stat id="agility" display="true">
+      <name>agility</name>
+      <shortname>agility</shortname>
+      <default>3</default>
+    </stat>
+    <stat id="lives" display="true">
+      <name>lives</name>
+      <shortname>lives</shortname>
+      <default>1</default>
+    </stat>
+  </stats>
+  <costs>
+    <cost id="pts" default="true">
+      <name>Points</name>
+      <shortname>pts</shortname>
+      <unit>pts</unit>
+      <default>0</default>
+    </cost>
+  </costs>
+  <defaultArmyName>Army</defaultArmyName>
+  <defaultArmySize>
+    <cost id="pts">1500</cost>
+  </defaultArmySize>
+  <errors/>
+  <mainmenu>
+    <menu id="Heroes">
+      <name>Heroes</name>
+    </menu>
+    <menu id="Infantry">
+      <name>Infantry</name>
+    </menu>
+    <menu id="Monsters">
+      <name>Monsters</name>
+    </menu>
+    <menu id="Machines">
+      <name>Machines</name>
+    </menu>
+  </mainmenu>
+  <models>
+    <model id="model1" default="true">
+      <name>Default Model</name>
+      <elements src="elements.xml"/>
+      <validator src="validator.js"/>
+    </model>
+  </models>
+</ruleset>
