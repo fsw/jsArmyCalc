@@ -1,1 +1,0 @@
-//unfortunatell auto conversion does not support validation scripts and you have to revrite it :(
