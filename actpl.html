@@ -1,0 +1,70 @@
+<div class="acCanvas">
+	<div class="toolbar">
+		<div class='buttons1'>
+			<a id='acNew' href='#' title="New Army"><img src='/calcengine/img/action_new.png' alt='new'/></a>
+			<a id='acPrint' href='#' title="Print Army"><img src='/calcengine/img/action_print.png' alt='print'/></a>	
+			<a id='acRevalidate' href='#' title="Revalidate"><img src='/calcengine/img/action_revalidate.png' alt='revalidate'/></a>
+			<a id='acHelp' href='#' title="Help"><img src='/calcengine/img/action_help.png' alt='help'/></a>
+		</div>	
+		<div class='buttons2'>
+			<span class="langsel">lang: <select id='acLang'></select></span>
+			<a id='acMaximize' href='#' title="Fullscreen"><img src='/calcengine/img/action_maximize.png' alt='maximize'/></a>
+			<a id='acMinimize' href='#' title="Revert" style="display:none;"><img src='/calcengine/img/action_minimize.png' alt='minimize'/></a>
+		</div>
+		
+	</div>
+	<div class="menucontainer">
+		<div class="menu">
+			<ul id="acElements"></ul>
+		</div>
+	</div>
+	<div class="workspace">
+		<div class="unitdetails">
+			<div id="acDetails">
+				<ul class='actions'>
+				  <li>
+					<a id='acDec' href='#' title="Remove"><img src='/calcengine/img/elem_dec.png' alt='rem'/></a>
+					<img src='/calcengine/img/elem_dec_disabled.png' alt='rem'/>
+				  </li>
+				  <li>
+					<a id='acInc' href='#' title="Add"><img src='/calcengine/img/elem_inc.png' alt='add'/></a>
+					<img src='/calcengine/img/elem_inc_disabled.png' alt='rem'/>
+				  </li>
+				  <li>
+					<a id='acUp' href='#' title="Move up"><img src='/calcengine/img/elem_up.png' alt='up'/></a>
+					<img src='/calcengine/img/elem_up_disabled.png' alt='up'/>
+				  </li>
+				  <li>
+					<a id='acDown' href='#' title="Move down"><img src='/calcengine/img/elem_down.png' alt='down'/></a>
+					<img src='/calcengine/img/elem_down_disabled.png' alt='down'/>
+				  </li>
+				  <li>
+					<a id='acRem' href='#' title="Delete"><img src='/calcengine/img/elem_rem.png' alt='del'/></a>
+					<img src='/calcengine/img/elem_rem_disabled.png' alt='rem'/>
+				  </li>
+				</ul>
+				<div class='submenu'></div>
+			</div>
+		</div>
+		<div class="unitslist">
+			<div id="acUnitsHeader"></div>
+			<ul id="acUnits"></ul>
+			total: <span id="acTotal"></span>
+		</div>	
+	</div>
+	<div class="statusbar">
+		
+		<div class="status" id="acStatus"></div>
+		<div class="link">powered by <a href="http://armycalc.com/">ArmyCalc</a></div>
+		
+	</div>
+	
+
+	<div id="acPopupBg"></div>
+	<div id="acPopup">  
+	  <a href="#" id="acClosePopup"><img src="/calcengine/img/popup_close.png" alt="X"></a>
+	  <h2 id="acPopupTitle"></h2>
+	  <div id="acPopupContent"></div>
+	</div>
+
+</div>
