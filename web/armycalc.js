@@ -377,6 +377,13 @@ if (navigator.appName != 'Microsoft Internet Explorer')
 
 
 (function(ArmyCalc){
+	
+	//this is a quick hack. this will require $ to be present in global scope. 
+	//later on we will think about incorporating required jQuery functions here;
+	ArmyCalc.$ = $;
+	
+})(ArmyCalc);
+(function(ArmyCalc){
 	//template
 	ArmyCalc.Instance = (function(){
 		
@@ -395,6 +402,8 @@ if (navigator.appName != 'Microsoft Internet Explorer')
 			return( twrReader );
 		}; 
 		
+		return Instance;
+		
 	}).call({});
 	
 })(ArmyCalc);
@@ -406,6 +415,7 @@ if (navigator.appName != 'Microsoft Internet Explorer')
 			return template;
 		}
 	
+		return Template;
 	}).call({});
 	
 })(ArmyCalc);

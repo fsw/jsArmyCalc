@@ -6,6 +6,7 @@
 			return template;
 		}
 	
+		return Template;
 	}).call({});
 	
 })(ArmyCalc);

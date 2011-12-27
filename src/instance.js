@@ -17,6 +17,8 @@
 			return( twrReader );
 		}; 
 		
+		return Instance;
+		
 	}).call({});
 	
 })(ArmyCalc);

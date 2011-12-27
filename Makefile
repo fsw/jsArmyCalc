@@ -9,6 +9,7 @@ JS_ENGINE ?= `which node nodejs 2>/dev/null`
 COMPRESSOR ?= `which yui-compressor 2>/dev/null`
 
 JS_FILES = ${SRC_DIR}/armycalc.js\
+	${SRC_DIR}/jquery.js\
 	${SRC_DIR}/instance.js\
 	${SRC_DIR}/template.js\
 	${SRC_DIR}/twrreader.js\
