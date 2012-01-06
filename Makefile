@@ -72,6 +72,8 @@ ${AC_CSS_MIN}: ${AC_CSS}
 test: ${TESTS_DIR}
 	@@echo "Testing"
 	
+doc:
+	@@echo "TODO"
 	
 clean:
 	@@echo "Cleaning up"

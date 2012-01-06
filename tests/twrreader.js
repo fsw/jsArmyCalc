@@ -1,24 +1,16 @@
 
-console.log('starting test suite...');
+console.log('loading twrreader test suite...');
 
-var twrReader = new jsArmyCalc.TwrReader(
-		{
+console.log = function(txt) { document.write(txt + '<br/>'); };
 
-			getFile : function(path, callback)
-			{
-			$.get('../twr3example/' + path, callback, 'text');
-			},
+console.log('STARTING TESTS SUITE');
+var twr = new ArmyCalc.TwrReader({
+		'onProgress' : function(percent){ console.log('progress: ' + percent + '%'); },
+		'onLoaded' : function(){ console.log('DONE'); }
+});
 
-			putFile : function(path, body)
-			{
-				console.log(path);
-				console.log(body);
-			}
+twr.load('../twr3example/');
+//uncomment this to load test1 on init
 
-		});
 
-twrReader.identity.name = 'Save Test';
-twrReader.save();
-
-twrReader.load();
-console.log('test suite finished');
+console.log('twrreader test suite loaded.');
