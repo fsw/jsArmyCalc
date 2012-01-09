@@ -74,7 +74,10 @@ ArmyCalc.TwrReader = (function(){
 			return true;
 		},
 		loadInfoXml : function(data){
-			alert($(data).children('name').length);
+			
+			info = $(data).children('info');
+			alert(info.length);
+			alert(info.children('name'));
 			if (this.onProgress){
 				this.onProgress(100);
 			}

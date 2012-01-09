@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<elements xmlns="armycalc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="armycalc http://armycalc.org/xmls/twr3elements.xsd" version="3.0">
+  
+  <element id="warrior" minCount="1" maxCount="5" defaultSize="5" maxSize="20">
+    <name>Warrior</name>
+    <description>There have to be at least one and maximum 5 units of warriors in the army. Each unit can contain from 1 to 20 warriors.</description>
+	<stats>
+	  <stat id="str">5</stat>
+	  <stat id="sta">5</stat>
+	  <stat id="spe">5</stat>
+	  <stat id="hp">10</stat>
+	</stats>
+
+	<cost id="pts">10</cost>
+	<cost id="gc">1</cost>
+	
+    <thumbnail src="media/warrior.jpg"></thumbnail>
+
+	<elements>
+		<element minCount="0" maxCount="1" minSize="1" maxSize="1">
+		  <uid>chieftain</uid>
+		  <name>Chieftain</name>
+		  <stats>
+			<stat id="str">6</stat>
+			<stat id="sta">6</stat>
+			<stat id="spe">6</stat>
+			<stat id="hp">10</stat>
+		  </stats>
+		
+		  <elements>
+			<element minCount="1" maxCount="1" minSize="1" maxSize="1">
+			  <uid>chieftains-squire</uid>
+			  <name>Chieftain's squire</name>
+			  <stats>
+				<stat id="str">1</stat>
+				<stat id="sta">1</stat>
+				<stat id="spe">1</stat>
+				<stat id="hp">1</stat>
+			  </stats>
+			</element>
+		  </elements>
+
+		</element>
+	</elements>
+
+	<elements maxTotalCount="1">
+
+	  <element minCount="0" maxCount="1" size="inherit" 
+			  afterAppend = "that.parent.stat('sta',that.parent.stat('sta')+1);"
+			  beforeRemove = "that.parent.stat('sta',that.parent.stat('sta')-1);">
+		<uid>shield</uid>
+		<name>Shield</name>
+		<cost id="pts">1</cost>
+	  </element>
+		
+	  <element minCount="0" maxCount="1" size="inherit" 
+			  afterAppend = "that.parent.stat('str',that.parent.stat('str')+1);"
+			  beforeRemove = "that.parent.stat('str',that.parent.stat('str')-1);">
+		<uid>two-handed-weapon</uid>
+		<name>Two handed weapon</name>
+		<cost id="pts">1</cost>
+
+	  </element>
+
+	</elements>
+
+  </element>
+  
+  <element minCount="0" maxCount="2" minSize="1" defaultSize="3" maxSize="20">
+    
+	<uid>archer</uid>
+    <name>Archer</name>
+    <description></description>
+    
+	<menu id="menu-infantry-units" />
+	
+	<stats>
+	  <stat id="str">4</stat>
+	  <stat id="sta">6</stat>
+	  <stat id="spe">5</stat>
+	  <stat id="hp">5</stat>
+	</stats>
+
+	<cost id="pts">10</cost>
+	<cost id="gc">1</cost>
+	
+    <thumbnail src="media/archer.jpg"></thumbnail>
+
+	<elements>
+		<element minCont="0" maxCount="1" minSize="1" maxSize="1">
+		  <uid>chieftain</uid>
+		  <name>Chieftain</name>
+		  <stats>
+			<stat id="str">6</stat>
+			<stat id="sta">6</stat>
+			<stat id="spe">6</stat>
+			<stat id="hp">10</stat>
+		  </stats>
+		</element>
+	</elements>
+
+  </element> 
+
+  <element minCount="0" minSize="5" defaultSize="10">
+    
+	<uid>peon</uid>
+    <name>Peon</name>
+	
+    <description></description>
+    
+	<menu id="menu-infantry-units" />
+	
+	<stats>
+	  <stat id="str">2</stat>
+	  <stat id="sta">2</stat>
+	  <stat id="spe">2</stat>
+	  <stat id="hp">4</stat>
+	</stats>
+
+	<cost id="pts">1</cost>
+	<cost id="gc">0</cost>
+	
+    <thumbnail src="media/peon.jpg"></thumbnail>
+
+  </element>
+
+  <element minCount="0" maxCount="2" minSize="3" defaultSize="5" maxSize="10">
+    
+	<uid>horseman</uid>
+    <name>Horseman</name>
+	
+    <description></description>
+    
+	<menu id="menu-cavalry-units" />
+	
+	<stats>
+	  <stat id="str">3</stat>
+	  <stat id="sta">3</stat>
+	  <stat id="spe">3</stat>
+	  <stat id="hp">6</stat>
+	</stats>
+
+	<cost id="pts">1</cost>
+	<cost id="gc">0</cost>
+	
+    <thumbnail src="media/horseman.jpg"></thumbnail>
+	
+	<elements>
+		<element minCount="1" maxCount="1" size="inherit">
+		  <uid>horse</uid>
+		  <name>Horse</name>
+		  <stats>
+			<stat id="str">0</stat>
+			<stat id="sta">0</stat>
+			<stat id="spe">25</stat>
+			<stat id="hp">2</stat>
+		  </stats>
+		</element>
+	</elements>
+
+  </element>
+
+</elements>

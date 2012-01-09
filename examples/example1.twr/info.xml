@@ -77,14 +77,18 @@
 		</cost>
 	</costs>
 
-	<files>
+	<data>
+	  <elements>
 		<elements src="elements/equipment.xml" />
 		<elements src="elements/magic.xml" />
 		<elements src="elements/core.xml" />
 		<elements src="elements/heroes.xml" />
+	  </elements>
+	  <scripts>
 		<helpers src="scripts/helpers.js" />
 		<validator src="scripts/validator.js" />
-	</files>
+	  </scripts>
+	</data>
 
 	<armies>
 		<army id="defaultArmy">

@@ -1,7 +1,7 @@
 
 console.log('loading twrreader test suite...');
 
-console.log = function(txt) { document.write(txt + '<br/>'); };
+//console.log = function(txt) { document.write(txt + '<br/>'); };
 
 console.log('STARTING TESTS SUITE');
 var twr = new ArmyCalc.TwrReader({
