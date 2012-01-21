@@ -9,7 +9,7 @@ var twr = new ArmyCalc.TwrReader({
 		'onLoaded' : function(){ console.log('DONE'); }
 });
 
-twr.load('../twr3example/');
+twr.load('../examples/example2.twr/');
 //uncomment this to load test1 on init
 
 

@@ -66,9 +66,8 @@
 
   </element>
   
-  <element minCount="0" maxCount="2" minSize="1" defaultSize="3" maxSize="20">
+  <element id="archer" minCount="0" maxCount="2" minSize="1" defaultSize="3" maxSize="20">
     
-	<uid>archer</uid>
     <name>Archer</name>
     <description></description>
     
@@ -101,9 +100,8 @@
 
   </element> 
 
-  <element minCount="0" minSize="5" defaultSize="10">
+  <element id="peon" minCount="0" minSize="5" defaultSize="10">
     
-	<uid>peon</uid>
     <name>Peon</name>
 	
     <description></description>
@@ -124,9 +122,8 @@
 
   </element>
 
-  <element minCount="0" maxCount="2" minSize="3" defaultSize="5" maxSize="10">
+  <element id="horseman" minCount="0" maxCount="2" minSize="3" defaultSize="5" maxSize="10">
     
-	<uid>horseman</uid>
     <name>Horseman</name>
 	
     <description></description>

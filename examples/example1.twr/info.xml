@@ -78,16 +78,16 @@
 	</costs>
 
 	<data>
-	  <elements>
-		<elements src="elements/equipment.xml" />
-		<elements src="elements/magic.xml" />
-		<elements src="elements/core.xml" />
-		<elements src="elements/heroes.xml" />
-	  </elements>
-	  <scripts>
-		<helpers src="scripts/helpers.js" />
-		<validator src="scripts/validator.js" />
-	  </scripts>
+		<elements>
+			<elements src="elements/equipment.xml" />
+			<elements src="elements/magic.xml" />
+			<elements src="elements/core.xml" />
+			<elements src="elements/heroes.xml" />
+		</elements>
+		<scripts>
+			<script src="scripts/helpers.js" />
+			<script src="scripts/validator.js" />
+		</scripts>
 	</data>
 
 	<armies>

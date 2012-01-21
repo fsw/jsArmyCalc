@@ -100,25 +100,28 @@
   order of this is important for the inheritance!
   -->
   <data>
-  
-	<elements>
-	  <elements src="elements/equipment.xml"></elements>
-	  <elements src="elements/templates.xml"></elements>
-	  <elements src="elements/core_units.xml"></elements>
-	  <elements src="elements/special_units.xml"></elements>
-	  <elements src="elements/heroes.xml"></elements>
-	  <elements src="elements/tournament.xml"></elements>
+  	<elements>
+		<elements src="elements/equipment.xml"></elements>
+		<elements src="elements/templates.xml"></elements>
+		<elements src="elements/core_units.xml"></elements>
+		<elements src="elements/special_units.xml"></elements>
+		<elements src="elements/heroes.xml"></elements>
+		<elements src="elements/tournament.xml"></elements>
 	</elements>
-	
+
 	<scripts>
-	  <helper><script src="scripts/helpers1.js"/></helper>
-	  <helper><script src="scripts/helpers2.js"/></helper>
-	  <validator><script src="scripts/validator.js"/></validator>
-	  <display><script src="scripts/display.js"/></display>
+		<script src="scripts/helpers1.js"/>
+		<script>
+		//<!--
+		//scripts can be as well defined inline
+		//-->
+		</script>
+		<script src="scripts/validator.js"/>
+		<script src="scripts/display.js"/>
 	</scripts>
-	
-	<errors src="errors.xml"/>
-	
+	<errors>
+		<errors src="errors.xml"/>
+	</errors>
 	<!--
 	twr uses ISO 639-1 language codes (the code parameter)
 	this will for example open this ruleset in preffered user language when editing online.

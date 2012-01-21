@@ -1,11 +1,13 @@
 (function(ArmyCalc){
 	//template
 	ArmyCalc.Template = (function(){
-		function Template(xml){
+		function Template(type, id, parent){
+			//TODO xml can be id
 			var template = {};
-			template.parent = null;
+			template.type = type;
+			template.id = id;
+			template.parent = parent;
 			template.children = {};
-			template.id = '';
 			template.enabled = true;
 			template.stats = true;
 			return template;
