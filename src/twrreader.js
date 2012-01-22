@@ -24,32 +24,40 @@ ArmyCalc.TwrReader = (function(){
 	// ------------------------------------------------------ //
 	// Define the class methods.
 	TwrReader.prototype = {
+		/**
+		* clears previously loaded data
+		*/
 		clear : function() {
-			
 			this.identity = {};
 			this.languages = {};
 			this.info = {};
 			this.armies = {};
-			this.elementsById = {};
+			this.templatesById = {};
 			this.scripts = [];
 			this.languages = {};
-			this.elementsQueue = [];
+			this.templatesQueue = [];
 			this.languagesQueue = [];
 			this.toLoadCount = 0;
+			this.noIdsCounter = 0;
 		},
 		load : function( path ){
 			var that = this;
 			this.path = path;
 			this.setProgress(0);
-			$.get(this.path + 'info.xml',function(data){that.loadInfoXml(data);},'xml'); 
-			
+			$.get(this.path + 'info.xml',function(data){that.loadInfoXml(data);},'xml'); 	
 			return true;
 		},
-		setProgress : function(progress){
+		issueWarning : function( text ){
+			console.log('WARNING: ' + text);
+		},
+		setProgress : function( progress ){
 			if (this.onProgress){
 				this.onProgress(progress);
 			}
 		},
+		/**
+		* Processing info.xml file
+		*/
 		loadInfoXml : function(data){
 			var that = this;
 			this.clear();
@@ -68,20 +76,29 @@ ArmyCalc.TwrReader = (function(){
 			};
 			this.info.description = $(data).children('info').children('description').text();
 			
-			var elements = $(data).children('data').children('elements').children('elements');
-			elements.each(function(i, elem) {
+			var templates = $(data).children('data').children('templates').children('templates');
+			templates.each(function(i, elem) {
 				if($(elem).attr('src')) {
-					that.elementsQueue.push($(elem).attr('src'));
-					var index = that.elementsQueue.length - 1;
+					that.templatesQueue.push($(elem).attr('src'));
+					var index = that.templatesQueue.length - 1;
 					that.toLoadCount ++;
-					$.get(that.path + $(elem).attr('src'), function(data){
-						$(data).children('elements').each(function(){
-							that.elementsQueue[index] = this;
+					$.ajax({
+					  url : that.path + $(elem).attr('src'),
+					  success : function(data){
+						$(data).children('templates').each(function(){
+							that.templatesQueue[index] = this;
 						});
 						that.fileLoaded();
-						},'xml'); 
+					  },
+					  error : function( jqXHR, textStatus ) {
+						that.templatesQueue[index] = null;
+						that.issueWarning('error loading file ' + $(elem).attr('src') + '(' + textStatus + ')');
+						that.fileLoaded();
+					  },
+					  dataType : 'xml'
+					}); 
 				} else
-					that.elementsQueue.push(elem);
+					that.templatesQueue.push(elem);
 			});
 			
 			var scripts = $(data).children('data').children('scripts').children('script');
@@ -90,10 +107,19 @@ ArmyCalc.TwrReader = (function(){
 					that.scripts.push($(elem).attr('src'));
 					var index = that.scripts.length - 1;
 					that.toLoadCount ++;
-					$.get(that.path + $(elem).attr('src'), function(data){
+					$.ajax({
+					  url : that.path + $(elem).attr('src'), 
+					  success : function(data) {
 						that.scripts[index] = data;
 						that.fileLoaded();
-						},'text'); 
+					  },
+					  error : function( jqXHR, textStatus ) {
+						that.scripts[index] = '';
+						that.issueWarning('error loading file ' + $(elem).attr('src') + '(' + textStatus + ')');
+						that.fileLoaded();
+					  },
+					  dataType : 'text'
+					});
 				} else
 					that.scripts.push($(elem).text());
 			});
@@ -104,19 +130,30 @@ ArmyCalc.TwrReader = (function(){
 					that.languagesQueue.push($(elem).attr('src'));
 					var index = that.languagesQueue.length - 1;
 					that.toLoadCount ++;
-					$.get(that.path + $(elem).attr('src'), function(data){
+					$.ajax({
+					  url : that.path + $(elem).attr('src'), 
+					  success : function( data ) {
 						that.languagesQueue[index] = $(data).children('language').first();
 						that.fileLoaded();
-						},'xml'); 
+					  },
+					  error : function( jqXHR, textStatus ) {
+						that.languagesQueue[index] = null;
+						that.issueWarning('error loading file ' + $(elem).attr('src') + '(' + textStatus + ')');
+						that.fileLoaded();
+					  },
+					  dataType : 'xml'
+					}); 
 				} else
 					that.languagesQueue.push(elem);
 			});
 			this.toLoadCount++;
 			this.fileLoaded();
+			this.armiesXml = $(data).children('armies').children('army');
+	
 		},
 		fileLoaded : function(){
 			this.toLoadCount --;
-			var all = this.elementsQueue.length + this.scripts.length + this.languagesQueue.length;
+			var all = this.templatesQueue.length + this.scripts.length + this.languagesQueue.length;
 			this.setProgress(((all - this.toLoadCount) / all) * 50);
 			if (this.toLoadCount == 0)
 				this.loadFiles();
@@ -128,31 +165,67 @@ ArmyCalc.TwrReader = (function(){
 		loadFiles : function(){
 			var that = this;
 			this.setProgress(50);
-			this.elements = {};
-			this.toProcessAll = this.toProcessCount = this.elementsQueue.length + this.languagesQueue.length + this.scripts.length;
-			for (i = 0; i < this.elementsQueue.length; i++) {
-				this.appendElements(this.elementsQueue[i], this);
+			this.templates = {};
+			this.toProcessAll = this.toProcessCount = this.templatesQueue.length + this.languagesQueue.length + this.scripts.length;
+			for (i = 0; i < this.templatesQueue.length; i++) {
+				this.appendTemplates(this.templatesQueue[i], {});
 				this.fileProcessed();
 			}
+			//after all templates are processed we can add armies data
+			$(this.armiesXml).each(function(i, elem){
+			  var parent = null;
+			  if($(elem).attr('parent'))
+				parent = that.armies[$(elem).attr('parent')];
+			  
+			  var template = new ArmyCalc.Template($(elem).attr('id'), parent);
+			  that.armies[template.id] = template;
+			  that.appendTemplates(elem, template.children);
+			});
+
 			this.setProgress(100);
 		},
-		appendElements : function(xml, root){
+		templateFromXml : function(elem){
+			var type = elem.nodeName.toLowerCase();
+			var parent = null;
+			if($(elem).attr('parent'))
+			  parent = this.templatesById[$(elem).attr('parent')];
+			
+			var id = $(elem).attr('id');
+			if(!id)
+			  id = this.noIdsCounter++;
+			
+			switch( type ){
+			  case 'element' : 
+				var template = new ArmyCalc.ElementTemplate(id, parent);
+				break;
+			  case 'group' : 
+				var template = new ArmyCalc.GroupTemplate(id, parent);
+				break;
+			  case 'deadend' : 
+				return false;
+			  default :
+				return false;
+			};
+		
+			template.name = $(elem).children('name').text();
+			template.description = $(elem).children('description').text();
+			
+			return template;
+		},
+		appendTemplates : function(xml, root){
 			var that = this;
-			alert(xml.tagName);
-			$(xml).children('element').each(function(i, elem) {
-				//tu cała logika!
-				var parent = null;
-				if($(elem).attr('parent'))
-					parent = that.elementsById[$(elem).attr('parent')];
-				
-				var template = new ArmyCalc.Template($(elem).tagName, $(elem).attr('id'), parent);
-				
-				root[template.id] = template;
-				that.elementsById[template.id] = template;
-				that.appendElements(elem, template.children);
-			});
-			$(xml).children('deadend').each(function(i, elem) {
-				delete root[$(elem).attr('id')];
+			$(xml).children().each(function(i, elem) {
+			  if (elem.nodeName.toLowerCase() == 'deadend') {
+				//delete root[$(elem).attr('id')];
+				alert('deadend');
+			  } else {
+				var template = that.templateFromXml(elem);
+				if (template) {
+				  root[template.id] = template;
+				  that.templatesById[template.id] = template;
+				  that.appendTemplates(elem, template.children);
+				}
+			  }
 			});
 		},
 		save : function(){

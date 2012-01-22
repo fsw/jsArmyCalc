@@ -1,16 +1,27 @@
 (function(ArmyCalc){
 	//template
 	ArmyCalc.Template = (function(){
-		function Template(type, id, parent){
+		function Template(id, parent){
 			//TODO xml can be id
-			var template = {};
-			template.type = type;
+			var template;
+			if (parent) {
+			  template = Template.clone(parent);
+			  template.parent = parent;
+			} else {
+			  template = {};
+			  template.children = {};
+			  template.enabled = true;
+			  template.stats = true;
+			}
 			template.id = id;
-			template.parent = parent;
-			template.children = {};
-			template.enabled = true;
-			template.stats = true;
 			return template;
+		}
+
+		Template.clone = function( x ){
+		  if (typeof x != 'object') return x;
+		  n = {};
+		  for(i in x) n[i] = this.clone(x[i]);
+		  return n;
 		}
 
 		Template.prototype = {

@@ -1,14 +1,8 @@
 
 
-/*
-jsArmyCalc constructor
-selector is a jquery selector string that is to return a single dom element
-$template url can be used to customize calc template
-*/
-
 
 var ArmyCalc = (function(){
-	
+
 function ArmyCalc(selector, templateurl){
 	
 	calc = {};
