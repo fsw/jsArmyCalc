@@ -3,28 +3,27 @@
 	ArmyCalc.Template = (function(){
 		function Template(id, parent){
 			//TODO xml can be id
-			var template;
 			if (parent) {
-			  template = Template.clone(parent);
-			  template.parent = parent;
+			  this.clone( this, parent );
+			  this.parent = parent;
 			} else {
-			  template = {};
-			  template.children = {};
-			  template.enabled = true;
-			  template.stats = true;
+			  this.children = {};
+			  this.enabled = true;
+			  this.stats = true;
 			}
-			template.id = id;
-			return template;
-		}
-
-		Template.clone = function( x ){
-		  if (typeof x != 'object') return x;
-		  n = {};
-		  for(i in x) n[i] = this.clone(x[i]);
-		  return n;
+			this.id = id;
 		}
 
 		Template.prototype = {
+			clone : function( target, source ){
+			  for(i in source)
+				if (typeof source[i] != 'object')
+				  target[i] = source[i];
+				else
+				  target[i] = this.clone({}, source[i]);
+			  
+			  return target;
+			},
 			enable : function( value ){ 
 				template.enabled = true;
 				return true;

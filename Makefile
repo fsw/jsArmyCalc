@@ -14,6 +14,7 @@ JS_FILES = ${SRC_DIR}/armycalc.js\
 	${SRC_DIR}/template.js\
 	${SRC_DIR}/element.template.js\
 	${SRC_DIR}/group.template.js\
+	${SRC_DIR}/army.template.js\
 	${SRC_DIR}/twrreader.js\
 	${SRC_DIR}/printer.js\
 	${SRC_DIR}/sandbox.js

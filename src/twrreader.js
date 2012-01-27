@@ -148,7 +148,6 @@ ArmyCalc.TwrReader = (function(){
 			});
 			this.toLoadCount++;
 			this.fileLoaded();
-			this.armiesXml = $(data).children('armies').children('army');
 	
 		},
 		fileLoaded : function(){
@@ -167,28 +166,18 @@ ArmyCalc.TwrReader = (function(){
 			this.setProgress(50);
 			this.templates = {};
 			this.toProcessAll = this.toProcessCount = this.templatesQueue.length + this.languagesQueue.length + this.scripts.length;
-			for (i = 0; i < this.templatesQueue.length; i++) {
+			for (var i = 0; i < this.templatesQueue.length; i++) {
 				this.appendTemplates(this.templatesQueue[i], {});
 				this.fileProcessed();
 			}
-			//after all templates are processed we can add armies data
-			$(this.armiesXml).each(function(i, elem){
-			  var parent = null;
-			  if($(elem).attr('parent'))
-				parent = that.armies[$(elem).attr('parent')];
-			  
-			  var template = new ArmyCalc.Template($(elem).attr('id'), parent);
-			  that.armies[template.id] = template;
-			  that.appendTemplates(elem, template.children);
-			});
-
 			this.setProgress(100);
 		},
 		templateFromXml : function(elem){
 			var type = elem.nodeName.toLowerCase();
-			var parent = null;
-			if($(elem).attr('parent'))
-			  parent = this.templatesById[$(elem).attr('parent')];
+			
+			var proto = null;
+			if($(elem).attr('prototype'))
+			  proto = this.templatesById[$(elem).attr('prototype')];
 			
 			var id = $(elem).attr('id');
 			if(!id)
@@ -196,13 +185,16 @@ ArmyCalc.TwrReader = (function(){
 			
 			switch( type ){
 			  case 'element' : 
-				var template = new ArmyCalc.ElementTemplate(id, parent);
+				var template = new ArmyCalc.ElementTemplate(id, proto);
 				break;
 			  case 'group' : 
-				var template = new ArmyCalc.GroupTemplate(id, parent);
+				var template = new ArmyCalc.GroupTemplate(id, proto);
+				break;
+			  case 'army' : 
+				var template = new ArmyCalc.ArmyTemplate(id, proto);
 				break;
 			  case 'deadend' : 
-				return false;
+				return {id : id};
 			  default :
 				return false;
 			};
@@ -214,18 +206,20 @@ ArmyCalc.TwrReader = (function(){
 		},
 		appendTemplates : function(xml, root){
 			var that = this;
-			$(xml).children().each(function(i, elem) {
-			  if (elem.nodeName.toLowerCase() == 'deadend') {
-				//delete root[$(elem).attr('id')];
-				alert('deadend');
-			  } else {
+			$(xml).children('army, group, element, deadend').each(function(i, elem) {
 				var template = that.templateFromXml(elem);
+				console.log(elem.nodeName.toLowerCase() + '-' + template.id + '-' + template.name + '-' + (template instanceof ArmyCalc.Template));
 				if (template) {
-				  root[template.id] = template;
-				  that.templatesById[template.id] = template;
-				  that.appendTemplates(elem, template.children);
+				  if (template instanceof ArmyCalc.Template){
+					root[template.id] = template;
+					that.templatesById[template.id] = template;
+					that.appendTemplates(elem, template.children);
+					if (template instanceof ArmyCalc.ArmyTemplate)
+					  that.armies[template.id] = template;
+				  } else {
+					delete root[template.id];
+				  }
 				}
-			  }
 			});
 		},
 		save : function(){
