@@ -5,7 +5,7 @@ var ArmyCalc = (function() {
 	* 
 	*/
 	function ArmyCalc(selector, templateurl) {
-
+		var that = this;
 		this.canvas = $(selector);
 		this.canvas.attr('style','');
 		this.canvas.html('loading calc...');
@@ -18,8 +18,8 @@ var ArmyCalc = (function() {
 		this.langSelect = this.canvas.find('#acLang');
 		this.langSelect.change(function(){ calc.setLang($(this).val()); });
 
-		this.canvas.find('#acMaximize').click(function(){this.setFullscreen(true); return false;});
-		this.canvas.find('#acMinimize').click(function(){this.setFullscreen(false); return false;});
+		this.canvas.find('#acMaximize').click(function(){that.setFullscreen(true); return false;});
+		this.canvas.find('#acMinimize').click(function(){that.setFullscreen(false); return false;});
 
 		this.canvas.find('#acNew').click(function(){calc.newArmy(); return false;});
 		this.canvas.find('#acRevalidate').click(function(){calc.revalidate(); return false;});
@@ -42,12 +42,13 @@ var ArmyCalc = (function() {
 				calc.canvas.find('#acDown').toggle(_focused_element._li.next().length > 0);
 				return false;
 				}).hide();
-
-		//this is a 
+		
+		this.twrReader = new ArmyCalc.TwrReader({
+		  'onProgress' : function(percent){ console.log('progress: ' + percent + '%'); },
+		  'onLoaded' : function(){ console.log('DONE'); }
+		});
+		
 		this.army = null;
-
-		this.units = [];
-		this.availableUnits = {};
 
 	};
 
@@ -112,14 +113,8 @@ var ArmyCalc = (function() {
 		},
 		loadTWR : function( url ){
 
-			this.twrurl = url;
-			this.units = [];
-			this.availableUnits = [];
-
+			this.twrReader.load('../examples/dwarfs.twr/');
 			this.setStatus( 'loading '+url );
-
-			this.ruleset = new acRuleset( this );
-			this.ruleset.loadFromUrl( url );
 
 		},
 		revalidate : function( ){
@@ -327,50 +322,6 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 })(ArmyCalc);
 (function(ArmyCalc){
 	//template
-	ArmyCalc.Instance = (function(){
-		
-		function Instance(template){
-			var instance = {};
-			instance.t = template;
-			instance.children = [];
-			instance.stats = {};
-			return instance;
-		}
-		
-		Instance.injectClassMethods = function( twrReader ){
-			for (var method in TwrReader.prototype){
-				if (TwrReader.prototype.hasOwnProperty( method )){
-					twrReader[ method ] = TwrReader.prototype[ method ];
-				}
-			}
-			return( twrReader );
-		};
-		
-		Instance.prototype = {
-			resize : function( size ){
-				
-			},
-			append : function( id ){ 
-				return true;
-			},
-			remove : function( id ){ 
-				return true;
-			},
-			setStat : function( id ){ 
-				return true;
-			},
-			getStat : function( id ){ 
-				return true;
-			}
-		};
-		
-		return Instance;
-		
-	}).call({});
-	
-})(ArmyCalc);
-(function(ArmyCalc){
-	//template
 	ArmyCalc.Template = (function(){
 		function Template(id, parent){
 			//TODO xml can be id
@@ -413,6 +364,40 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 
 })(ArmyCalc);
 (function(ArmyCalc){
+	ArmyCalc.Instance = (function(){
+		
+		function Instance(template){
+			var instance = {};
+			instance.t = template;
+			instance.children = [];
+			instance.stats = {};
+			return instance;
+		}
+		
+		Instance.prototype = {
+			resize : function( size ){
+				
+			},
+			append : function( id ){ 
+				return true;
+			},
+			remove : function( id ){ 
+				return true;
+			},
+			setStat : function( id ){ 
+				return true;
+			},
+			getStat : function( id ){ 
+				return true;
+			}
+		};
+		
+		return Instance;
+		
+	}).call({});
+	
+})(ArmyCalc);
+(function(ArmyCalc){
 	
 	ArmyCalc.ElementTemplate = (function(){
 		function ElementTemplate(id, parent){
@@ -424,6 +409,22 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 		return ElementTemplate;
 	}).call({});
 
+})(ArmyCalc);
+(function(ArmyCalc){
+	
+	ArmyCalc.ElementInstance = (function(){
+		
+		ElementInstance.prototype = new ArmyCalc.Instance({});
+		ElementInstance.prototype.constructor = ElementInstance;
+		
+		function ElementInstance(template){
+			ArmyCalc.Instance.call(this, template);
+		}
+		
+		return ElementInstance;
+		
+	}).call({});
+	
 })(ArmyCalc);
 (function(ArmyCalc){
 	
@@ -440,6 +441,21 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 })(ArmyCalc);
 (function(ArmyCalc){
 	
+	ArmyCalc.GroupInstance = (function(){
+		
+		GroupInstance.prototype = new ArmyCalc.Instance({});
+		GroupInstance.prototype.constructor = GroupInstance;
+		function GroupInstance(template){
+			ArmyCalc.Instance.call(this, template);
+		}
+		
+		return GroupInstance;
+		
+	}).call({});
+	
+})(ArmyCalc);
+(function(ArmyCalc){
+	
 	ArmyCalc.ArmyTemplate = (function(){
 		
 		ArmyTemplate.prototype = new ArmyCalc.Template(1);
@@ -448,17 +464,33 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 			ArmyCalc.Template.call(this, id, proto);
 		}
 
-		ArmyTemplate.prototype.getHtml = function( ){
-			return "Not <b>yet</b> implemented.HTML";
-		};
-
-		ArmyTemplate.prototype.getTwa = function( ){
-			return "Not <b>yet</b> implemented.TWA";
-		};
-
-		return ArmyTemplate;
+	  return ArmyTemplate;
 	}).call({});
 
+})(ArmyCalc);
+(function(ArmyCalc){
+	
+	ArmyCalc.ArmyInstance = (function(){
+		
+		ArmyInstance.prototype = new ArmyCalc.Instance({});
+		ArmyInstance.prototype.constructor = ArmyInstance;
+		
+		function ArmyInstance(template){
+			ArmyCalc.Instance.call(this, template);
+		}
+		
+		ArmyInstance.prototype.getHtml = function( ){
+			return "Not <b>yet</b> implemented.HTML";
+		};
+		
+		ArmyInstance.prototype.getTwa = function( ){
+			return "Not <b>yet</b> implemented.TWA";
+		};
+		
+		return ArmyInstance;
+		
+	}).call({});
+	
 })(ArmyCalc);
 (function(ArmyCalc){
 

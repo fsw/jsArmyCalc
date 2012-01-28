@@ -5,7 +5,7 @@ var ArmyCalc = (function() {
 	* 
 	*/
 	function ArmyCalc(selector, templateurl) {
-
+		var that = this;
 		this.canvas = $(selector);
 		this.canvas.attr('style','');
 		this.canvas.html('loading calc...');
@@ -18,8 +18,8 @@ var ArmyCalc = (function() {
 		this.langSelect = this.canvas.find('#acLang');
 		this.langSelect.change(function(){ calc.setLang($(this).val()); });
 
-		this.canvas.find('#acMaximize').click(function(){this.setFullscreen(true); return false;});
-		this.canvas.find('#acMinimize').click(function(){this.setFullscreen(false); return false;});
+		this.canvas.find('#acMaximize').click(function(){that.setFullscreen(true); return false;});
+		this.canvas.find('#acMinimize').click(function(){that.setFullscreen(false); return false;});
 
 		this.canvas.find('#acNew').click(function(){calc.newArmy(); return false;});
 		this.canvas.find('#acRevalidate').click(function(){calc.revalidate(); return false;});
@@ -42,12 +42,13 @@ var ArmyCalc = (function() {
 				calc.canvas.find('#acDown').toggle(_focused_element._li.next().length > 0);
 				return false;
 				}).hide();
-
-		//this is a 
+		
+		this.twrReader = new ArmyCalc.TwrReader({
+		  'onProgress' : function(percent){ console.log('progress: ' + percent + '%'); },
+		  'onLoaded' : function(){ console.log('DONE'); }
+		});
+		
 		this.army = null;
-
-		this.units = [];
-		this.availableUnits = {};
 
 	};
 
@@ -112,14 +113,8 @@ var ArmyCalc = (function() {
 		},
 		loadTWR : function( url ){
 
-			this.twrurl = url;
-			this.units = [];
-			this.availableUnits = [];
-
+			this.twrReader.load('../examples/dwarfs.twr/');
 			this.setStatus( 'loading '+url );
-
-			this.ruleset = new acRuleset( this );
-			this.ruleset.loadFromUrl( url );
 
 		},
 		revalidate : function( ){

@@ -33,5 +33,35 @@ div.acCanvas div.buttons2 {
 	height: 26px;
 }
 
+div.acCanvas div.buttons1 a {
+	width: 22px;	
+	height: 22px;
+	background: url(armycalc.png);
+	display: block;
+	float: left;
+}
+
+div.acCanvas div.buttons2 a {
+	width: 22px;	
+	height: 22px;
+	background: url(armycalc.png);
+	display: block;
+	float: left;
+}
+
+
+
+div.acCanvas #acNew {  background-position: 0px -66px; }
+div.acCanvas #acPrint {  background-position: -66px -44px; }
+div.acCanvas #acRevalidate {  background-position: 0px -88px; }
+div.acCanvas #acHelp {  background-position: -22px -88px; }
+
+div.acCanvas #acMaximize {  background-position: -44px -132px; }
+div.acCanvas #acMinimize {  background-position: -22px -132px; }
+
+
+
+
+
 
 

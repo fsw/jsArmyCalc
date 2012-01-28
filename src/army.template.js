@@ -8,15 +8,7 @@
 			ArmyCalc.Template.call(this, id, proto);
 		}
 
-		ArmyTemplate.prototype.getHtml = function( ){
-			return "Not <b>yet</b> implemented.HTML";
-		};
-
-		ArmyTemplate.prototype.getTwa = function( ){
-			return "Not <b>yet</b> implemented.TWA";
-		};
-
-		return ArmyTemplate;
+	  return ArmyTemplate;
 	}).call({});
 
 })(ArmyCalc);
