@@ -12,8 +12,13 @@ project website: http://armycalc.net/
 
 FILES IN THIS PACKAGE
 
-/README - this file
-/LICENSE - simplified BSD licence
-
-
+src/ - JavaScript sources
+css/ - styles and images source files
+web/ - output directory containing merged and packed scripts and stylesheets
+examples/ - few twrs to work with
+tests/ - test suits (you can navigate your browser to this folder to view example rulesets in calculator)
+Makefile - run make to merge and compress js's and css's
+README - this file
+LICENSE - simplified BSD licence
+.project - eclipse customisation
 

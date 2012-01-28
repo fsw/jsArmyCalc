@@ -21,10 +21,10 @@ var ArmyCalc = (function() {
 		this.canvas.find('#acMaximize').click(function(){that.setFullscreen(true); return false;});
 		this.canvas.find('#acMinimize').click(function(){that.setFullscreen(false); return false;});
 
-		this.canvas.find('#acNew').click(function(){calc.newArmy(); return false;});
-		this.canvas.find('#acRevalidate').click(function(){calc.revalidate(); return false;});
+		this.canvas.find('#acNew').click(function(){that.newArmy(); return false;});
+		this.canvas.find('#acRevalidate').click(function(){that.revalidate(); return false;});
 
-		this.canvas.find('#acPrint').click(function(){calc.print(); return false;});
+		this.canvas.find('#acPrint').click(function(){that.print(); return false;});
 
 		this.canvas.find('#acDec').click( function(){ _focused_element.size(_focused_element.size()-1); return false;}).hide();
 		this.canvas.find('#acInc').click( function(){ _focused_element.size(_focused_element.size()+1); return false;}).hide();
@@ -43,7 +43,7 @@ var ArmyCalc = (function() {
 				return false;
 				}).hide();
 		
-		this.twrReader = new ArmyCalc.TwrReader({
+		this.twr = new ArmyCalc.TwrReader({
 		  'onProgress' : function(percent){ console.log('progress: ' + percent + '%'); },
 		  'onLoaded' : function(){ console.log('DONE'); }
 		});
@@ -113,7 +113,7 @@ var ArmyCalc = (function() {
 		},
 		loadTWR : function( url ){
 
-			this.twrReader.load('../examples/dwarfs.twr/');
+			this.twr.load('../examples/dwarfs.twr/');
 			this.setStatus( 'loading '+url );
 
 		},
@@ -146,35 +146,25 @@ var ArmyCalc = (function() {
 		newArmy : function( ){
 
 			that = this;
+			var body = $('<div></div>');
+			body.append("<div class='piece'><h3>" + this.twr.info.name + "</h3>" + this.twr.info.description + "</div>");
+			var armySelect = $("<select></select>");
+			for( id in this.twr.armies )
+				armySelect.append("<option value='" + id + "'" + ">" + this.twr.armies[id].name + "</option>");
+			var createButton = $("<input type='button' value='create'/>");
+			body.append($("<label>Choose Army</label>").append(armySelect));
 
-			body = $('<div></div>');
-			body.append("<div class='piece'><h3>"+this.ruleset.name+"</h3>"+this.ruleset.description+"</div>");
-
-			modelSelect = $("<select></select>");
-
-			for( id in this.ruleset.models )
-				modelSelect.append("<option value='" + id + "'"+(this.ruleset.models[id]['default'] ?" selected='true'":"")+">"
-						+this.ruleset.models[id].name+"</option>");
-
-
-			createButton = $("<input type='button' value='create'/>");
-
-			body.append($("<label>Model</label>").append(modelSelect));
-
-			for( id in this.ruleset.costs ){
-				this.ruleset.costs[id].input = $("<input name='cost[" + id + "]' value='0'/>");
-				body.append($("<label>"+this.ruleset.costs[id].name+"</label>").append(this.ruleset.costs[id].input));
+			var costInputs = {};
+			for( id in this.twr.costs ){
+				costInputs[id] = $("<input name='cost[" + id + "]' value='0'/>");
+				body.append($("<label>"+this.twr.costs[id].name+"</label>").append(costInputs[id]));
 			}
-
+			
 			createButton.click(function(){
-
-					calc.closePopup( );  
-
-					calc.canvas.find('#acElements').html('');
-					calc.canvas.find('#acUnits').html('');
-
-
-
+					that.closePopup( );  
+					that.canvas.find('#acElements').html('');
+					that.canvas.find('#acUnits').html('');
+					/*
 					var list_header = $("<div class='title'></div>");
 					$.each( that.ruleset.costs, function( id, item){
 						list_header.append("<span class='cst'>"+item.shortname+"</span>");
@@ -184,22 +174,21 @@ var ArmyCalc = (function() {
 						list_header.append("<span class='st'>"+item.shortname+"</span>");
 						});
 
-
+					
 					calc.canvas.find('#acUnitsHeader').html( "" );
 					calc.canvas.find('#acUnitsHeader').append( list_header );
+					*/
 
-					calc.model = that.ruleset.models[modelSelect.val()];
-					calc.army = new acInstance( that, that.ruleset, null, calc.model );
-
-					calc.army.maxCosts = {};
-					for( id in calc.ruleset.costs ){
-						calc.army.maxCosts[id] = that.ruleset.costs[id].input.val();
+					that.armyTemplate = that.twr.armies[armySelect.val()];
+					for( id in costInputs ){
+						that.armyTemplate.maxTotalCosts[id] = costInputs[id].val();
 					}
-
-
+					that.armInstance = new ArmyCalc.ArmyInstance( that.armyTemplate );
+				
+					/*
 					var menu_ul_by_id = {};
-					/* we are buliding the menu and populating the menu_ul_by_id table */
-					/* TODO make this recurrent to populate multiple menu levels? */
+					// we are buliding the menu and populating the menu_ul_by_id table 
+					// TODO make this recurrent to populate multiple menu levels? 
 					$.each(calc.model.mainmenu,function( id, item ){
 
 							menu_ul_by_id[id] = $("<ul class='submm'></ul>");
@@ -228,7 +217,7 @@ var ArmyCalc = (function() {
 
 					});
 
-					/* we are appending all elements that have menu defined to the menu*/
+					// we are appending all elements that have menu defined to the menu
 					$.each(calc.army.element.elements,function( id, item ){
 							$.each(item.elements,function( id, item ){
 								if(item.menu_id){
@@ -247,15 +236,14 @@ var ArmyCalc = (function() {
 							if($(item).children('li').length == 0)
 							$(item).parent().remove();
 							});
-
+					*/
 
 
 
 			});
 
 			body.append($("<div class='submit'></div>").append(createButton));  
-
-			this.popup( "New army - " + this.ruleset.name, body );
+			this.popup( "New army - " + this.twr.info.name, body );
 
 		},
 		setFullscreen : function( fs ){

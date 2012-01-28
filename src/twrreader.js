@@ -35,6 +35,10 @@ ArmyCalc.TwrReader = (function(){
 			this.templatesById = {};
 			this.scripts = [];
 			this.languages = {};
+
+			this.costs = {};
+			this.stats = {};
+
 			this.templatesQueue = [];
 			this.languagesQueue = [];
 			this.toLoadCount = 0;
@@ -75,7 +79,30 @@ ArmyCalc.TwrReader = (function(){
 				email : $(data).children('info').children('author').children('email').text()	
 			};
 			this.info.description = $(data).children('info').children('description').text();
+
+			$(data).children('costs').children('cost').each(function(){
+			  $this = $(this);
+			  var c = {};
+			  c.name = $this.children('name').text();
+			  c.shortname = $this.children('shortname').text();
+			  c.suffix = $this.children('suffix').text();
+			  c.prefix = $this.children('prefix').text();
+			  c.default = $this.children('default').text();
+			  that.costs[$this.attr('id')] = c;
+			});
 			
+			$(data).children('stats').children('stat').each(function(){
+			  $this = $(this);
+			  var s = {};
+			  s.name = $this.children('name').text();
+			  s.shortname = $this.children('shortname').text();
+			  s.suffix = $this.children('suffix').text();
+			  s.prefix = $this.children('prefix').text();
+			  s.default = ($this.attr('default') == 'true');
+			  that.stats[$this.attr('id')] = s;
+			});
+
+
 			var templates = $(data).children('data').children('templates').children('templates');
 			templates.each(function(i, elem) {
 				if($(elem).attr('src')) {
