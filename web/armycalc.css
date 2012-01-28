@@ -42,42 +42,6 @@ div.acCanvas a:focus {
     outline: none;
 }
 
-/* TOOLBAR */
-div.acCanvas div.toolbar {
-	background: black;
-	height: 26px;
-	color:white;
-}
-
-div.acCanvas div.toolbar img {
-	padding: 2px;
-}
-
-div.acCanvas span.langsel {
-	display: block;
-	float: left;
-	padding: 2px;
-}
-
-
-div.acCanvas div.toolbar select {
-	border: 1px solid #eee;
-	background: #333;
-	color: white;
-}
-
-div.acCanvas div.buttons1 {
-	float: left;	
-	height: 26px;
-}
-
-
-div.acCanvas div.buttons2 {
-	float: right;	
-	height: 26px;
-}
-
-
 
 /* MENU */
 
@@ -190,44 +154,7 @@ div.acCanvas div.menu #acElements li:hover ul, div.acCanvas div.menu #acElements
 }
 
 
-/* WORKSPACE */
-div.acCanvas div.workspace {
-	min-height: 150px;
-	border: none;
-	overflow: hidden;
-	background-color: #ddd;
-}
-div.acCanvas div.workspace div.unitslist{
-	margin-left: 160px;
-	height: 300px;
-	/*
-	overflow: auto;
-	overflow-x: hidden;
-	-ms-overflow-x: hidden;
-	*/
-}
-div.acCanvas div.workspace div.unitdetails{
-	width: 160px;
-	float: left;
-}
-div.acCanvas div.workspace #acDetails{
-	min-height: 100px;
-	padding: 5px 0;
 
-}
-
-div.acCanvas #acDetails ul.actions {
-	overflow: hidden;
-	height: 34px;
-}
-
-div.acCanvas #acDetails ul.actions li {
-	float: left;
-}
-
-div.acCanvas #acDetails ul.actions li a {
-	display: block;
-}
 
 /* STATUSBAR */
 div.acCanvas div.statusbar {
@@ -256,6 +183,56 @@ div.acCanvas div.statusbar div.link a{
 	color:white;
 
 }
+
+/* TOOLBAR */
+div.acCanvas div.toolbar {
+	background: black;
+	height: 26px;
+	color:white;
+}
+
+div.acCanvas div.toolbar img {
+	padding: 2px;
+}
+
+div.acCanvas span.langsel {
+	display: block;
+	float: left;
+	padding: 2px;
+}
+
+
+div.acCanvas div.toolbar select {
+	border: 1px solid #eee;
+	background: #333;
+	color: white;
+}
+
+div.acCanvas div.buttons1 {
+	float: left;	
+	height: 26px;
+}
+
+
+div.acCanvas div.buttons2 {
+	float: right;	
+	height: 26px;
+}
+
+
+
+
+
+div.acCanvas ul.errors li {
+	padding: 5px;
+}
+
+div.acCanvas ul.errors li.error {
+	color: red;
+	font-weight: bold;
+}
+
+
 
 /* POPUP  */
 
@@ -362,6 +339,32 @@ div#acPopup input, div#acPopup select {
  
 
 
+
+div.acCanvas .submenu li {
+}
+
+div.acCanvas .submenu img {
+	display: block;
+	margin: 5px auto;
+}
+
+
+div.acCanvas .submenu li a {
+    background-image: url("img/icon_append.png");
+    background-position: 5px 5px;
+    background-repeat: no-repeat;
+    color: black;
+    display: block;
+    line-height: 16px;
+    padding: 5px 5px 5px 25px;
+    text-decoration: none;
+}
+
+div.acCanvas .submenu li a:hover {
+	font-weight: bold;
+}
+ 
+
 /* UNITS LIST */
 div.acCanvas #acUnits {
 	background-color: white;
@@ -422,40 +425,42 @@ div.acCanvas #acUnitsHeader div.title {
 
 
 
+/* WORKSPACE */
+div.acCanvas div.workspace {
+	min-height: 150px;
+	border: none;
+	overflow: hidden;
+	background-color: #ddd;
+}
+div.acCanvas div.workspace div.unitslist{
+	margin-left: 160px;
+	height: 300px;
+	/*
+	overflow: auto;
+	overflow-x: hidden;
+	-ms-overflow-x: hidden;
+	*/
+}
+div.acCanvas div.workspace div.unitdetails{
+	width: 160px;
+	float: left;
+}
+div.acCanvas div.workspace #acDetails{
+	min-height: 100px;
+	padding: 5px 0;
 
-div.acCanvas ul.errors li {
-	padding: 5px;
 }
 
-div.acCanvas ul.errors li.error {
-	color: red;
-	font-weight: bold;
+div.acCanvas #acDetails ul.actions {
+	overflow: hidden;
+	height: 34px;
 }
 
-
-
-
-div.acCanvas .submenu li {
+div.acCanvas #acDetails ul.actions li {
+	float: left;
 }
 
-div.acCanvas .submenu img {
+div.acCanvas #acDetails ul.actions li a {
 	display: block;
-	margin: 5px auto;
 }
 
-
-div.acCanvas .submenu li a {
-    background-image: url("img/icon_append.png");
-    background-position: 5px 5px;
-    background-repeat: no-repeat;
-    color: black;
-    display: block;
-    line-height: 16px;
-    padding: 5px 5px 5px 25px;
-    text-decoration: none;
-}
-
-div.acCanvas .submenu li a:hover {
-	font-weight: bold;
-}
- 

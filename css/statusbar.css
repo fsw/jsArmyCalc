@@ -1,0 +1,29 @@
+
+/* STATUSBAR */
+div.acCanvas div.statusbar {
+	
+	background: black;
+	height: 20px;
+	line-height: 20px;
+	color: white;
+	
+}
+
+div.acCanvas div.statusbar div.status {
+	
+	float:left;	
+	
+}
+
+div.acCanvas div.statusbar div.link {
+	
+	float:right;	
+	
+}
+
+div.acCanvas div.statusbar div.link a{
+	
+	color:white;
+
+}
+

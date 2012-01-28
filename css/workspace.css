@@ -1,0 +1,40 @@
+
+/* WORKSPACE */
+div.acCanvas div.workspace {
+	min-height: 150px;
+	border: none;
+	overflow: hidden;
+	background-color: #ddd;
+}
+div.acCanvas div.workspace div.unitslist{
+	margin-left: 160px;
+	height: 300px;
+	/*
+	overflow: auto;
+	overflow-x: hidden;
+	-ms-overflow-x: hidden;
+	*/
+}
+div.acCanvas div.workspace div.unitdetails{
+	width: 160px;
+	float: left;
+}
+div.acCanvas div.workspace #acDetails{
+	min-height: 100px;
+	padding: 5px 0;
+
+}
+
+div.acCanvas #acDetails ul.actions {
+	overflow: hidden;
+	height: 34px;
+}
+
+div.acCanvas #acDetails ul.actions li {
+	float: left;
+}
+
+div.acCanvas #acDetails ul.actions li a {
+	display: block;
+}
+

@@ -19,11 +19,15 @@ JS_FILES = ${SRC_DIR}/armycalc.js\
 	${SRC_DIR}/printer.js\
 	${SRC_DIR}/sandbox.js
 
-CSS_FILES = ${CSS_DIR}/style.css\
-	${CSS_DIR}/unitslist.css\
+CSS_FILES = ${CSS_DIR}/layout.css\
+	${CSS_DIR}/menu.css\
+	${CSS_DIR}/statusbar.css\
+	${CSS_DIR}/toolbar.css\
 	${CSS_DIR}/validation.css\
-	${CSS_DIR}/submenu.css
-
+	${CSS_DIR}/popup.css\
+	${CSS_DIR}/submenu.css\
+	${CSS_DIR}/unitslist.css\
+	${CSS_DIR}/workspace.css
 	
 TEST_FILES = ${TESTS_DIR}/twrreader.js
 

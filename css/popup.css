@@ -1,0 +1,105 @@
+
+/* POPUP  */
+
+div#acPopup {
+  display:none;
+  position: absolute;
+  width: 400px;
+  top:40px;
+  border: 3px solid white;
+  left: 50%;
+  margin-left: -200px;
+  z-index:200;  
+
+}
+
+div#acPopupBg {
+  display:none;
+  position:fixed;  
+  height:100%;  
+  width:100%;  
+  top:0;  
+  left:0;  
+  background:#000000;  
+  z-index:1;
+  filter:alpha(opacity=60); 
+  -moz-opacity: 0.6; 
+  opacity: 0.6; 
+
+}
+
+div#acPopup a#acClosePopup {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  top:0;
+  right:0;
+  padding:3px;
+}
+
+
+div#acPopup h2#acPopupTitle {
+  background: black;
+  color: white;
+  height: 28px;
+  padding: 0 5px;
+  margin: 0;
+  line-height: 28px;
+  font-size: 14px;
+  font-weight: bold;
+
+}
+
+div#acPopup div#acPopupContent {
+  
+  min-height: 100px;
+  background: white;
+  overflow: auto;
+}
+
+div#acPopup div#acPopupContent div.piece {
+  border: 1px dashed #ddd;
+  margin: 5px;
+  padding: 10px;
+  font-size: 12px;
+  line-height: 16px;
+  background: none repeat scroll 0 0 #EEEEEE;
+  font-style: italic;
+  color: #222;
+}
+
+div#acPopup div#acPopupContent div.piece h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+div#acPopup div#acPopupContent div.submit {
+  border: 1px dashed #ddd;
+  margin: 5px;
+  padding: 10px;
+  overflow: auto;
+}
+
+
+div#acPopup div#acPopupContent label {
+  
+  display: block;
+  border: 1px dashed #ddd;
+  margin: 5px;
+  padding: 5px;
+  overflow: auto;
+
+}
+
+div#acPopup input, div#acPopup select {
+  
+  width: 200px;
+  border: 1px solid #aaa;
+  float: right;
+  
+}
+
+
+ 
+
