@@ -1,11 +1,14 @@
 (function(ArmyCalc){
 	
 	ArmyCalc.GroupTemplate = (function(){
-		function GroupTemplate(id, parent){
-			return new ArmyCalc.Template(id, parent);
+
+		GroupTemplate.prototype = new ArmyCalc.Template(1);
+		GroupTemplate.prototype.constructor = GroupTemplate;
+		function GroupTemplate(id, proto){
+			ArmyCalc.Template.call(this, id, proto);
+			this.group = true;
 		}
 
-		GroupTemplate.prototype = ArmyCalc.Template.prototype;
 
 		return GroupTemplate;
 	}).call({});

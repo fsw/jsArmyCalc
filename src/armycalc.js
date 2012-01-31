@@ -180,11 +180,36 @@ var ArmyCalc = (function() {
 					*/
 
 					that.armyTemplate = that.twr.armies[armySelect.val()];
-					for( id in costInputs ){
-						that.armyTemplate.maxTotalCosts[id] = costInputs[id].val();
+					that.army = new ArmyCalc.ArmyInstance( that.armyTemplate );
+					for (id in costInputs ) {
+						that.army.maxTotalCosts[id] = costInputs[id].val();
 					}
-					that.armInstance = new ArmyCalc.ArmyInstance( that.armyTemplate );
-				
+	  
+
+					function appendToMenu(ul, children){
+					  for (var id in children) {
+						if (children[id] instanceof ArmyCalc.ElementTemplate) {
+						  var menu_elem = $("<a href='#'>"+children[id].name+"</a>");
+						  menu_elem.click(function(){
+							that.army.appendElement( id ); 
+							$('.submm').hide();
+						  });
+						  ul.append($("<li></li>").append(menu_elem));
+						}
+						if (children[id] instanceof ArmyCalc.GroupTemplate) {
+						  var subm = $("<ul class='submm'></ul>");
+						  appendToMenu(subm, children[id].children);
+						  var menu_elem = $("<a href='#'>"+children[id].name+"</a>");
+						  ul.append($("<li></li>").append(menu_elem).append(subm).hover( function(){
+							$(this).children("ul").show();
+						  }, function(){
+							$(this).children("ul").hide();
+						  }));
+						}
+					  }
+					}
+					that.canvas.find('#acElements').html();
+					appendToMenu(that.canvas.find('#acElements'), that.army.template.children);
 					/*
 					var menu_ul_by_id = {};
 					// we are buliding the menu and populating the menu_ul_by_id table 
@@ -244,7 +269,7 @@ var ArmyCalc = (function() {
 
 			body.append($("<div class='submit'></div>").append(createButton));  
 			this.popup( "New army - " + this.twr.info.name, body );
-
+			armySelect.focus();
 		},
 		setFullscreen : function( fs ){
 

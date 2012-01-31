@@ -180,11 +180,36 @@ var ArmyCalc = (function() {
 					*/
 
 					that.armyTemplate = that.twr.armies[armySelect.val()];
-					for( id in costInputs ){
-						that.armyTemplate.maxTotalCosts[id] = costInputs[id].val();
+					that.army = new ArmyCalc.ArmyInstance( that.armyTemplate );
+					for (id in costInputs ) {
+						that.army.maxTotalCosts[id] = costInputs[id].val();
 					}
-					that.armInstance = new ArmyCalc.ArmyInstance( that.armyTemplate );
-				
+	  
+
+					function appendToMenu(ul, children){
+					  for (var id in children) {
+						if (children[id] instanceof ArmyCalc.ElementTemplate) {
+						  var menu_elem = $("<a href='#'>"+children[id].name+"</a>");
+						  menu_elem.click(function(){
+							that.army.appendElement( id ); 
+							$('.submm').hide();
+						  });
+						  ul.append($("<li></li>").append(menu_elem));
+						}
+						if (children[id] instanceof ArmyCalc.GroupTemplate) {
+						  var subm = $("<ul class='submm'></ul>");
+						  appendToMenu(subm, children[id].children);
+						  var menu_elem = $("<a href='#'>"+children[id].name+"</a>");
+						  ul.append($("<li></li>").append(menu_elem).append(subm).hover( function(){
+							$(this).children("ul").show();
+						  }, function(){
+							$(this).children("ul").hide();
+						  }));
+						}
+					  }
+					}
+					that.canvas.find('#acElements').html();
+					appendToMenu(that.canvas.find('#acElements'), that.army.template.children);
 					/*
 					var menu_ul_by_id = {};
 					// we are buliding the menu and populating the menu_ul_by_id table 
@@ -244,7 +269,7 @@ var ArmyCalc = (function() {
 
 			body.append($("<div class='submit'></div>").append(createButton));  
 			this.popup( "New army - " + this.twr.info.name, body );
-
+			armySelect.focus();
 		},
 		setFullscreen : function( fs ){
 
@@ -314,12 +339,23 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 		function Template(id, parent){
 			//TODO xml can be id
 			if (parent) {
-			  this.clone( this, parent );
+			  this.stats = {};
+			  this.clone( this.stats, parent.stats );
+			  this.enabled = parent.enabled;
+			  this.name = parent.name;
+			  this.children = {};
+			  for (var id in parent.children) {
+				if (parent.children[id] instanceof ArmyCalc.ElementTemplate)
+				  this.children[id] = new ArmyCalc.ElementTemplate(id, parent.children[id]);
+				else if (parent.children[id] instanceof ArmyCalc.GroupTemplate)
+				  this.children[id] = new ArmyCalc.ElementTemplate(id, parent.children[id]);		
+			  }
 			  this.parent = parent;
 			} else {
 			  this.children = {};
 			  this.enabled = true;
 			  this.stats = true;
+			  this.name = 'Unnamed';
 			}
 			this.id = id;
 		}
@@ -354,20 +390,34 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 (function(ArmyCalc){
 	ArmyCalc.Instance = (function(){
 		
-		function Instance(template){
-			var instance = {};
-			instance.t = template;
-			instance.children = [];
-			instance.stats = {};
-			return instance;
+		function Instance(template) {
+			this.template = template;
+			this.availabe = template.children;
+			this.children = {};
+			this.stats = {};
+			for (var i in template.stats) {
+			  this.stats[i] = template.stats[i];
+			}
+			this.size = template.defaultSize;
+			this.costs = {};
+			for (var i in template.costs) {
+			  this.costs[i] = template.costs[i] * this.size;
+			  this.costs[i] = template.costs[i] * this.size;
+			}
+			this.maxTotalCosts = {};
+			//TODO append all required childrens
 		}
 		
 		Instance.prototype = {
 			resize : function( size ){
 				
 			},
-			append : function( id ){ 
-				return true;
+			appendElement : function( id ){
+			  if (typeof(this.children[id]) == 'undefined')
+				this.children[id] = [];
+			  //TODO
+			  //this.children[id].push();
+			  return true;
 			},
 			remove : function( id ){ 
 				return true;
@@ -388,11 +438,13 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 (function(ArmyCalc){
 	
 	ArmyCalc.ElementTemplate = (function(){
-		function ElementTemplate(id, parent){
-			return new ArmyCalc.Template(id, parent);
+		
+		ElementTemplate.prototype = new ArmyCalc.Template(1);
+		ElementTemplate.prototype.constructor = ElementTemplate;
+		function ElementTemplate(id, proto){
+			ArmyCalc.Template.call(this, id, proto);
+			this.element = true;
 		}
-
-		ElementTemplate.prototype = ArmyCalc.Template.prototype;
 
 		return ElementTemplate;
 	}).call({});
@@ -417,11 +469,14 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 (function(ArmyCalc){
 	
 	ArmyCalc.GroupTemplate = (function(){
-		function GroupTemplate(id, parent){
-			return new ArmyCalc.Template(id, parent);
+
+		GroupTemplate.prototype = new ArmyCalc.Template(1);
+		GroupTemplate.prototype.constructor = GroupTemplate;
+		function GroupTemplate(id, proto){
+			ArmyCalc.Template.call(this, id, proto);
+			this.group = true;
 		}
 
-		GroupTemplate.prototype = ArmyCalc.Template.prototype;
 
 		return GroupTemplate;
 	}).call({});
@@ -708,8 +763,12 @@ ArmyCalc.TwrReader = (function(){
 				return false;
 			};
 		
-			template.name = $(elem).children('name').text();
-			template.description = $(elem).children('description').text();
+			if ($(elem).children('name').text()) {
+			  template.name = $(elem).children('name').text();
+			}
+			if ($(elem).children('description').text()) {
+			  template.description = $(elem).children('description').text();
+			}
 			
 			return template;
 		},

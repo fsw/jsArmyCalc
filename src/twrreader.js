@@ -226,8 +226,12 @@ ArmyCalc.TwrReader = (function(){
 				return false;
 			};
 		
-			template.name = $(elem).children('name').text();
-			template.description = $(elem).children('description').text();
+			if ($(elem).children('name').text()) {
+			  template.name = $(elem).children('name').text();
+			}
+			if ($(elem).children('description').text()) {
+			  template.description = $(elem).children('description').text();
+			}
 			
 			return template;
 		},

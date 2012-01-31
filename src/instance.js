@@ -3,7 +3,8 @@
 		
 		function Instance(template) {
 			this.template = template;
-			this.children = [];
+			this.availabe = template.children;
+			this.children = {};
 			this.stats = {};
 			for (var i in template.stats) {
 			  this.stats[i] = template.stats[i];
@@ -14,6 +15,7 @@
 			  this.costs[i] = template.costs[i] * this.size;
 			  this.costs[i] = template.costs[i] * this.size;
 			}
+			this.maxTotalCosts = {};
 			//TODO append all required childrens
 		}
 		
@@ -21,8 +23,12 @@
 			resize : function( size ){
 				
 			},
-			append : function( id ){ 
-				return true;
+			appendElement : function( id ){
+			  if (typeof(this.children[id]) == 'undefined')
+				this.children[id] = [];
+			  //TODO
+			  //this.children[id].push();
+			  return true;
 			},
 			remove : function( id ){ 
 				return true;

@@ -1,11 +1,13 @@
 (function(ArmyCalc){
 	
 	ArmyCalc.ElementTemplate = (function(){
-		function ElementTemplate(id, parent){
-			return new ArmyCalc.Template(id, parent);
+		
+		ElementTemplate.prototype = new ArmyCalc.Template(1);
+		ElementTemplate.prototype.constructor = ElementTemplate;
+		function ElementTemplate(id, proto){
+			ArmyCalc.Template.call(this, id, proto);
+			this.element = true;
 		}
-
-		ElementTemplate.prototype = ArmyCalc.Template.prototype;
 
 		return ElementTemplate;
 	}).call({});

@@ -4,12 +4,23 @@
 		function Template(id, parent){
 			//TODO xml can be id
 			if (parent) {
-			  this.clone( this, parent );
+			  this.stats = {};
+			  this.clone( this.stats, parent.stats );
+			  this.enabled = parent.enabled;
+			  this.name = parent.name;
+			  this.children = {};
+			  for (var id in parent.children) {
+				if (parent.children[id] instanceof ArmyCalc.ElementTemplate)
+				  this.children[id] = new ArmyCalc.ElementTemplate(id, parent.children[id]);
+				else if (parent.children[id] instanceof ArmyCalc.GroupTemplate)
+				  this.children[id] = new ArmyCalc.ElementTemplate(id, parent.children[id]);		
+			  }
 			  this.parent = parent;
 			} else {
 			  this.children = {};
 			  this.enabled = true;
 			  this.stats = true;
+			  this.name = 'Unnamed';
 			}
 			this.id = id;
 		}
