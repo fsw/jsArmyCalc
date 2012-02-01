@@ -186,20 +186,25 @@ var ArmyCalc = (function() {
 					}
 	  
 
-					function appendToMenu(ul, children){
+					function appendToMenu(ul, children, path){
 					  for (var id in children) {
 						if (children[id] instanceof ArmyCalc.ElementTemplate) {
 						  var menu_elem = $("<a href='#'>"+children[id].name+"</a>");
 						  menu_elem.click(function(){
-							that.army.appendElement( id ); 
+							var group = that.army;
+							for (var i=0; i<path.length; i++)
+							  group = group.children[path[i]];
+							group.appendElement(id);
 							$('.submm').hide();
+							return false;
 						  });
 						  ul.append($("<li></li>").append(menu_elem));
 						}
 						if (children[id] instanceof ArmyCalc.GroupTemplate) {
 						  var subm = $("<ul class='submm'></ul>");
-						  appendToMenu(subm, children[id].children);
+						  appendToMenu(subm, children[id].children, path.concat(id));
 						  var menu_elem = $("<a href='#'>"+children[id].name+"</a>");
+						  menu_elem.click(function(){return false;});
 						  ul.append($("<li></li>").append(menu_elem).append(subm).hover( function(){
 							$(this).children("ul").show();
 						  }, function(){
@@ -209,7 +214,7 @@ var ArmyCalc = (function() {
 					  }
 					}
 					that.canvas.find('#acElements').html();
-					appendToMenu(that.canvas.find('#acElements'), that.army.template.children);
+					appendToMenu(that.canvas.find('#acElements'), that.army.template.children, []);
 					/*
 					var menu_ul_by_id = {};
 					// we are buliding the menu and populating the menu_ul_by_id table 

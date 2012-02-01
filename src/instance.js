@@ -17,18 +17,22 @@
 			}
 			this.maxTotalCosts = {};
 			//TODO append all required childrens
+			for (var i in template.children) {
+			  if(template.children[i] instanceof ArmyCalc.GroupTemplate)
+				this.children[i] = new ArmyCalc.GroupInstance(template.children[i]);
+			}
 		}
 		
 		Instance.prototype = {
 			resize : function( size ){
-				
+
 			},
 			appendElement : function( id ){
 			  if (typeof(this.children[id]) == 'undefined')
 				this.children[id] = [];
-			  //TODO
-			  //this.children[id].push();
-			  return true;
+			  var instance = new ArmyCalc.ElementInstance(this.template.children[id]);
+			  this.children[id].push(instance);
+			  return instance;
 			},
 			remove : function( id ){ 
 				return true;
