@@ -225,21 +225,19 @@ ArmyCalc.TwrReader = (function(){
 			  default :
 				return false;
 			};
-		
+	
 			if ($(elem).children('name').text()) {
 			  template.name = $(elem).children('name').text();
 			}
 			if ($(elem).children('description').text()) {
 			  template.description = $(elem).children('description').text();
 			}
-			
 			return template;
 		},
 		appendTemplates : function(xml, root){
 			var that = this;
 			$(xml).children('army, group, element, deadend').each(function(i, elem) {
 				var template = that.templateFromXml(elem);
-				console.log(elem.nodeName.toLowerCase() + '-' + template.id + '-' + template.name + '-' + (template instanceof ArmyCalc.Template));
 				if (template) {
 				  if (template instanceof ArmyCalc.Template){
 					root[template.id] = template;

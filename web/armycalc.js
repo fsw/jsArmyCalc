@@ -189,8 +189,13 @@ var ArmyCalc = (function() {
 					function appendToMenu(ul, children, path){
 					  for (var id in children) {
 						if (children[id] instanceof ArmyCalc.ElementTemplate) {
-						  var menu_elem = $("<a href='#'>"+children[id].name+"</a>");
+						  alert(id);
+						  var menu_elem = $("<a rel='" + id + "'href='#'>"+children[id].name+"</a>");
+						  var newId = id;
+						  ul.append($("<li></li>").append(menu_elem));
 						  menu_elem.click(function(){
+							alert(newId);
+							alert($(this).attr('rel'));
 							var group = that.army;
 							for (var i=0; i<path.length; i++)
 							  group = group.children[path[i]];
@@ -198,9 +203,8 @@ var ArmyCalc = (function() {
 							$('.submm').hide();
 							return false;
 						  });
-						  ul.append($("<li></li>").append(menu_elem));
 						}
-						if (children[id] instanceof ArmyCalc.GroupTemplate) {
+						else if (children[id] instanceof ArmyCalc.GroupTemplate) {
 						  var subm = $("<ul class='submm'></ul>");
 						  appendToMenu(subm, children[id].children, path.concat(id));
 						  var menu_elem = $("<a href='#'>"+children[id].name+"</a>");
@@ -343,6 +347,7 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 	ArmyCalc.Template = (function(){
 		function Template(id, parent){
 			//TODO xml can be id
+			this.id = id;
 			if (parent) {
 			  this.stats = {};
 			  this.clone( this.stats, parent.stats );
@@ -362,7 +367,6 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 			  this.stats = true;
 			  this.name = 'Unnamed';
 			}
-			this.id = id;
 		}
 
 		Template.prototype = {
@@ -414,6 +418,8 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 			for (var i in template.children) {
 			  if(template.children[i] instanceof ArmyCalc.GroupTemplate)
 				this.children[i] = new ArmyCalc.GroupInstance(template.children[i]);
+			  else
+				this.children[i] = [];
 			}
 		}
 		
@@ -422,8 +428,7 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 
 			},
 			appendElement : function( id ){
-			  if (typeof(this.children[id]) == 'undefined')
-				this.children[id] = [];
+			  //TODO error handling
 			  var instance = new ArmyCalc.ElementInstance(this.template.children[id]);
 			  this.children[id].push(instance);
 			  return instance;
@@ -756,6 +761,8 @@ ArmyCalc.TwrReader = (function(){
 			if(!id)
 			  id = this.noIdsCounter++;
 			
+			console.log('X-' + id);
+
 			switch( type ){
 			  case 'element' : 
 				var template = new ArmyCalc.ElementTemplate(id, proto);
@@ -771,14 +778,15 @@ ArmyCalc.TwrReader = (function(){
 			  default :
 				return false;
 			};
-		
+			console.log('Y-' + id);
+	
 			if ($(elem).children('name').text()) {
 			  template.name = $(elem).children('name').text();
 			}
 			if ($(elem).children('description').text()) {
 			  template.description = $(elem).children('description').text();
 			}
-			
+			console.log('R-' + id + '-' + template.id + '-' + template.name + '-' + (template instanceof ArmyCalc.Template));
 			return template;
 		},
 		appendTemplates : function(xml, root){

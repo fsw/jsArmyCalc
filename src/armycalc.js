@@ -189,18 +189,18 @@ var ArmyCalc = (function() {
 					function appendToMenu(ul, children, path){
 					  for (var id in children) {
 						if (children[id] instanceof ArmyCalc.ElementTemplate) {
-						  var menu_elem = $("<a href='#'>"+children[id].name+"</a>");
+						  var menu_elem = $("<a rel='" + id + "'href='#'>"+children[id].name+"</a>");
+						  ul.append($("<li></li>").append(menu_elem));
 						  menu_elem.click(function(){
 							var group = that.army;
 							for (var i=0; i<path.length; i++)
 							  group = group.children[path[i]];
-							group.appendElement(id);
+							group.appendElement($(this).attr('rel'));
 							$('.submm').hide();
 							return false;
 						  });
-						  ul.append($("<li></li>").append(menu_elem));
 						}
-						if (children[id] instanceof ArmyCalc.GroupTemplate) {
+						else if (children[id] instanceof ArmyCalc.GroupTemplate) {
 						  var subm = $("<ul class='submm'></ul>");
 						  appendToMenu(subm, children[id].children, path.concat(id));
 						  var menu_elem = $("<a href='#'>"+children[id].name+"</a>");

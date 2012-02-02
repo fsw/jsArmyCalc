@@ -20,6 +20,8 @@
 			for (var i in template.children) {
 			  if(template.children[i] instanceof ArmyCalc.GroupTemplate)
 				this.children[i] = new ArmyCalc.GroupInstance(template.children[i]);
+			  else
+				this.children[i] = [];
 			}
 		}
 		
@@ -28,8 +30,7 @@
 
 			},
 			appendElement : function( id ){
-			  if (typeof(this.children[id]) == 'undefined')
-				this.children[id] = [];
+			  //TODO error handling
 			  var instance = new ArmyCalc.ElementInstance(this.template.children[id]);
 			  this.children[id].push(instance);
 			  return instance;

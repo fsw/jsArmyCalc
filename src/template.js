@@ -2,7 +2,8 @@
 	//template
 	ArmyCalc.Template = (function(){
 		function Template(id, parent){
-			//TODO xml can be id
+			//TODO xml can be id?
+			this.id = id;
 			if (parent) {
 			  this.stats = {};
 			  this.clone( this.stats, parent.stats );
@@ -22,7 +23,6 @@
 			  this.stats = true;
 			  this.name = 'Unnamed';
 			}
-			this.id = id;
 		}
 
 		Template.prototype = {
