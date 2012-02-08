@@ -1,26 +1,24 @@
 (function(ArmyCalc){
 	//template
 	ArmyCalc.Template = (function(){
-		function Template(id, parent){
-			//TODO xml can be id?
-			this.id = id;
-			if (parent) {
+		function Template(proto){
+			if (proto) {
 			  this.stats = {};
-			  this.clone( this.stats, parent.stats );
-			  this.enabled = parent.enabled;
-			  this.name = parent.name;
+			  this.clone( this.stats, proto.stats );
+			  this.enabled = proto.enabled;
+			  this.name = proto.name;
 			  this.children = {};
-			  for (var id in parent.children) {
-				if (parent.children[id] instanceof ArmyCalc.ElementTemplate)
-				  this.children[id] = new ArmyCalc.ElementTemplate(id, parent.children[id]);
-				else if (parent.children[id] instanceof ArmyCalc.GroupTemplate)
-				  this.children[id] = new ArmyCalc.ElementTemplate(id, parent.children[id]);		
+			  for (var id in proto.children) {
+				if (proto.children[id] instanceof ArmyCalc.ElementTemplate)
+				  this.children[id] = new ArmyCalc.ElementTemplate(proto.children[id]);
+				else if (proto.children[id] instanceof ArmyCalc.GroupTemplate)
+				  this.children[id] = new ArmyCalc.ElementTemplate(proto.children[id]);		
 			  }
-			  this.parent = parent;
+			  this.proto = proto;
 			} else {
 			  this.children = {};
 			  this.enabled = true;
-			  this.stats = true;
+			  this.stats = {};
 			  this.name = 'Unnamed';
 			}
 		}
@@ -45,6 +43,18 @@
 			},
 			append : function( template ){
 				
+			},
+			_loadFromXml : function($elem){
+
+			  var name = null;
+			  if ((name = $elem.children('name').text()) || (name = $elem.attr('name'))) {
+				this.name = name;
+			  }
+			  var desc = null;
+			  if (desc = $elem.children('description').text()) {
+				this.description = desc;;
+			  }
+
 			}
 		};
 

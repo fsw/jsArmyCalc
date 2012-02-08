@@ -328,26 +328,24 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 (function(ArmyCalc){
 	//template
 	ArmyCalc.Template = (function(){
-		function Template(id, parent){
-			//TODO xml can be id?
-			this.id = id;
-			if (parent) {
+		function Template(proto){
+			if (proto) {
 			  this.stats = {};
-			  this.clone( this.stats, parent.stats );
-			  this.enabled = parent.enabled;
-			  this.name = parent.name;
+			  this.clone( this.stats, proto.stats );
+			  this.enabled = proto.enabled;
+			  this.name = proto.name;
 			  this.children = {};
-			  for (var id in parent.children) {
-				if (parent.children[id] instanceof ArmyCalc.ElementTemplate)
-				  this.children[id] = new ArmyCalc.ElementTemplate(id, parent.children[id]);
-				else if (parent.children[id] instanceof ArmyCalc.GroupTemplate)
-				  this.children[id] = new ArmyCalc.ElementTemplate(id, parent.children[id]);		
+			  for (var id in proto.children) {
+				if (proto.children[id] instanceof ArmyCalc.ElementTemplate)
+				  this.children[id] = new ArmyCalc.ElementTemplate(proto.children[id]);
+				else if (proto.children[id] instanceof ArmyCalc.GroupTemplate)
+				  this.children[id] = new ArmyCalc.ElementTemplate(proto.children[id]);		
 			  }
-			  this.parent = parent;
+			  this.proto = proto;
 			} else {
 			  this.children = {};
 			  this.enabled = true;
-			  this.stats = true;
+			  this.stats = {};
 			  this.name = 'Unnamed';
 			}
 		}
@@ -372,6 +370,18 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 			},
 			append : function( template ){
 				
+			},
+			_loadFromXml : function($elem){
+
+			  var name = null;
+			  if ((name = $elem.children('name').text()) || (name = $elem.attr('name'))) {
+				this.name = name;
+			  }
+			  var desc = null;
+			  if (desc = $elem.children('description').text()) {
+				this.description = desc;;
+			  }
+
 			}
 		};
 
@@ -436,10 +446,10 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 	
 	ArmyCalc.ElementTemplate = (function(){
 		
-		ElementTemplate.prototype = new ArmyCalc.Template(1);
+		ElementTemplate.prototype = new ArmyCalc.Template();
 		ElementTemplate.prototype.constructor = ElementTemplate;
-		function ElementTemplate(id, proto){
-			ArmyCalc.Template.call(this, id, proto);
+		function ElementTemplate(proto){
+			ArmyCalc.Template.call(this, proto);
 			this.element = true;
 		}
 
@@ -456,19 +466,26 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 		
 		function ElementInstance(parent, template){
 			ArmyCalc.Instance.call(this, parent, template);
+			var that = this;
 			if (typeof parent.childrenUl != 'undefined'){
 			  var anchor = $('<a href="#">' + template.name + '</a>');
 			  this.sizeSpan = $('<span></span>');
-			  this.li = $('<li></li>').append(anchor.prepend(sizeSpan));
+			  this.li = $('<li></li>').append(anchor.prepend(this.sizeSpan));
 			  this.childrenUl = $('<ul></ul>');
+			  anchor.click(function(){that.focus()});
 			  parent.childrenUl.append(this.li.append(this.childrenUl));
+			  this.availableUl = $('<ul></ul>');
+			  for(var id in this.available){
+				this.availableUl.append('<li>' + this.available[id].name + '</li>');
+			  }
 			}
 
 		}
 		
 		ElementInstance.prototype.focus = function( ){
-			if (typeof parent.childrenUl != 'undefined'){
-			  this.li.addClass('current'); 
+			if (typeof this.li != 'undefined'){
+			  this.li.addClass('current');
+			  alert(this.template.name);
 			}
 		};
 
@@ -481,10 +498,10 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 	
 	ArmyCalc.GroupTemplate = (function(){
 
-		GroupTemplate.prototype = new ArmyCalc.Template(1);
+		GroupTemplate.prototype = new ArmyCalc.Template();
 		GroupTemplate.prototype.constructor = GroupTemplate;
-		function GroupTemplate(id, proto){
-			ArmyCalc.Template.call(this, id, proto);
+		function GroupTemplate(proto){
+			ArmyCalc.Template.call(this, proto);
 			this.group = true;
 		}
 
@@ -513,10 +530,10 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 	
 	ArmyCalc.ArmyTemplate = (function(){
 		
-		ArmyTemplate.prototype = new ArmyCalc.Template(1);
+		ArmyTemplate.prototype = new ArmyCalc.Template();
 		ArmyTemplate.prototype.constructor = ArmyTemplate;
-		function ArmyTemplate(id, proto){
-			ArmyCalc.Template.call(this, id, proto);
+		function ArmyTemplate(proto){
+			ArmyCalc.Template.call(this, proto);
 		}
 
 	  return ArmyTemplate;
@@ -581,7 +598,7 @@ ArmyCalc.TwrReader = (function(){
 			this.languages = {};
 			this.info = {};
 			this.armies = {};
-			this.templatesById = {};
+			this.templatesByPath = {};
 			this.scripts = [];
 			this.languages = {};
 
@@ -743,61 +760,50 @@ ArmyCalc.TwrReader = (function(){
 			this.templates = {};
 			this.toProcessAll = this.toProcessCount = this.templatesQueue.length + this.languagesQueue.length + this.scripts.length;
 			for (var i = 0; i < this.templatesQueue.length; i++) {
-				this.appendTemplates(this.templatesQueue[i], {});
+				this.appendTemplates(this.templatesQueue[i], this.templates, '');
 				this.fileProcessed();
 			}
 			this.setProgress(100);
 		},
-		templateFromXml : function(elem){
-			var type = elem.nodeName.toLowerCase();
-			
-			var proto = null;
-			if($(elem).attr('prototype'))
-			  proto = this.templatesById[$(elem).attr('prototype')];
-			
-			var id = $(elem).attr('id');
-			if(!id)
-			  id = this.noIdsCounter++;
-			
-			switch( type ){
-			  case 'element' : 
-				var template = new ArmyCalc.ElementTemplate(id, proto);
-				break;
-			  case 'group' : 
-				var template = new ArmyCalc.GroupTemplate(id, proto);
-				break;
-			  case 'army' : 
-				var template = new ArmyCalc.ArmyTemplate(id, proto);
-				break;
-			  case 'deadend' : 
-				return {id : id};
-			  default :
-				return false;
-			};
-	
-			if ($(elem).children('name').text()) {
-			  template.name = $(elem).children('name').text();
-			}
-			if ($(elem).children('description').text()) {
-			  template.description = $(elem).children('description').text();
-			}
-			return template;
-		},
-		appendTemplates : function(xml, root){
+		appendTemplates : function(xml, root, path){
 			var that = this;
+			var noIdsCounter = 0;
 			$(xml).children('army, group, element, deadend').each(function(i, elem) {
-				var template = that.templateFromXml(elem);
-				if (template) {
-				  if (template instanceof ArmyCalc.Template){
-					root[template.id] = template;
-					that.templatesById[template.id] = template;
-					that.appendTemplates(elem, template.children);
-					if (template instanceof ArmyCalc.ArmyTemplate)
-					  that.armies[template.id] = template;
-				  } else {
-					delete root[template.id];
-				  }
+				noIdsCounter ++;
+				var type = elem.nodeName.toLowerCase();
+				var proto = null;
+				if(proto = $(elem).attr('prototype')){
+				  proto = that.templatesByPath[proto];
 				}
+				var id = id = $(elem).attr('id');
+				if(!id && proto) id = proto.id;
+				if(!id) id = noIdsCounter;
+				
+				switch ( type ){
+				  case 'element' : 
+					var template = new ArmyCalc.ElementTemplate(proto);
+					break;
+				  case 'group' : 
+					var template = new ArmyCalc.GroupTemplate(proto);
+					break;
+				  case 'army' : 
+					var template = new ArmyCalc.ArmyTemplate(proto);
+					break;
+				  case 'deadend' :
+					delete root[id];
+					return;
+				  default :
+					return;
+				};
+	
+				template._loadFromXml($(elem));
+				//ugly
+				template.id = id;
+				root[id] = template;
+				that.templatesByPath[path + id] = template;
+				that.appendTemplates(elem, template.children, path + id + '.');
+				if (template instanceof ArmyCalc.ArmyTemplate)
+					that.armies[id] = template;
 			});
 		},
 		save : function(){
