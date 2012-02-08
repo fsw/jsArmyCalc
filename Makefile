@@ -30,7 +30,8 @@ CSS_FILES = ${CSS_DIR}/layout.css\
 	${CSS_DIR}/popup.css\
 	${CSS_DIR}/submenu.css\
 	${CSS_DIR}/unitslist.css\
-	${CSS_DIR}/workspace.css
+	${CSS_DIR}/workspace.css\
+	${CSS_DIR}/actions.css
 	
 TEST_FILES = ${TESTS_DIR}/twrreader.js
 

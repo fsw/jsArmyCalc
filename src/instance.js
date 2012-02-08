@@ -1,7 +1,7 @@
 (function(ArmyCalc){
 	ArmyCalc.Instance = (function(){
 		
-		function Instance(template) {
+		function Instance(parent, template) {
 			this.template = template;
 			this.availabe = template.children;
 			this.children = {};
@@ -19,7 +19,7 @@
 			//TODO append all required childrens
 			for (var i in template.children) {
 			  if(template.children[i] instanceof ArmyCalc.GroupTemplate)
-				this.children[i] = new ArmyCalc.GroupInstance(template.children[i]);
+				this.children[i] = new ArmyCalc.GroupInstance(this, template.children[i]);
 			  else
 				this.children[i] = [];
 			}
@@ -31,7 +31,7 @@
 			},
 			appendElement : function( id ){
 			  //TODO error handling
-			  var instance = new ArmyCalc.ElementInstance(this.template.children[id]);
+			  var instance = new ArmyCalc.ElementInstance(this, this.template.children[id]);
 			  this.children[id].push(instance);
 			  return instance;
 			},

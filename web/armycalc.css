@@ -463,7 +463,8 @@ div.acCanvas div.workspace {
 	background-color: #ddd;
 }
 div.acCanvas div.workspace div.unitslist{
-	margin-left: 160px;
+	float: left;
+	width: 300px;
 	height: 300px;
 	/*
 	overflow: auto;
@@ -472,14 +473,17 @@ div.acCanvas div.workspace div.unitslist{
 	*/
 }
 div.acCanvas div.workspace div.unitdetails{
-	width: 160px;
-	float: left;
+	margin-left: 310px;
 }
 div.acCanvas div.workspace #acDetails{
 	min-height: 100px;
 	padding: 5px 0;
 
 }
+
+
+
+
 
 div.acCanvas #acDetails ul.actions {
 	overflow: hidden;
@@ -491,6 +495,25 @@ div.acCanvas #acDetails ul.actions li {
 }
 
 div.acCanvas #acDetails ul.actions li a {
+	width: 22px;	
+	height: 22px;
+	background: url(armycalc.png);
 	display: block;
+	float: left;
 }
+
+div.acCanvas #acDec {  background-position: 0px -66px; }
+div.acCanvas #acInc {  background-position: -66px -44px; }
+div.acCanvas #acRem {  background-position: 0px -88px; }
+
+div.acCanvas #acUp {  background-position: -44px -132px; }
+div.acCanvas #acDown {  background-position: -22px -132px; }
+
+
+
+
+
+
+
+
 

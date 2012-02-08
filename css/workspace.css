@@ -7,7 +7,8 @@ div.acCanvas div.workspace {
 	background-color: #ddd;
 }
 div.acCanvas div.workspace div.unitslist{
-	margin-left: 160px;
+	float: left;
+	width: 300px;
 	height: 300px;
 	/*
 	overflow: auto;
@@ -16,8 +17,7 @@ div.acCanvas div.workspace div.unitslist{
 	*/
 }
 div.acCanvas div.workspace div.unitdetails{
-	width: 160px;
-	float: left;
+	margin-left: 310px;
 }
 div.acCanvas div.workspace #acDetails{
 	min-height: 100px;
@@ -25,16 +25,4 @@ div.acCanvas div.workspace #acDetails{
 
 }
 
-div.acCanvas #acDetails ul.actions {
-	overflow: hidden;
-	height: 34px;
-}
-
-div.acCanvas #acDetails ul.actions li {
-	float: left;
-}
-
-div.acCanvas #acDetails ul.actions li a {
-	display: block;
-}
 

@@ -164,23 +164,9 @@ var ArmyCalc = (function() {
 					that.closePopup( );  
 					that.canvas.find('#acElements').html('');
 					that.canvas.find('#acUnits').html('');
-					/*
-					var list_header = $("<div class='title'></div>");
-					$.each( that.ruleset.costs, function( id, item){
-						list_header.append("<span class='cst'>"+item.shortname+"</span>");
-						});
-
-					$.each( that.ruleset.stats, function( id, item){
-						list_header.append("<span class='st'>"+item.shortname+"</span>");
-						});
-
 					
-					calc.canvas.find('#acUnitsHeader').html( "" );
-					calc.canvas.find('#acUnitsHeader').append( list_header );
-					*/
-
 					that.armyTemplate = that.twr.armies[armySelect.val()];
-					that.army = new ArmyCalc.ArmyInstance( that.armyTemplate );
+					that.army = new ArmyCalc.ArmyInstance( that.armyTemplate, that.canvas.find('#acUnits'));
 					for (id in costInputs ) {
 						that.army.maxTotalCosts[id] = costInputs[id].val();
 					}
@@ -195,8 +181,9 @@ var ArmyCalc = (function() {
 							var group = that.army;
 							for (var i=0; i<path.length; i++)
 							  group = group.children[path[i]];
-							group.appendElement($(this).attr('rel'));
+							var inst = group.appendElement($(this).attr('rel'));
 							$('.submm').hide();
+							inst.focus();
 							return false;
 						  });
 						}
