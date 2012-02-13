@@ -5,8 +5,8 @@
 		ArmyInstance.prototype = new ArmyCalc.Instance({}, {});
 		ArmyInstance.prototype.constructor = ArmyInstance;
 		
-		function ArmyInstance(template, childrenUl){
-			this.childrenUl = childrenUl;
+		function ArmyInstance(template, canvas){
+			this.canvas = canvas;
 			ArmyCalc.Instance.call(this, {}, template);
 		}
 		

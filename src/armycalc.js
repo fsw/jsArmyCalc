@@ -166,7 +166,11 @@ var ArmyCalc = (function() {
 					that.canvas.find('#acUnits').html('');
 					
 					that.armyTemplate = that.twr.armies[armySelect.val()];
-					that.army = new ArmyCalc.ArmyInstance( that.armyTemplate, that.canvas.find('#acUnits'));
+					that.army = new ArmyCalc.ArmyInstance( that.armyTemplate, {
+						ul: that.canvas.find('#acUnits'), 
+						details: that.canvas.find('#acDetails'),
+						available: that.canvas.find('#acAvailable'),
+					});
 					for (id in costInputs ) {
 						that.army.maxTotalCosts[id] = costInputs[id].val();
 					}

@@ -3,7 +3,7 @@
 		
 		function Instance(parent, template) {
 			this.template = template;
-			this.availabe = template.children;
+			this.available = template.children;
 			this.children = {};
 			this.stats = {};
 			for (var i in template.stats) {

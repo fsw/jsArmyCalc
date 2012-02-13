@@ -166,7 +166,11 @@ var ArmyCalc = (function() {
 					that.canvas.find('#acUnits').html('');
 					
 					that.armyTemplate = that.twr.armies[armySelect.val()];
-					that.army = new ArmyCalc.ArmyInstance( that.armyTemplate, that.canvas.find('#acUnits'));
+					that.army = new ArmyCalc.ArmyInstance( that.armyTemplate, {
+						ul: that.canvas.find('#acUnits'), 
+						details: that.canvas.find('#acDetails'),
+						available: that.canvas.find('#acAvailable'),
+					});
 					for (id in costInputs ) {
 						that.army.maxTotalCosts[id] = costInputs[id].val();
 					}
@@ -381,7 +385,9 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 			  if (desc = $elem.children('description').text()) {
 				this.description = desc;;
 			  }
-
+			},
+			_createAppender : function(instance) {
+				return $('<li>' + this.name + '</li>');
 			}
 		};
 
@@ -394,7 +400,7 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 		
 		function Instance(parent, template) {
 			this.template = template;
-			this.availabe = template.children;
+			this.available = template.children;
 			this.children = {};
 			this.stats = {};
 			for (var i in template.stats) {
@@ -467,25 +473,31 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 		function ElementInstance(parent, template){
 			ArmyCalc.Instance.call(this, parent, template);
 			var that = this;
-			if (typeof parent.childrenUl != 'undefined'){
+			if (typeof parent.canvas != 'undefined'){
 			  var anchor = $('<a href="#">' + template.name + '</a>');
-			  this.sizeSpan = $('<span></span>');
+			  this.sizeSpan = $('<span> size </span>');
 			  this.li = $('<li></li>').append(anchor.prepend(this.sizeSpan));
 			  this.childrenUl = $('<ul></ul>');
 			  anchor.click(function(){that.focus()});
-			  parent.childrenUl.append(this.li.append(this.childrenUl));
+			  parent.canvas.ul.append(this.li.append(this.childrenUl));
+			  this.canvas = {ul: this.childrenUl, available: parent.canvas.available, details: parent.canvas.details};
 			  this.availableUl = $('<ul></ul>');
 			  for(var id in this.available){
-				this.availableUl.append('<li>' + this.available[id].name + '</li>');
+				this.availableUl.append(this.available[id]._createAppender(this));
 			  }
+			  this.detailsDiv = $('<div> ... details ... </div>');
 			}
 
 		}
 		
 		ElementInstance.prototype.focus = function( ){
-			if (typeof this.li != 'undefined'){
+			if (typeof this.canvas != 'undefined'){
+			  this.li.parent().find('li').removeClass('current');
 			  this.li.addClass('current');
-			  alert(this.template.name);
+			  this.canvas.available.html('');
+			  this.canvas.available.append(this.availableUl);
+			  this.canvas.details.html('');
+			  this.canvas.details.append(this.detailsDiv);
 			}
 		};
 
@@ -518,7 +530,7 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 		GroupInstance.prototype.constructor = GroupInstance;
 		function GroupInstance(parent, template){
 			ArmyCalc.Instance.call(this, parent, template);
-			this.childrenUl = parent.childrenUl;	
+			this.canvas = parent.canvas;	
 		}
 		
 		return GroupInstance;
@@ -547,8 +559,8 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 		ArmyInstance.prototype = new ArmyCalc.Instance({}, {});
 		ArmyInstance.prototype.constructor = ArmyInstance;
 		
-		function ArmyInstance(template, childrenUl){
-			this.childrenUl = childrenUl;
+		function ArmyInstance(template, canvas){
+			this.canvas = canvas;
 			ArmyCalc.Instance.call(this, {}, template);
 		}
 		
@@ -772,8 +784,12 @@ ArmyCalc.TwrReader = (function(){
 				noIdsCounter ++;
 				var type = elem.nodeName.toLowerCase();
 				var proto = null;
-				if(proto = $(elem).attr('prototype')){
-				  proto = that.templatesByPath[proto];
+				var protoPath;
+				if(protoPath = $(elem).attr('prototype')){
+				  proto = that.templatesByPath[protoPath];
+				  if (!proto) {
+					that.issueWarning('cant find prototype ' + protoPath);
+				  }
 				}
 				var id = id = $(elem).attr('id');
 				if(!id && proto) id = proto.id;

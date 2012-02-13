@@ -6,7 +6,7 @@
 		GroupInstance.prototype.constructor = GroupInstance;
 		function GroupInstance(parent, template){
 			ArmyCalc.Instance.call(this, parent, template);
-			this.childrenUl = parent.childrenUl;	
+			this.canvas = parent.canvas;	
 		}
 		
 		return GroupInstance;

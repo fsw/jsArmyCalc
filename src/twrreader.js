@@ -206,8 +206,12 @@ ArmyCalc.TwrReader = (function(){
 				noIdsCounter ++;
 				var type = elem.nodeName.toLowerCase();
 				var proto = null;
-				if(proto = $(elem).attr('prototype')){
-				  proto = that.templatesByPath[proto];
+				var protoPath;
+				if(protoPath = $(elem).attr('prototype')){
+				  proto = that.templatesByPath[protoPath];
+				  if (!proto) {
+					that.issueWarning('cant find prototype ' + protoPath);
+				  }
 				}
 				var id = id = $(elem).attr('id');
 				if(!id && proto) id = proto.id;

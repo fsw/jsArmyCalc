@@ -419,6 +419,11 @@ div.acCanvas #acUnits li a {
 	color: black;
 }
 
+div.acCanvas #acUnits li.current a {
+	background-color: #ddd;
+	color: #333;
+}
+
 div.acCanvas #acUnits > li > a {
 	font-weight: bold;
 }	
@@ -462,19 +467,28 @@ div.acCanvas div.workspace {
 	overflow: hidden;
 	background-color: #ddd;
 }
-div.acCanvas div.workspace div.unitslist{
+
+div.acCanvas div.workspace div#acAvailable {
+	float:left;
+	width:30%;
+	margin: 0;
+	padding: 0;
+}
+
+div.acCanvas div.workspace div.unitslist {
 	float: left;
-	width: 300px;
-	height: 300px;
-	/*
-	overflow: auto;
-	overflow-x: hidden;
-	-ms-overflow-x: hidden;
-	*/
+	width: 30%;
+	margin: 0;
+	padding: 0;
 }
+
 div.acCanvas div.workspace div.unitdetails{
-	margin-left: 310px;
+	float: left;
+	width: 40%;
+	margin: 0;
+	padding: 0;
 }
+
 div.acCanvas div.workspace #acDetails{
 	min-height: 100px;
 	padding: 5px 0;

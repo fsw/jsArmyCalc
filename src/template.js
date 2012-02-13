@@ -54,7 +54,9 @@
 			  if (desc = $elem.children('description').text()) {
 				this.description = desc;;
 			  }
-
+			},
+			_createAppender : function(instance) {
+				return $('<li>' + this.name + '</li>');
 			}
 		};
 

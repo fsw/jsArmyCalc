@@ -23,6 +23,11 @@ div.acCanvas #acUnits li a {
 	color: black;
 }
 
+div.acCanvas #acUnits li.current a {
+	background-color: #ddd;
+	color: #333;
+}
+
 div.acCanvas #acUnits > li > a {
 	font-weight: bold;
 }	
