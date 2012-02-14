@@ -4,8 +4,8 @@
 		
 		ElementTemplate.prototype = new ArmyCalc.Template();
 		ElementTemplate.prototype.constructor = ElementTemplate;
-		function ElementTemplate(proto){
-			ArmyCalc.Template.call(this, proto);
+		function ElementTemplate(parent, id, proto){
+			ArmyCalc.Template.call(this, parent, id, proto);
 			this.element = true;
 		}
 

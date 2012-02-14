@@ -191,10 +191,10 @@ ArmyCalc.TwrReader = (function(){
 		loadFiles : function(){
 			var that = this;
 			this.setProgress(50);
-			this.templates = {};
+			this.children = {};
 			this.toProcessAll = this.toProcessCount = this.templatesQueue.length + this.languagesQueue.length + this.scripts.length;
 			for (var i = 0; i < this.templatesQueue.length; i++) {
-				this.appendTemplates(this.templatesQueue[i], this.templates, '');
+				this.appendTemplates(this.templatesQueue[i], this, '');
 				this.fileProcessed();
 			}
 			this.setProgress(100);
@@ -219,27 +219,24 @@ ArmyCalc.TwrReader = (function(){
 				
 				switch ( type ){
 				  case 'element' : 
-					var template = new ArmyCalc.ElementTemplate(proto);
+					var template = new ArmyCalc.ElementTemplate(root, id, proto);
 					break;
 				  case 'group' : 
-					var template = new ArmyCalc.GroupTemplate(proto);
+					var template = new ArmyCalc.GroupTemplate(root, id, proto);
 					break;
 				  case 'army' : 
-					var template = new ArmyCalc.ArmyTemplate(proto);
+					var template = new ArmyCalc.ArmyTemplate(root, id, proto);
 					break;
 				  case 'deadend' :
-					delete root[id];
+					delete root.children[id];
 					return;
 				  default :
 					return;
 				};
 	
 				template._loadFromXml($(elem));
-				//ugly
-				template.id = id;
-				root[id] = template;
 				that.templatesByPath[path + id] = template;
-				that.appendTemplates(elem, template.children, path + id + '.');
+				that.appendTemplates(elem, template, path + id + '.');
 				if (template instanceof ArmyCalc.ArmyTemplate)
 					that.armies[id] = template;
 			});

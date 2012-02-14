@@ -2,12 +2,12 @@
 	
 	ArmyCalc.ArmyInstance = (function(){
 		
+		//TODO is there a better way?
 		ArmyInstance.prototype = new ArmyCalc.Instance({}, {});
 		ArmyInstance.prototype.constructor = ArmyInstance;
 		
 		function ArmyInstance(template, canvas){
-			this.canvas = canvas;
-			ArmyCalc.Instance.call(this, {}, template);
+			ArmyCalc.Instance.call(this, {canvas:canvas}, template);
 		}
 		
 		ArmyInstance.prototype.getHtml = function( ){

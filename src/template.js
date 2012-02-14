@@ -1,7 +1,9 @@
 (function(ArmyCalc){
 	//template
 	ArmyCalc.Template = (function(){
-		function Template(proto){
+		function Template(parent, id, proto){
+			this.id = id;
+			this.parent = parent;
 			if (proto) {
 			  this.stats = {};
 			  this.clone( this.stats, proto.stats );
@@ -10,9 +12,9 @@
 			  this.children = {};
 			  for (var id in proto.children) {
 				if (proto.children[id] instanceof ArmyCalc.ElementTemplate)
-				  this.children[id] = new ArmyCalc.ElementTemplate(proto.children[id]);
+				  new ArmyCalc.ElementTemplate(this, id, proto.children[id]);
 				else if (proto.children[id] instanceof ArmyCalc.GroupTemplate)
-				  this.children[id] = new ArmyCalc.ElementTemplate(proto.children[id]);		
+				  new ArmyCalc.GroupTemplate(this, id, proto.children[id]);		
 			  }
 			  this.proto = proto;
 			} else {
@@ -21,6 +23,8 @@
 			  this.stats = {};
 			  this.name = 'Unnamed';
 			}
+			if(parent)
+			  parent.children[id] = this;
 		}
 
 		Template.prototype = {
@@ -56,7 +60,13 @@
 			  }
 			},
 			_createAppender : function(instance) {
-				return $('<li>' + this.name + '</li>');
+				var a = $('<a href="#">' + this.name + '</a>');
+				var that = this;
+				a.click(function(){
+				  instance.appendElement(that.id);
+				  return false;
+				});
+				return $('<li></li>').append(a);
 			}
 		};
 

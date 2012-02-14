@@ -23,7 +23,7 @@ div.acCanvas #acUnits li a {
 	color: black;
 }
 
-div.acCanvas #acUnits li.current a {
+div.acCanvas #acUnits li.current > a {
 	background-color: #ddd;
 	color: #333;
 }

@@ -4,8 +4,8 @@
 
 		GroupTemplate.prototype = new ArmyCalc.Template();
 		GroupTemplate.prototype.constructor = GroupTemplate;
-		function GroupTemplate(proto){
-			ArmyCalc.Template.call(this, proto);
+		function GroupTemplate(parent, id, proto){
+			ArmyCalc.Template.call(this, parent, id, proto);
 			this.group = true;
 		}
 
