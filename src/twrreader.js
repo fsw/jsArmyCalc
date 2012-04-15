@@ -87,7 +87,7 @@ ArmyCalc.TwrReader = (function(){
 			  c.shortname = $this.children('shortname').text();
 			  c.suffix = $this.children('suffix').text();
 			  c.prefix = $this.children('prefix').text();
-			  c.default = $this.children('default').text();
+			  c['default'] = $this.children('default').text();
 			  that.costs[$this.attr('id')] = c;
 			});
 			
@@ -98,7 +98,7 @@ ArmyCalc.TwrReader = (function(){
 			  s.shortname = $this.children('shortname').text();
 			  s.suffix = $this.children('suffix').text();
 			  s.prefix = $this.children('prefix').text();
-			  s.default = ($this.attr('default') == 'true');
+			  s['default'] = ($this.attr('default') == 'true');
 			  that.stats[$this.attr('id')] = s;
 			});
 
