@@ -113,7 +113,7 @@ var ArmyCalc = (function() {
 		},
 		loadTWR : function( url ){
 
-			this.twr.load('../examples/dwarfs.twr/');
+			this.twr.load( url );
 			this.setStatus( 'loading '+url );
 
 		},
