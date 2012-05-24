@@ -23,7 +23,6 @@ JS_FILES = ${SRC_DIR}/armycalc.js\
 	${SRC_DIR}/sandbox.js
 
 CSS_FILES = ${CSS_DIR}/layout.css\
-	${CSS_DIR}/menu.css\
 	${CSS_DIR}/statusbar.css\
 	${CSS_DIR}/toolbar.css\
 	${CSS_DIR}/validation.css\
@@ -89,4 +88,7 @@ doc:
 clean:
 	@@echo "Cleaning up"
 	@@rm ${AC}
-	
+	@@rm ${AC_CSS}
+	@@rm ${AC_MIN}
+	@@rm ${AC_CSS_MIN}
+

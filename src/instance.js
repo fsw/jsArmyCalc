@@ -27,7 +27,7 @@
 			
 			  if (typeof parent.canvas.children != 'undefined'){
 				var anchor = $('<a href="#">' + template.name + '</a>');
-				this.sizeSpan = $('<span> size </span>');
+				this.sizeSpan = $('<span> 0x </span>');
 				this.li = $('<li></li>').append(anchor.prepend(this.sizeSpan));
 				this.canvas.children = $('<ul></ul>');
 				anchor.click(function(){that.focus()});
@@ -42,11 +42,13 @@
 			for (var i in template.children) {
 			  if(template.children[i] instanceof ArmyCalc.GroupTemplate)
 			  {
+				console.log('adding ' + i + ' to ' + this.template.id);
 				this.children[i] = new ArmyCalc.GroupInstance(this, template.children[i]);
-				this.canvas.available.append('<li>GROUP</li>');
+				//this.canvas.available.append('<li>GROUP</li>');
 			  }
 			  else
 			  {
+				console.log('adding ' + i + ' to ' + this.template.id);
 				this.children[i] = [];
 				this.canvas.available.append(template.children[i]._createAppender(this));
 			  }
@@ -69,6 +71,8 @@
 			},
 			appendElement : function( id ){
 			  //TODO error handling
+			  alert( 'kaszanka' + id + this.template.children.length);
+			  
 			  var instance = new ArmyCalc.ElementInstance(this, this.template.children[id]);
 			  this.children[id].push(instance);
 			  return instance;

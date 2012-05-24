@@ -49,22 +49,8 @@ table {
 
 body {
   background-color: #ccc;
-  padding: 20px;
-  width: 900px;
-  margin: 0px auto;
+  padding: 0;
+  /*width: 900px;
+  margin: 0 auto;*/
 }
 
-div#legend {
-  float: left;
-  width: 280px;
-  padding: 10px;
-}
-
-div#rhs {
-  margin-left: 300px;
-}
-
-div#legend p {
-  padding:10px;
-  font-size:13px;
-}

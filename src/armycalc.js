@@ -20,10 +20,8 @@ var ArmyCalc = (function() {
 
 		this.canvas.find('#acMaximize').click(function(){that.setFullscreen(true); return false;});
 		this.canvas.find('#acMinimize').click(function(){that.setFullscreen(false); return false;});
-
 		this.canvas.find('#acNew').click(function(){that.newArmy(); return false;});
 		this.canvas.find('#acRevalidate').click(function(){that.revalidate(); return false;});
-
 		this.canvas.find('#acPrint').click(function(){that.print(); return false;});
 
 		this.canvas.find('#acDec').click( function(){ _focused_element.size(_focused_element.size()-1); return false;}).hide();
@@ -44,8 +42,8 @@ var ArmyCalc = (function() {
 				}).hide();
 		
 		this.twr = new ArmyCalc.TwrReader({
-		  'onProgress' : function(percent){ console.log('progress: ' + percent + '%'); },
-		  'onLoaded' : function(){ console.log('DONE'); }
+		  'onProgress' : function(percent){ that.setStatus('loading ' + that.twrUrl + ' (' + Math.round(percent) + '%)'); },
+		  'onLoaded' : function(){ that.setStatus(that.twrUrl + ' loaded.'); }
 		});
 		
 		this.army = null;
@@ -108,14 +106,9 @@ var ArmyCalc = (function() {
 		setError : function( text ){
 			this.statusElem.html('<b style="color:red">'+text+'</b>');
 		},
-		calcLoadUnitsXml : function( xml ){
-			console.log(xml);
-		},
 		loadTWR : function( url ){
-
-			this.twr.load( url );
-			this.setStatus( 'loading '+url );
-
+			this.twrUrl = url;
+			this.twr.load( this.twrUrl );
 		},
 		revalidate : function( ){
 			if(! this.army ){
@@ -133,15 +126,11 @@ var ArmyCalc = (function() {
 
 		},
 		print : function( ){
-
 			if(! this.army ){
 				this.flashMsg( "Please create new army first!" );
 				return;
 			}
-
-
 			acPrintText(this.canvas.find(".unitslist").html());
-
 		},
 		newArmy : function( ){
 
@@ -174,93 +163,6 @@ var ArmyCalc = (function() {
 					for (id in costInputs ) {
 						that.army.maxTotalCosts[id] = costInputs[id].val();
 					}
-	  
-
-					function appendToMenu(ul, children, path){
-					  for (var id in children) {
-						if (children[id] instanceof ArmyCalc.ElementTemplate) {
-						  var menu_elem = $("<a rel='" + id + "'href='#'>"+children[id].name+"</a>");
-						  ul.append($("<li></li>").append(menu_elem));
-						  menu_elem.click(function(){
-							var group = that.army;
-							for (var i=0; i<path.length; i++)
-							  group = group.children[path[i]];
-							var inst = group.appendElement($(this).attr('rel'));
-							$('.submm').hide();
-							inst.focus();
-							return false;
-						  });
-						}
-						else if (children[id] instanceof ArmyCalc.GroupTemplate) {
-						  var subm = $("<ul class='submm'></ul>");
-						  appendToMenu(subm, children[id].children, path.concat(id));
-						  var menu_elem = $("<a href='#'>"+children[id].name+"</a>");
-						  menu_elem.click(function(){return false;});
-						  ul.append($("<li></li>").append(menu_elem).append(subm).hover( function(){
-							$(this).children("ul").show();
-						  }, function(){
-							$(this).children("ul").hide();
-						  }));
-						}
-					  }
-					}
-					that.canvas.find('#acElements').html();
-					appendToMenu(that.canvas.find('#acElements'), that.army.template.children, []);
-					/*
-					var menu_ul_by_id = {};
-					// we are buliding the menu and populating the menu_ul_by_id table 
-					// TODO make this recurrent to populate multiple menu levels? 
-					$.each(calc.model.mainmenu,function( id, item ){
-
-							menu_ul_by_id[id] = $("<ul class='submm'></ul>");
-
-							var menu_elem = $("<a href='#'>"+item.name+"</a>");
-
-							calc.canvas.find('#acElements').append(
-								$("<li></li>")
-								.append(menu_elem)
-								.append(menu_ul_by_id[id])
-								.hover(function(){ $(this).children("ul").show();},function(){$(this).children("ul").hide();})
-								);
-
-							$.each(item.submenus,function( child_id, child ){
-								menu_ul_by_id[child_id] = $("<ul class='submm'></ul>");
-								var menu_elem = $("<a href='#'>"+child.name+"</a>");
-
-								menu_ul_by_id[id].append(
-									$("<li></li>")
-									.append(menu_elem)
-									.append(menu_ul_by_id[child_id])
-									.hover(function(){ $(this).children("ul").show();},function(){$(this).children("ul").hide();})
-									);
-
-								});
-
-					});
-
-					// we are appending all elements that have menu defined to the menu
-					$.each(calc.army.element.elements,function( id, item ){
-							$.each(item.elements,function( id, item ){
-								if(item.menu_id){
-								var appendButton = $("<a href='#'>"+item.name+"</a>");
-								menu_ul_by_id[item.menu_id].append($("<li></li>").append(appendButton));
-								appendButton.click( function(){ 
-									calc.army.append( id ); 
-									$('.submm').hide();
-									} );
-								}
-								});
-							});
-
-					//in case a model does not define any units for a menu we remove it from the dom tree
-					$.each(menu_ul_by_id,function( id, item ){
-							if($(item).children('li').length == 0)
-							$(item).parent().remove();
-							});
-					*/
-
-
-
 			});
 
 			body.append($("<div class='submit'></div>").append(createButton));  
