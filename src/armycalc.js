@@ -24,9 +24,9 @@ var ArmyCalc = (function() {
 		this.canvas.find('#acRevalidate').click(function(){that.revalidate(); return false;});
 		this.canvas.find('#acPrint').click(function(){that.print(); return false;});
 
-		this.canvas.find('#acDec').click( function(){ _focused_element.size(_focused_element.size()-1); return false;}).hide();
-		this.canvas.find('#acInc').click( function(){ _focused_element.size(_focused_element.size()+1); return false;}).hide();
-		this.canvas.find('#acRem').click( function(){ _focused_element.remove(); return false;}).hide();
+		this.canvas.find('#acDec').click(function(){ _focused_element.decSize(); return false;}).hide();
+		this.canvas.find('#acInc').click(function(){ _focused_element.incSize(); return false;}).hide();
+		this.canvas.find('#acRem').click(function(){ _focused_element.remove(); return false;}).hide();
 
 		this.canvas.find('#acUp').click( function(){
 				_focused_element._li.prev().before(  _focused_element._li );
@@ -159,6 +159,13 @@ var ArmyCalc = (function() {
 						children: that.canvas.find('#acUnits'), 
 						detailsContainer: that.canvas.find('#acDetails'),
 						availableContainer: that.canvas.find('#acAvailable'),
+						buttons: {
+							dec : that.canvas.find('#acDec'),
+							inc : that.canvas.find('#acInc'),
+							rem : that.canvas.find('#acRem'),
+							up : that.canvas.find('#acUp'),
+							down : that.canvas.find('#acDown')
+						}
 					});
 					for (id in costInputs ) {
 						that.army.maxTotalCosts[id] = costInputs[id].val();

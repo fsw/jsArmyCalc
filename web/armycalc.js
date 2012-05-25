@@ -24,9 +24,9 @@ var ArmyCalc = (function() {
 		this.canvas.find('#acRevalidate').click(function(){that.revalidate(); return false;});
 		this.canvas.find('#acPrint').click(function(){that.print(); return false;});
 
-		this.canvas.find('#acDec').click( function(){ _focused_element.size(_focused_element.size()-1); return false;}).hide();
-		this.canvas.find('#acInc').click( function(){ _focused_element.size(_focused_element.size()+1); return false;}).hide();
-		this.canvas.find('#acRem').click( function(){ _focused_element.remove(); return false;}).hide();
+		this.canvas.find('#acDec').click(function(){ _focused_element.decSize(); return false;}).hide();
+		this.canvas.find('#acInc').click(function(){ _focused_element.incSize(); return false;}).hide();
+		this.canvas.find('#acRem').click(function(){ _focused_element.remove(); return false;}).hide();
 
 		this.canvas.find('#acUp').click( function(){
 				_focused_element._li.prev().before(  _focused_element._li );
@@ -159,6 +159,13 @@ var ArmyCalc = (function() {
 						children: that.canvas.find('#acUnits'), 
 						detailsContainer: that.canvas.find('#acDetails'),
 						availableContainer: that.canvas.find('#acAvailable'),
+						buttons: {
+							dec : that.canvas.find('#acDec'),
+							inc : that.canvas.find('#acInc'),
+							rem : that.canvas.find('#acRem'),
+							up : that.canvas.find('#acUp'),
+							down : that.canvas.find('#acDown')
+						}
 					});
 					for (id in costInputs ) {
 						that.army.maxTotalCosts[id] = costInputs[id].val();
@@ -242,6 +249,10 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 			  this.clone( this.stats, proto.stats );
 			  this.enabled = proto.enabled;
 			  this.name = proto.name;
+			  this.minSize = proto.minSize;
+			  this.maxSize = proto.minSize;
+			  this.defaultSize = proto.defaultSize;
+			  
 			  this.children = {};
 			  for (var id in proto.children) {
 				if (proto.children[id] instanceof ArmyCalc.ElementTemplate)
@@ -255,9 +266,12 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 			  this.enabled = true;
 			  this.stats = {};
 			  this.name = 'Unnamed';
+			  this.minSize = 1;
+			  this.maxSize = null;
+			  this.defaultSize = 1;
 			}
 			if(parent)
-			  parent.children[id] = this;
+			  parent.children[this.id] = this;
 		}
 
 		Template.prototype = {
@@ -282,15 +296,21 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 				
 			},
 			_loadFromXml : function($elem){
+				//this should not override prototype properties!
+				(n = $elem.children('name').text()) || (n = $elem.attr('name'));
+				if (typeof n != 'undefined') this.name = n;
+				
+				(d = $elem.children('description').text());
+				if (typeof d != 'undefined') this.description = n;
+				
+				(min = $elem.attr('minSize'));
+				if (typeof min != 'undefined') { this.minSize = parseInt(min); this.defaultSize = this.minSize; }
+				
+				(max = $elem.attr('maxSize'));
+				if (typeof max != 'undefined') this.maxSize = parseInt(max);
 
-			  var name = null;
-			  if ((name = $elem.children('name').text()) || (name = $elem.attr('name'))) {
-				this.name = name;
-			  }
-			  var desc = null;
-			  if (desc = $elem.children('description').text()) {
-				this.description = desc;;
-			  }
+				(def = $elem.attr('defaultSize'));
+				if (typeof def != 'undefined') this.defaultSize = parseInt(def);
 			},
 			_createAppender : function(instance) {
 				var a = $('<a href="#">' + this.name + '</a>');
@@ -312,7 +332,9 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 		
 		function Instance(parent, template) {
 			var that = this;
-			this.parent = parent;
+			if (parent instanceof ArmyCalc.Instance){
+				this.parent = parent;
+			}
 			this.template = template;
 			this.available = template.children;
 			this.children = {};
@@ -320,12 +342,7 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 			for (var i in template.stats) {
 			  this.stats[i] = template.stats[i];
 			}
-			this.size = template.defaultSize;
-			this.costs = {};
-			for (var i in template.costs) {
-			  this.costs[i] = template.costs[i] * this.size;
-			  this.costs[i] = template.costs[i] * this.size;
-			}
+			
 			this.maxTotalCosts = {};
 			this.canvas = {};
 			if (parent.canvas)
@@ -333,13 +350,18 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 			  this.canvas['children'] = parent.canvas['children'];
 			  this.canvas['availableContainer'] = parent.canvas['availableContainer'];
 			  this.canvas['detailsContainer'] = parent.canvas['detailsContainer'];
-			
+			  this.canvas['buttons'] = parent.canvas['buttons'];
+
 			  if (typeof parent.canvas.children != 'undefined'){
 				var anchor = $('<a href="#">' + template.name + '</a>');
-				this.sizeSpan = $('<span> 0x </span>');
-				this.li = $('<li></li>').append(anchor.prepend(this.sizeSpan));
+				this.sizeSpan = $('<span></span>');
+				this.folder = $('<span class="folder">&nbsp;</span>');
+				anchor.prepend(this.sizeSpan);
+				anchor.prepend(this.folder);
+				this.li = $('<li></li>').append(anchor);
 				this.canvas.children = $('<ul></ul>');
-				anchor.click(function(){that.focus()});
+				anchor.click(function(){that.focus();});
+				this.folder.click(function(){that.toggleFold();});
 				parent.canvas.children.append(this.li.append(this.canvas.children));
 			  }
 			}
@@ -347,6 +369,11 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 			this.canvas.available = $('<ul></ul>');	
 			this.canvas.details = $('<div> ... details ... </div>');
 			
+			this.costs = {};
+			if (this.parent)
+			{
+				this.setSize(template.defaultSize);
+			}			
 			//TODO append all required childrens
 			for (var i in template.children) {
 			  if(template.children[i] instanceof ArmyCalc.GroupTemplate)
@@ -362,26 +389,80 @@ if (navigator.appName != 'Microsoft Internet Explorer') {
 				this.canvas.available.append(template.children[i]._createAppender(this));
 			  }
 			}
+			this.childrenCountChanged();
+			if (this.parent)
+			{
+				this.parent.childrenCountChanged();
+			}
 		}
 		
 		Instance.prototype = {
-			focus : function( ){
-			  if (typeof this.canvas != 'undefined'){
-				this.li.parent().find('li').removeClass('current');
-				this.li.addClass('current');
-			    this.canvas.availableContainer.html('');
-				this.canvas.availableContainer.append(this.canvas.available);
-			    this.canvas.detailsContainer.html('');
-				this.canvas.detailsContainer.append(this.canvas.details);
-			  }
+			toggleFold : function( ){
+				this.folder.toggleClass('unfold');
+				this.canvas.children.toggle();
 			},
-			resize : function( size ){
-
+			unfocus : function( ){
+				this.li.removeClass('current');
+				if (this.parent){
+					this.parent.unfocus( );
+				}
+			},
+			focus : function( depth ){
+				if ((!depth) && (typeof _focused_element != 'undefined')){
+					_focused_element.unfocus();
+				}
+				this.li.addClass('current');
+				if (this.parent){
+					this.parent.focus( true );
+				}
+				if (!depth)
+				{
+					this.canvas.availableContainer.html('');
+					this.canvas.availableContainer.append(this.canvas.available);
+				    this.canvas.detailsContainer.html('');
+					this.canvas.detailsContainer.append(this.canvas.details);
+					
+					this.canvas.buttons.inc.toggle(true);
+					this.canvas.buttons.dec.toggle(true);
+					this.canvas.buttons.rem.toggle(true);
+					this.canvas.buttons.up.toggle(true);
+					this.canvas.buttons.down.toggle(true);
+					
+					_focused_element = this;
+				}
+			},
+			getSize : function( ){
+				return this.size;
+			},
+			setSize : function( size ){
+				this.size = size;
+				for (var i in this.template.costs) {
+					this.costs[i] = template.costs[i] * this.size;
+					this.costs[i] = template.costs[i] * this.size;
+				}
+				if (this.size > 1)
+				{
+					this.sizeSpan.text(this.size + 'x');
+				}
+				else
+				{
+					this.sizeSpan.text('');
+				}
+			},
+			incSize : function( ){
+				this.setSize(this.getSize() + 1);
+			},
+			decSize : function( ){
+				this.setSize(this.getSize() - 1);
+			},
+			childrenCountChanged : function(){
+				if (this.folder){
+					this.folder.toggle(Object.keys(this.children).length > 0);
+				}
 			},
 			appendElement : function( id ){
 			  //TODO error handling
-			  alert( 'kaszanka' + id + this.template.children.length);
-			  
+			  //alert( 'kaszanka' + id + this.template.children.length);
 			  var instance = new ArmyCalc.ElementInstance(this, this.template.children[id]);
 			  this.children[id].push(instance);
 			  return instance;
@@ -719,7 +800,9 @@ ArmyCalc.TwrReader = (function(){
 				var id = id = $(elem).attr('id');
 				if(!id && proto) id = proto.id;
 				if(!id) id = noIdsCounter;
-				
+
+				//that.issueWarning('appending ' + path + id);
+
 				switch ( type ){
 				  case 'element' : 
 					var template = new ArmyCalc.ElementTemplate(root, id, proto);

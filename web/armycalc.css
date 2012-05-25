@@ -45,118 +45,6 @@ div.acCanvas a:focus {
 }
 
 
-/* MENU */
-
-div.acCanvas div.menucontainer {
-	background: black;
-	min-height: 25px;
-	color: white;
-	line-height: 22px;
-	margin-bottom: 7px;
-}
-
-div.acCanvas div.menu {
-	position:absolute;	
-	z-index:10;
-	/*
-	left:20px;
-	margin-left:-2.5em;
-	width:80%;
-	*/
-}
-
-div.acCanvas div.menu #acElements li>ul { 
-	top: auto;
-	left: auto;
-}
-
-div.acCanvas div.menu #acElements {
-	list-style: none;
-}
-
-div.acCanvas div.menu #acElements ul { 
-	padding: 0;
-	margin:0;
-	list-style: none;
-    width:10em;
-    z-index:99;
-    position:relative;
-    overflow:visible;  
-}
-
-div.acCanvas div.menu #acElements li { 
-    margin:0;   
-    position: relative; 
-    float:left;
-	width: 10em;
-	background-color: black;
-    border:solid 1px #444;
-    display:block;
-    height:auto;
-}
-
-div.acCanvas div.menu #acElements ul li{ 
-	background-color: black;
-}
-
-div.acCanvas div.menu #acElements ul li{
-	border-width:1px 1px 0 0;
-}
-
-div.acCanvas div.menu #acElements ul ul li{ 
-	border-width:1px 1px 0 1px;
-}
-
-div.acCanvas div.menu #acElements ul ul li:last-child { 
-	border-width:1px;
-}
- 
-div.acCanvas div.menu #acElements a {
-	text-align: center;
-    text-decoration:none; 
-    display:block;
-	color: white;
-	white-space: nowrap;
-	/* padding: 0.1em;  
-    margin:0.2em 0 0.2em 0.1em; 
-    width:11.5em; 
-    height:1.05em; */
-}
-
-div.acCanvas div.menu #acElements a:hover {
-	background-color: white;
-	color: black;
-}
-/* div.acCanvas div.menu #acElements a:hover, div.acCanvas div.menu #acElements li:hover, div.acCanvas div.menu #acElements ul li:hover, div.acCanvas div.menu #acElements ul li a:hover */
-
-div.acCanvas div.menu #acElements ul{
-    display:none;   
-}
-
-/*all see this */
-div.acCanvas div.menu #acElements ul ul, div.acCanvas div.menu #acElements ul ul ul{
-    display:none; 
-    position:absolute; 
-    margin-top:-1.8em; 
-    margin-left:10em;
-}
-
-/* non-IE browsers see this */
-div.acCanvas div.menu #acElements ul li>ul, div.acCanvas div.menu #acElements ul ul li>ul {
-    margin-top:-1.35em; 
-}
-
- 
-div.acCanvas div.menu #acElements li:hover ul ul, div.acCanvas div.menu #acElements li:hover ul ul ul, div.acCanvas div.menu #acElements li:hover ul ul ul ul, div.acCanvas div.menu #acElements li:hover ul ul ul ul ul {
-    display:none;
-}
-
-div.acCanvas div.menu #acElements li:hover ul, div.acCanvas div.menu #acElements ul li:hover ul, div.acCanvas div.menu #acElements ul ul li:hover ul, div.acCanvas div.menu #acElements ul ul ul li:hover ul, div.acCanvas div.menu #acElements ul ul ul ul li:hover ul {
-    /* display:block; */
-}
-
-
-
 
 /* STATUSBAR */
 div.acCanvas div.statusbar {
@@ -460,7 +348,19 @@ div.acCanvas #acUnitsHeader div.title {
 }
 
 
+div.acCanvas span.folder {
+	width: 16px;	
+	height: 16px;
+	background: url(armycalc.png);
+	display: block;
+	float: left;
+	background-position: -3px -135px;
+}
 
+
+div.acCanvas span.unfold {
+	background-position: -3px -113px;
+}
 
 /* WORKSPACE */
 div.acCanvas div.workspace {
@@ -502,35 +402,28 @@ div.acCanvas div.workspace #acDetails{
 
 
 
-div.acCanvas #acDetails ul.actions {
+div.acCanvas ul.actions {
 	overflow: hidden;
 	height: 34px;
 }
 
-div.acCanvas #acDetails ul.actions li {
+div.acCanvas ul.actions li {
 	float: left;
 }
 
-div.acCanvas #acDetails ul.actions li a {
+div.acCanvas ul.actions li a {
 	width: 22px;	
 	height: 22px;
 	background: url(armycalc.png);
 	display: block;
 	float: left;
+	text-decoration: none;
 }
 
-div.acCanvas #acDec {  background-position: 0px -66px; }
-div.acCanvas #acInc {  background-position: -66px -44px; }
-div.acCanvas #acRem {  background-position: 0px -88px; }
 
-div.acCanvas #acUp {  background-position: -44px -132px; }
-div.acCanvas #acDown {  background-position: -22px -132px; }
+div.acCanvas #acUp {  background-position: 0px 0px; }
+div.acCanvas #acDown {  background-position: -22px 0px; }
 
-
-
-
-
-
-
-
-
+div.acCanvas #acInc {  background-position: -44px 0px; }
+div.acCanvas #acDec {  background-position: -66px 0px; }
+div.acCanvas #acRem {  background-position: -88px 0px; }

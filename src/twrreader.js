@@ -216,7 +216,9 @@ ArmyCalc.TwrReader = (function(){
 				var id = id = $(elem).attr('id');
 				if(!id && proto) id = proto.id;
 				if(!id) id = noIdsCounter;
-				
+
+				//that.issueWarning('appending ' + path + id);
+
 				switch ( type ){
 				  case 'element' : 
 					var template = new ArmyCalc.ElementTemplate(root, id, proto);

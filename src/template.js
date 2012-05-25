@@ -9,6 +9,10 @@
 			  this.clone( this.stats, proto.stats );
 			  this.enabled = proto.enabled;
 			  this.name = proto.name;
+			  this.minSize = proto.minSize;
+			  this.maxSize = proto.minSize;
+			  this.defaultSize = proto.defaultSize;
+			  
 			  this.children = {};
 			  for (var id in proto.children) {
 				if (proto.children[id] instanceof ArmyCalc.ElementTemplate)
@@ -22,9 +26,12 @@
 			  this.enabled = true;
 			  this.stats = {};
 			  this.name = 'Unnamed';
+			  this.minSize = 1;
+			  this.maxSize = null;
+			  this.defaultSize = 1;
 			}
 			if(parent)
-			  parent.children[id] = this;
+			  parent.children[this.id] = this;
 		}
 
 		Template.prototype = {
@@ -49,15 +56,21 @@
 				
 			},
 			_loadFromXml : function($elem){
+				//this should not override prototype properties!
+				(n = $elem.children('name').text()) || (n = $elem.attr('name'));
+				if (typeof n != 'undefined') this.name = n;
+				
+				(d = $elem.children('description').text());
+				if (typeof d != 'undefined') this.description = n;
+				
+				(min = $elem.attr('minSize'));
+				if (typeof min != 'undefined') { this.minSize = parseInt(min); this.defaultSize = this.minSize; }
+				
+				(max = $elem.attr('maxSize'));
+				if (typeof max != 'undefined') this.maxSize = parseInt(max);
 
-			  var name = null;
-			  if ((name = $elem.children('name').text()) || (name = $elem.attr('name'))) {
-				this.name = name;
-			  }
-			  var desc = null;
-			  if (desc = $elem.children('description').text()) {
-				this.description = desc;;
-			  }
+				(def = $elem.attr('defaultSize'));
+				if (typeof def != 'undefined') this.defaultSize = parseInt(def);
 			},
 			_createAppender : function(instance) {
 				var a = $('<a href="#">' + this.name + '</a>');

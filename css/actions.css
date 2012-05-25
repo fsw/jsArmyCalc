@@ -1,35 +1,28 @@
 
 
 
-div.acCanvas #acDetails ul.actions {
+div.acCanvas ul.actions {
 	overflow: hidden;
 	height: 34px;
 }
 
-div.acCanvas #acDetails ul.actions li {
+div.acCanvas ul.actions li {
 	float: left;
 }
 
-div.acCanvas #acDetails ul.actions li a {
+div.acCanvas ul.actions li a {
 	width: 22px;	
 	height: 22px;
 	background: url(armycalc.png);
 	display: block;
 	float: left;
+	text-decoration: none;
 }
 
-div.acCanvas #acDec {  background-position: 0px -66px; }
-div.acCanvas #acInc {  background-position: -66px -44px; }
-div.acCanvas #acRem {  background-position: 0px -88px; }
 
-div.acCanvas #acUp {  background-position: -44px -132px; }
-div.acCanvas #acDown {  background-position: -22px -132px; }
+div.acCanvas #acUp {  background-position: 0px 0px; }
+div.acCanvas #acDown {  background-position: -22px 0px; }
 
-
-
-
-
-
-
-
-
+div.acCanvas #acInc {  background-position: -44px 0px; }
+div.acCanvas #acDec {  background-position: -66px 0px; }
+div.acCanvas #acRem {  background-position: -88px 0px; }

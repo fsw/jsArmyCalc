@@ -62,4 +62,16 @@ div.acCanvas #acUnitsHeader div.title {
 }
 
 
+div.acCanvas span.folder {
+	width: 16px;	
+	height: 16px;
+	background: url(armycalc.png);
+	display: block;
+	float: left;
+	background-position: -3px -135px;
+}
 
+
+div.acCanvas span.unfold {
+	background-position: -3px -113px;
+}
